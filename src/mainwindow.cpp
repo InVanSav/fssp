@@ -14,9 +14,9 @@ MainWindow::~MainWindow() {}
 
 void MainWindow::aboutFssp() {
   QMessageBox aboutFssp;
-  aboutFssp.setText(tr("Fast Simple Signal Processing 0.1.0"));
+  aboutFssp.setText(tr("Fast Simple Signal Processing 0.1.1"));
   aboutFssp.setInformativeText(
-      tr("Made by:\n"
+      tr("Made by students of DVFU:\n"
          "    Kuligin Kirill\n"
          "    Savickij Ivan\n"
          "    Arefevef Egor"));

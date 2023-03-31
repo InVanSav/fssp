@@ -12,19 +12,23 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
 
-set(TS_FILES fssp_ru_RU.ts)
+set(TS_FILES translation/fssp_ru_RU.ts)
 
 qt_create_translation(QM_FILES ${PROJECT_SOURCE_DIR} ${TS_FILES})
 
+set(PROJECT_INCLUDE
+        include/mainwindow.h
+)
+
 set(PROJECT_SOURCES
-        main.cpp
-        mainwindow.cpp
-        mainwindow.h
+        src/main.cpp
+        src/mainwindow.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(fssp
         MANUAL_FINALIZATION
+        ${PROJECT_INCLUDE}
         ${PROJECT_SOURCES}
         ${QM_FILES}
     )
@@ -47,6 +51,11 @@ else()
         )
     endif()
 endif()
+
+target_include_directories(fssp PRIVATE
+    src
+    include
+)
 
 target_link_libraries(fssp PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 

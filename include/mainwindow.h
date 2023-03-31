@@ -27,4 +27,4 @@ class MainWindow : public QMainWindow {
   QAction *aboutFsspAct;
   QAction *openAct;
 };
-#endif // MAINWINDOW_H
+#endif  // MAINWINDOW_H
