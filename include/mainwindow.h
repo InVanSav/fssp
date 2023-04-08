@@ -1,30 +1,34 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include <QMainWindow>
 
+#include "signal.h"
+
 class MainWindow : public QMainWindow {
-  Q_OBJECT
+	Q_OBJECT
 
- public:
-  MainWindow(QWidget *parent = nullptr);
-  ~MainWindow();
+public:
+	MainWindow(QWidget *parent = nullptr);
+	~MainWindow();
 
- private slots:
-  void aboutFssp();
-  void open();
+private slots:
+	void aboutFssp();
+	void open();
+	void aboutSignal();
 
- private:
-  void createActions();
-  void createMenus();
+private:
+	void createActions();
+	void createMenus();
 
-  QMenu *fileMenu;
-  QMenu *modelingMenu;
-  QMenu *analizeMenu;
-  QMenu *filterMenu;
-  QMenu *settingsMenu;
-  QMenu *helpMenu;
-  QAction *aboutFsspAct;
-  QAction *openAct;
+	QMenu *fileMenu;
+	QMenu *modelingMenu;
+	QMenu *analizeMenu;
+	QMenu *filterMenu;
+	QMenu *settingsMenu;
+	QMenu *helpMenu;
+	QAction *aboutFsspAct;
+	QAction *openAct;
+	QAction *aboutSignalAct;
+
+	Signal *signal = nullptr;
 };
-#endif  // MAINWINDOW_H

@@ -18,11 +18,15 @@ qt_create_translation(QM_FILES ${PROJECT_SOURCE_DIR} ${TS_FILES})
 
 set(PROJECT_INCLUDES
         include/mainwindow.h
+        include/signal.h
+        include/filereader.h
 )
 
 set(PROJECT_SOURCES
         src/main.cpp
         src/mainwindow.cpp
+        src/signal.cpp
+        src/filereader.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -39,6 +43,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 else()
     if(ANDROID)
         add_library(fssp SHARED
+            ${PROJECT_INCLUDES}
             ${PROJECT_SOURCES}
             ${QM_FILES}
         )
@@ -46,6 +51,7 @@ else()
 #    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
     else()
         add_executable(fssp
+            ${PROJECT_INCLUDES}
             ${PROJECT_SOURCES}
             ${QM_FILES}
         )
