@@ -154,7 +154,7 @@ Date and time the recording started - </source>
 <context>
     <name>Signal</name>
     <message>
-        <location filename="../src/signal.cpp" line="33"/>
+        <location filename="../src/signal.cpp" line="34"/>
         <source>Signals</source>
         <translation>Сигналы</translation>
     </message>

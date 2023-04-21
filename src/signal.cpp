@@ -1,5 +1,6 @@
 #include "signal.h"
 
+#include "customlabel.h"
 #include <QLabel>
 #include <QVBoxLayout>
 
@@ -20,10 +21,10 @@ Signal::Signal(QString fileName, QWidget *parent) :
 	}
 
 	for (int i = 0; i < images.size(); ++i) {
-		QLabel *image = new QLabel();
+		QLabel *image = new CustomLabel();
 		image->setPixmap(QPixmap::fromImage(images[i]));
 		layout->addWidget(image);
-		QLabel *label = new QLabel();
+		QLabel *label = new CustomLabel();
 		label->setText(reader->channels_names[i]);
 		layout->addWidget(label);
 		layout->setAlignment(image, Qt::AlignCenter);

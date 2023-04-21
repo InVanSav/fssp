@@ -15,6 +15,6 @@ public:
 	FileReader *reader;
 
 	QVector<QImage> images;
-	const int WIDTH = 1488, HEIGHT = 228;
+	const int WIDTH = 200, HEIGHT = 50;
 	QVBoxLayout *layout;
 };

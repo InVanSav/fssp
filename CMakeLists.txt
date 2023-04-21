@@ -20,6 +20,7 @@ set(PROJECT_INCLUDES
         include/mainwindow.h
         include/signal.h
         include/filereader.h
+        include/customlabel.h
 )
 
 set(PROJECT_SOURCES
@@ -27,6 +28,7 @@ set(PROJECT_SOURCES
         src/mainwindow.cpp
         src/signal.cpp
         src/filereader.cpp
+        src/customlabel.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
