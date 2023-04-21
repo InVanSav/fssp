@@ -38,13 +38,13 @@ void Signal::drawWaveform(const QVector<double> &channel, QImage &image) {
 	double minVal = *std::min_element(channel.begin(), channel.end());
 	double maxVal = *std::max_element(channel.begin(), channel.end());
 	double range = maxVal - minVal;
-	double scale = (double)HEIGHT / range;
+	double scale = HEIGHT / range;
 
 	for (int i = 0; i < numSamples - 1; ++i) {
-		int x1 = (int)round(i * (double)WIDTH / numSamples);
-		int x2 = (int)round((i + 1) * (double)WIDTH / numSamples);
-		int y1 = HEIGHT - (int)round((channel[i] - minVal) * scale);
-		int y2 = HEIGHT - (int)round((channel[i + 1] - minVal) * scale);
+		int x1 = round(i * WIDTH / numSamples);
+		int x2 = round((i + 1) * WIDTH / numSamples);
+		int y1 = HEIGHT - round((channel[i] - minVal) * scale);
+		int y2 = HEIGHT - round((channel[i + 1] - minVal) * scale);
 
 		int dx = abs(x2 - x1);
 		int dy = abs(y2 - y1);
