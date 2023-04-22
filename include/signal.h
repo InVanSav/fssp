@@ -11,10 +11,11 @@ public:
 	explicit Signal(QString fileName, QWidget *parent = nullptr);
 
 	void drawWaveform(const QVector<double> &channel, QImage &image);
+	void drawAxes(QImage &image, const QVector<double> &channel);
 
 	FileReader *reader;
 
 	QVector<QImage> images;
-	const int WIDTH = 200, HEIGHT = 50;
+	const int WIDTH = 600, HEIGHT = 300;
 	QVBoxLayout *layout;
 };
