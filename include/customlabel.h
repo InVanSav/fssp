@@ -42,7 +42,7 @@ private:
 		if (action) {
 			m_waveformChecked_ = action->isChecked();
 			if (m_waveformChecked_) {
-				// Если стоит голочка
+				// Если стоит галочка
 			} else {
 				// Галочки нет
 			}

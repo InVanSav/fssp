@@ -11,7 +11,10 @@ public:
 	explicit Signal(QString fileName, QWidget *parent = nullptr);
 
 	void drawWaveform(const QVector<double> &channel, QImage &image);
-	void drawAxes(QImage &image, const QVector<double> &channel);
+	void drawAxes(const QVector<double> &channel, QImage &image);
+	/*void drawLine(int x1, int y1, int x2, int y2, uchar *pixels, int width);
+	void drawText(int x, int y, const QString &text, uchar *pixels, int width);
+	void drawRotatedText(int x, int y, const QString &text, uchar *pixels, int width);*/
 
 	FileReader *reader;
 

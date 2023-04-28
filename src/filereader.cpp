@@ -15,7 +15,6 @@ void FileReader::open() {
 void FileReader::read() {
 	QTextStream ts(stdout);
 	this->open();
-	// if (this->checkTXT(file_name)) {
 	size_t i = 0;
 
 	str = file.readLine();
@@ -85,7 +84,6 @@ void FileReader::read() {
 		start_time = QTime(hour, minute, sec, msec);
 	}
 
-	i = 0;
 	ts << start_time.toString() << "\n";
 	ts << s_time << "\n";
 
@@ -130,15 +128,9 @@ void FileReader::read() {
 			data[j][k] = lineData[j].toDouble();
 		}
 	}
-	//}
 	this->close();
 }
 
 bool FileReader::checkTXT(QString str) {
-	QString ::iterator itStr = str.end();
-
-	if (*(itStr - 1) == 't' && *(itStr - 2) == 'x' && *(itStr - 3) == 't') {
-		return true;
-	}
-	return false;
+	return str.toLower().endsWith(".txt");
 }
