@@ -154,9 +154,27 @@ Date and time the recording started - </source>
 <context>
     <name>Signal</name>
     <message>
-        <location filename="../src/signal.cpp" line="36"/>
+        <location filename="../src/signal.cpp" line="41"/>
         <source>Signals</source>
         <translation>Сигналы</translation>
+    </message>
+</context>
+<context>
+    <name>WaveformsDialog</name>
+    <message>
+        <location filename="../src/waveformsdialog.cpp" line="21"/>
+        <source>Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/waveformsdialog.cpp" line="22"/>
+        <source>Scale</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/waveformsdialog.cpp" line="40"/>
+        <source>Осциллограмма</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

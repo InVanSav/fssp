@@ -1,56 +1,42 @@
 #pragma once
 
-#include "QDialog"
-#include "QLabel"
-#include "QMenu"
-#include "QMouseEvent"
+#include <QLabel>
+#include <QMenu>
+#include <QMouseEvent>
+#include <QPoint>
+#include <QVBoxLayout>
+#include <QVector>
 
-class WaveformsDialog : public QDialog {
-	Q_OBJECT
-public:
-	WaveformsDialog(QWidget *parent = nullptr) :
-			QDialog(parent) {
-		setWindowTitle("Осциллограмма");
-		setMinimumSize(600, 400);
-	}
-};
+#include "filereader.h"
+#include "graphlabel.h"
+#include "waveformsdialog.h"
+
+class WaveformsDialog;
 
 class CustomLabel : public QLabel {
 	Q_OBJECT
 public:
-	CustomLabel(QWidget *parent = nullptr) :
-			QLabel(parent), m_waveformChecked_(false) {
-		m_waveformAction_ = new QAction("Осциллограмма", this);
-		m_waveformAction_->setCheckable(true);
-		connect(m_waveformAction_, &QAction::triggered, this, &CustomLabel::showWaveform);
+	CustomLabel(FileReader *reader_, int number_, QWidget *parent = nullptr);
 
-		m_contextMenu_ = new QMenu(this);
-		m_contextMenu_->addAction(m_waveformAction_);
-	}
+	static QList<CustomLabel *> &getAllLabels();
+	static void clearAllLabels(QVBoxLayout *layout);
+	static void disableCheckedLabelsMenu();
 
 protected:
-	void mousePressEvent(QMouseEvent *event) override {
-		if (event->button() == Qt::RightButton) {
-			m_waveformChecked_ = m_waveformAction_->isChecked();
-			m_contextMenu_->exec(event->globalPosition().toPoint());
-		}
-	}
+	void mousePressEvent(QMouseEvent *event) override;
+	void showContextMenu(const QPoint &pos);
+
+private slots:
+	void openDialog(bool enabled);
 
 private:
-	void showWaveform() {
-		QAction *action = qobject_cast<QAction *>(sender());
-		if (action) {
-			m_waveformChecked_ = action->isChecked();
-			if (m_waveformChecked_) {
-				// Если стоит галочка
-			} else {
-				// Галочки нет
-			}
-		}
-	}
+	bool waveformEnabled = false;
+	int number;
+	const int WIDTH = 600, HEIGHT = 300;
 
-private:
-	QAction *m_waveformAction_;
-	QMenu *m_contextMenu_;
-	bool m_waveformChecked_;
+	FileReader *reader;
+
+	static WaveformsDialog *waveformsDialog;
+	static QList<CustomLabel *> allCustomLabels;
+	static QList<CustomLabel *> checkedLabels;
 };

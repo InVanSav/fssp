@@ -21,6 +21,8 @@ set(PROJECT_INCLUDES
         include/signal.h
         include/filereader.h
         include/customlabel.h
+        include/waveformsdialog.h
+        include/graphlabel.h
 )
 
 set(PROJECT_SOURCES
@@ -29,6 +31,8 @@ set(PROJECT_SOURCES
         src/signal.cpp
         src/filereader.cpp
         src/customlabel.cpp
+        src/waveformsdialog.cpp
+        src/graphlabel.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
