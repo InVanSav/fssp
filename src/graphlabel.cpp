@@ -51,8 +51,7 @@ void GraphLabel::mousePressEvent(QMouseEvent *event) {
 
 	isSelecting = true;
 	startPoint = event->pos();
-	startPoint.y =
-			selectionRect = QRect();
+    selectionRect = QRect();
 }
 
 void GraphLabel::mouseMoveEvent(QMouseEvent *event) {
@@ -70,7 +69,7 @@ void GraphLabel::mouseMoveEvent(QMouseEvent *event) {
 void GraphLabel::mouseReleaseEvent(QMouseEvent *event) {
 	if (event->button() == Qt::LeftButton && isSelecting && !selectionRect.isNull()) {
 		isSelecting = false;
-		emit selectionFinished(selectionRect, number);
+        emit selectionFinished(selectionRect, number);
 	}
 }
 

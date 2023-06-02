@@ -1,6 +1,6 @@
-#include "graphdialog.h"
+#include "graphsdialog.h"
 
-GraphDialog::GraphDialog(FileReader *reader_, QWidget *parent) :
+GraphsDialog::GraphsDialog(FileReader *reader_, QWidget *parent) :
 		QDialog(parent), reader(reader_) {
 	setupUI();
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -14,14 +14,14 @@ GraphDialog::GraphDialog(FileReader *reader_, QWidget *parent) :
 	rightArray = reader->data_num - 1;
 }
 
-void GraphDialog::setupUI() {
+void GraphsDialog::setupUI() {
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
 	QMenuBar *menuBar = new QMenuBar(this);
 	QMenu *menu = menuBar->addMenu(tr("Options"));
 	QAction *action = menu->addAction(tr("Scale"));
 
-	connect(action, &QAction::triggered, this, &GraphDialog::handleButtonClicked);
+connect(action, &QAction::triggered, this, &GraphsDialog::handleButtonClicked);
 
 	mainLayout->setMenuBar(menuBar);
 
@@ -41,31 +41,31 @@ void GraphDialog::setupUI() {
 	setLayout(mainLayout);
 }
 
-void GraphDialog::handleButtonClicked() {
+void GraphsDialog::handleButtonClicked() {
 	// Логика обработки нажатия кнопки меню
 }
 
-void GraphDialog::closeEvent(QCloseEvent *event) {
+void GraphsDialog::closeEvent(QCloseEvent *event) {
 	CustomLabel::disableCheckedLabelsMenu();
 	QDialog::closeEvent(event);
 }
 
-void GraphDialog::onSelectionFinished(const QRect &rect, int number_) {
+void GraphsDialog::onSelectionFinished(const QRect &rect, int number_) {
 	QImage image(WIDTH, HEIGHT, QImage::Format_ARGB32);
 	image.fill(Qt::white);
 
 	drawGraph(reader->data[number_], image, reader, number_, rect);
 
 	GraphLabel *graphLabel = new GraphLabel(scrollContent);
-	graphLabel->setNumber(number);
+graphLabel->setNumber(number_);
 	graphLabel->setPixmap(QPixmap::fromImage(image));
 
-	connect(graphLabel, &GraphLabel::selectionFinished, this, &GraphDialog::onSelectionFinished);
+connect(graphLabel, &GraphLabel::selectionFinished, this, &GraphsDialog::onSelectionFinished);
 
 	graphLayout->addWidget(graphLabel);
 }
 
-void GraphDialog::drawGraph(const QVector<double> &channel, QImage &image,
+void GraphsDialog::drawGraph(const QVector<double> &channel, QImage &image,
 		FileReader *reader, int number, QRect rect) {
 	if (GraphLabel::containsGraph(number)) {
 		GraphLabel::deleteGraph(number);

@@ -19,7 +19,7 @@ class CustomLabel;
 class GraphsDialog : public QDialog {
 	Q_OBJECT
 public:
-GraphsDialog(FileReader *reader_, QWidget *parent = nullptr);
+    GraphsDialog(FileReader *reader_, QWidget *parent = nullptr);
 
 protected:
 	void closeEvent(QCloseEvent *event) override;

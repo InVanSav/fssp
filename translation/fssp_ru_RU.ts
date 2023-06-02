@@ -2,6 +2,24 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU">
 <context>
+    <name>GraphsDialog</name>
+    <message>
+        <location filename="../src/graphsdialog.cpp" line="21"/>
+        <source>Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/graphsdialog.cpp" line="22"/>
+        <source>Scale</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/graphsdialog.cpp" line="40"/>
+        <source>Осциллограмма</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MainWindow</name>
     <message>
         <source>Fast Simple Signal Processing 0.1.0</source>
@@ -157,24 +175,6 @@ Date and time the recording started - </source>
         <location filename="../src/signal.cpp" line="41"/>
         <source>Signals</source>
         <translation>Сигналы</translation>
-    </message>
-</context>
-<context>
-    <name>WaveformsDialog</name>
-    <message>
-        <location filename="../src/waveformsdialog.cpp" line="21"/>
-        <source>Options</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/waveformsdialog.cpp" line="22"/>
-        <source>Scale</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/waveformsdialog.cpp" line="40"/>
-        <source>Осциллограмма</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

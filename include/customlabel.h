@@ -9,7 +9,7 @@
 
 #include "filereader.h"
 #include "graphlabel.h"
-#include "graphdialog.h"
+#include "graphsdialog.h"
 
 class GraphsDialog;
 
