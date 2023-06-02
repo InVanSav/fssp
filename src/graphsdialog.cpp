@@ -42,7 +42,26 @@ connect(action, &QAction::triggered, this, &GraphsDialog::handleButtonClicked);
 }
 
 void GraphsDialog::handleButtonClicked() {
-	// Логика обработки нажатия кнопки меню
+	QLineEdit *scaleFromValue = new QLineEdit(QString::number(leftTime));
+	QLineEdit *scaleToValue = new QLineEdit(QString::number(rightTime));
+
+	QPushButton *acceptScale = new QPushButton(tr("Accept"));
+	QPushButton *denyScale = new QPushButton(tr("Deny"));
+
+	QFormLayout *formLayout = new QFormLayout(this);
+
+	formLayout->addRow(tr("&From:"), scaleFromValue);
+	formLayout->addRow(tr("&To:"), scaleToValue);
+
+	QHBoxLayout *buttons = new QHBoxLayout();
+	buttons->addWidget(acceptScale);
+	buttons->addWidget(denyScale);
+	formLayout->addRow(buttons);
+
+	QWidget *scaleForm = new QWidget();
+	scaleForm->setLayout(formLayout);
+	scaleForm->setWindowTitle(tr("Scale Graph"));
+	scaleForm->show();
 }
 
 void GraphsDialog::closeEvent(QCloseEvent *event) {
@@ -50,27 +69,23 @@ void GraphsDialog::closeEvent(QCloseEvent *event) {
 	QDialog::closeEvent(event);
 }
 
-void GraphsDialog::onSelectionFinished(const QRect &rect, int number_) {
-	QImage image(WIDTH, HEIGHT, QImage::Format_ARGB32);
-	image.fill(Qt::white);
+void GraphsDialog::onSelectionFinished(const QRect &rect) {
+	QList<GraphLabel *> allGraphLabels = GraphLabel::getAllGraphLabels();
+	QList<int> numbers = GraphLabel::getNumbers();
 
-	drawGraph(reader->data[number_], image, reader, number_, rect);
+	//	GraphLabel::deleteGraphs();
 
-	GraphLabel *graphLabel = new GraphLabel(scrollContent);
-graphLabel->setNumber(number_);
-	graphLabel->setPixmap(QPixmap::fromImage(image));
+	for (int i = 0; i < allGraphLabels.size(); ++i) {
+		QImage image(WIDTH, HEIGHT, QImage::Format_ARGB32);
+		image.fill(Qt::white);
+		int number = numbers[i];
 
-connect(graphLabel, &GraphLabel::selectionFinished, this, &GraphsDialog::onSelectionFinished);
-
-	graphLayout->addWidget(graphLabel);
+		drawGraph(reader->data[number], image, reader, number, rect);
+	}
 }
 
 void GraphsDialog::drawGraph(const QVector<double> &channel, QImage &image,
 		FileReader *reader, int number, QRect rect) {
-	if (GraphLabel::containsGraph(number)) {
-		GraphLabel::deleteGraph(number);
-	}
-
 	QPainter painter(&image);
 	painter.setPen(Qt::black);
 
@@ -117,8 +132,12 @@ void GraphsDialog::drawGraph(const QVector<double> &channel, QImage &image,
 			labelValuesX[i] = i * labelStepX + leftTime;
 		}
 
-		minVal = *std::min_element(channel.begin(), channel.end());
-		maxVal = *std::max_element(channel.begin(), channel.end());
+		int elementsPerTime = reader->data_num / reader->all_time;
+		rightArray = elementsPerTime * rightTime;
+		leftArray = elementsPerTime * leftTime;
+
+		minVal = *std::min_element(channel.begin() + leftArray, channel.begin() + rightArray);
+		maxVal = *std::max_element(channel.begin() + leftArray, channel.begin() + rightArray);
 
 		rangeY = maxVal - minVal;
 		labelStepY = rangeY / (numLabelsY - 1);
@@ -189,10 +208,6 @@ void GraphsDialog::drawGraph(const QVector<double> &channel, QImage &image,
 		painter.drawText(labelRect, Qt::AlignHCenter | Qt::AlignTop, label);
 	}
 
-	//	int elementsPerTime = reader->data_num / reader->all_time;
-	//	leftArray = elementsPerTime * leftTime;
-	//	rightArray = elementsPerTime * rightTime;
-
 	// Рисуем график
 	double scaleX = (axisXEnd - axisXStart) / rangeX;
 	double scaleY = (axisYEnd - axisYStart) / rangeY;
@@ -201,17 +216,42 @@ void GraphsDialog::drawGraph(const QVector<double> &channel, QImage &image,
 	painter.setPen(graphPen);
 
 	QPointF lastPoint;
-	for (int i = 0; i < channel.size(); ++i) {
-		double x = axisXStart + i / reader->rate * scaleX;
-		double y = axisYEnd - (channel[i] - minVal) * scaleY;
 
-		QPointF point(x, y);
-		if (i == 0) {
+	if (rect.isNull()) {
+		for (int i = 0; i < channel.size(); ++i) {
+			double x = axisXStart + i / reader->rate * scaleX;
+			double y = axisYEnd - (channel[i] - minVal) * scaleY;
+
+			QPointF point(x, y);
+			if (i == 0) {
+				lastPoint = point;
+				continue;
+			}
+
+			painter.drawLine(lastPoint, point);
 			lastPoint = point;
-			continue;
 		}
+	} else {
+		for (int i = 0; i < rightArray - leftArray; ++i) {
+			double x = axisXStart + i / reader->rate * scaleX;
+			double y = axisYEnd - (channel[i + leftArray] - minVal) * scaleY;
 
-		painter.drawLine(lastPoint, point);
-		lastPoint = point;
+			QPointF point(x, y);
+			if (i == 0) {
+				lastPoint = point;
+				continue;
+			}
+
+			painter.drawLine(lastPoint, point);
+			lastPoint = point;
+		}
 	}
+
+	GraphLabel *graphLabel = new GraphLabel(scrollContent);
+	graphLabel->setNumber(number);
+	graphLabel->setPixmap(QPixmap::fromImage(image));
+
+	connect(graphLabel, &GraphLabel::selectionFinished, this, &GraphsDialog::onSelectionFinished);
+
+	graphLayout->addWidget(graphLabel);
 }

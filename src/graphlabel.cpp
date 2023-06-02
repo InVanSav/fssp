@@ -15,6 +15,15 @@ int GraphLabel::getNumber() {
 	return number;
 }
 
+QList<int> GraphLabel::getNumbers() {
+	QList<int> numbers;
+	for (int i = 0; i < allGraphLabels.size(); ++i) {
+		numbers.append(allGraphLabels[i]->number);
+	}
+
+	return numbers;
+}
+
 bool GraphLabel::containsGraph(int number) {
 	for (GraphLabel *graphLabel : GraphLabel::getAllGraphLabels()) {
 		if (graphLabel->getNumber() == number) {
@@ -36,6 +45,15 @@ void GraphLabel::deleteGraph(int number) {
 	GraphLabel::setAllGraphLabels(graphLabels);
 }
 
+void GraphLabel::deleteGraphs() {
+	QList<GraphLabel *> graphLabels = GraphLabel::getAllGraphLabels();
+	for (GraphLabel *graphLabel : graphLabels) {
+		graphLabels.removeAll(graphLabel);
+		delete graphLabel;
+	}
+	GraphLabel::setAllGraphLabels(graphLabels);
+}
+
 QList<GraphLabel *> GraphLabel::getAllGraphLabels() {
 	return allGraphLabels;
 }
@@ -51,17 +69,35 @@ void GraphLabel::mousePressEvent(QMouseEvent *event) {
 
 	isSelecting = true;
 	startPoint = event->pos();
-    selectionRect = QRect();
+
+	startPoint.setY(OFFSET_START_Y);
+
+	if (startPoint.x() < OFFSET_START_X) {
+		startPoint.setX(OFFSET_START_X);
+	}
+
+	if (startPoint.x() > (OFFSET_START_X + GRAPH_WIDTH)) {
+		startPoint.setX(OFFSET_START_X + GRAPH_WIDTH);
+	}
+
+	selectionRect = QRect();
 }
 
 void GraphLabel::mouseMoveEvent(QMouseEvent *event) {
 	if (isSelecting) {
 		QPoint currentPos = event->pos();
-		int x = qMin(startPoint.x(), currentPos.x());
-		int y = qMin(startPoint.y(), currentPos.y());
-		int width = qMax(startPoint.x(), currentPos.x()) - x;
-		int height = qMax(startPoint.y(), currentPos.y()) - y;
-		selectionRect = QRect(x, y, width, height);
+
+		currentPos.setY(OFFSET_START_Y + GRAPH_HEIGHT);
+
+		if (currentPos.x() < OFFSET_START_X) {
+			currentPos.setX(OFFSET_START_X);
+		}
+
+		if (currentPos.x() > (OFFSET_START_X + GRAPH_WIDTH)) {
+			currentPos.setX(OFFSET_START_X + GRAPH_WIDTH);
+		}
+
+		selectionRect = startPoint.x() > currentPos.x() ? QRect(currentPos, startPoint) : QRect(startPoint, currentPos);
 		update();
 	}
 }
@@ -69,7 +105,7 @@ void GraphLabel::mouseMoveEvent(QMouseEvent *event) {
 void GraphLabel::mouseReleaseEvent(QMouseEvent *event) {
 	if (event->button() == Qt::LeftButton && isSelecting && !selectionRect.isNull()) {
 		isSelecting = false;
-        emit selectionFinished(selectionRect, number);
+		emit selectionFinished(selectionRect);
 	}
 }
 

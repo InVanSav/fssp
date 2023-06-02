@@ -18,6 +18,31 @@
         <source>Осциллограмма</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/graphsdialog.cpp" line="48"/>
+        <source>Accept</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/graphsdialog.cpp" line="49"/>
+        <source>Deny</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/graphsdialog.cpp" line="53"/>
+        <source>&amp;From:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/graphsdialog.cpp" line="54"/>
+        <source>&amp;To:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/graphsdialog.cpp" line="63"/>
+        <source>Scale Graph</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MainWindow</name>

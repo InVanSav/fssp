@@ -14,13 +14,16 @@ public:
 	int getNumber();
 
 	static bool containsGraph(int number_);
-	static void deleteGraph(int number_);
+	static void deleteGraphs();
+
+	static void deleteGraph(int number);
+	static QList<int> getNumbers();
 
 	static QList<GraphLabel *> getAllGraphLabels();
 	static void setAllGraphLabels(QList<GraphLabel *> graphLabels);
 
 signals:
-	void selectionFinished(const QRect &rect, int number_);
+	void selectionFinished(const QRect &rect);
 
 protected:
 	void mousePressEvent(QMouseEvent *event) override;
@@ -35,6 +38,12 @@ private:
 	bool isSelecting;
 	QPoint startPoint;
 	QRect selectionRect;
+
+	const int WIDTH = 600, HEIGHT = 300;
+	const int OFFSET_START_X = 70, OFFSET_END_X = 50;
+	const int OFFSET_START_Y = 70, OFFSET_END_Y = 50;
+	const int GRAPH_WIDTH = WIDTH - (OFFSET_START_X + OFFSET_END_X);
+	const int GRAPH_HEIGHT = HEIGHT - (OFFSET_START_Y + OFFSET_END_Y);
 
 	static QList<GraphLabel *> allGraphLabels;
 };

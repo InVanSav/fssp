@@ -2,11 +2,14 @@
 
 #include <QDebug>
 #include <QDialog>
+#include <QFormLayout>
 #include <QLabel>
+#include <QLineEdit>
 #include <QMenu>
 #include <QMenuBar>
 #include <QPainter>
 #include <QPen>
+#include <QPushButton>
 #include <QScrollArea>
 #include <QVBoxLayout>
 
@@ -27,7 +30,7 @@ protected:
 public slots:
 	void drawGraph(const QVector<double> &channel, QImage &image,
 			FileReader *reader, int number, QRect rect = QRect());
-	void onSelectionFinished(const QRect &rect, int number_);
+	void onSelectionFinished(const QRect &rect);
 
 private slots:
 	void handleButtonClicked();
