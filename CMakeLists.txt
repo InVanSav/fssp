@@ -21,7 +21,7 @@ set(PROJECT_INCLUDES
         include/signal.h
         include/filereader.h
         include/customlabel.h
-        include/waveformsdialog.h
+        include/graphsdialog.h
         include/graphlabel.h
 )
 
@@ -31,7 +31,7 @@ set(PROJECT_SOURCES
         src/signal.cpp
         src/filereader.cpp
         src/customlabel.cpp
-        src/waveformsdialog.cpp
+        src/graphsdialog.cpp
         src/graphlabel.cpp
 )
 

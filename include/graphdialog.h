@@ -16,10 +16,10 @@
 
 class CustomLabel;
 
-class WaveformsDialog : public QDialog {
+class GraphsDialog : public QDialog {
 	Q_OBJECT
 public:
-	WaveformsDialog(FileReader *reader_, QWidget *parent = nullptr);
+GraphsDialog(FileReader *reader_, QWidget *parent = nullptr);
 
 protected:
 	void closeEvent(QCloseEvent *event) override;

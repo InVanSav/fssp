@@ -2,7 +2,7 @@
 
 QList<CustomLabel *> CustomLabel::allCustomLabels;
 QList<CustomLabel *> CustomLabel::checkedLabels;
-WaveformsDialog *CustomLabel::waveformsDialog = nullptr;
+GraphsDialog *CustomLabel::waveformsDialog = nullptr;
 
 CustomLabel::CustomLabel(FileReader *reader_, int number_, QWidget *parent) :
 		reader(reader_), number(number_), QLabel(parent) {
@@ -68,7 +68,7 @@ void CustomLabel::openDialog(bool enabled) {
 			checkedLabels.append(this);
 		}
 		if (!waveformsDialog) {
-			waveformsDialog = new WaveformsDialog(reader);
+			waveformsDialog = new GraphsDialog(reader);
 			waveformsDialog->setAttribute(Qt::WA_DeleteOnClose);
 			waveformsDialog->show();
 		}

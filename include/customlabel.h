@@ -9,9 +9,9 @@
 
 #include "filereader.h"
 #include "graphlabel.h"
-#include "waveformsdialog.h"
+#include "graphdialog.h"
 
-class WaveformsDialog;
+class GraphsDialog;
 
 class CustomLabel : public QLabel {
 	Q_OBJECT
@@ -36,7 +36,7 @@ private:
 
 	FileReader *reader;
 
-	static WaveformsDialog *waveformsDialog;
+static GraphsDialog *waveformsDialog;
 	static QList<CustomLabel *> allCustomLabels;
 	static QList<CustomLabel *> checkedLabels;
 };
