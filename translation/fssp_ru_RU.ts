@@ -14,32 +14,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/graphsdialog.cpp" line="40"/>
+        <location filename="../src/graphsdialog.cpp" line="41"/>
         <source>Осциллограмма</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/graphsdialog.cpp" line="48"/>
+        <location filename="../src/graphsdialog.cpp" line="46"/>
         <source>Accept</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/graphsdialog.cpp" line="49"/>
+        <location filename="../src/graphsdialog.cpp" line="47"/>
         <source>Deny</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/graphsdialog.cpp" line="53"/>
+        <location filename="../src/graphsdialog.cpp" line="57"/>
         <source>&amp;From:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/graphsdialog.cpp" line="54"/>
+        <location filename="../src/graphsdialog.cpp" line="58"/>
         <source>&amp;To:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/graphsdialog.cpp" line="63"/>
+        <location filename="../src/graphsdialog.cpp" line="67"/>
         <source>Scale Graph</source>
         <translation type="unfinished"></translation>
     </message>
@@ -86,19 +86,19 @@
         <translation>Текстовые файлы (*.txt)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="49"/>
+        <location filename="../src/mainwindow.cpp" line="62"/>
         <source>About</source>
         <translation>О программе</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="52"/>
+        <location filename="../src/mainwindow.cpp" line="65"/>
         <source>&amp;Open</source>
         <translation>&amp;Открыть</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="40"/>
         <location filename="../src/mainwindow.cpp" line="43"/>
-        <location filename="../src/mainwindow.cpp" line="55"/>
+        <location filename="../src/mainwindow.cpp" line="68"/>
         <source>About signal</source>
         <translation>О сигнале</translation>
     </message>
@@ -118,21 +118,21 @@
         <translation>Общее число каналов - </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="44"/>
+        <location filename="../src/mainwindow.cpp" line="46"/>
         <source>
 Total number of sampels - </source>
         <translation>
 Общее число отсчетов - </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="44"/>
+        <location filename="../src/mainwindow.cpp" line="48"/>
         <source>
 Sampling frequency - </source>
         <translation>
 Частота дискретизации - </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="44"/>
+        <location filename="../src/mainwindow.cpp" line="50"/>
         <source> HZ (step between samples </source>
         <translation> HZ (шаг между отсчетами </translation>
     </message>
@@ -143,53 +143,53 @@ Date and time the recording started - </source>
 Дата и время начала записи - </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="44"/>
+        <location filename="../src/mainwindow.cpp" line="54"/>
         <source>
 End date and time of recording - </source>
         <translation>
 Дата и время окончания записи - </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="44"/>
+        <location filename="../src/mainwindow.cpp" line="56"/>
         <source>
 Duration - </source>
         <translation>
 Длительность - </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="44"/>
+        <location filename="../src/mainwindow.cpp" line="52"/>
         <source> sec)
 Date and time the recording started - </source>
         <translation> секунд)
 Дата и время начала записи - </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="60"/>
+        <location filename="../src/mainwindow.cpp" line="73"/>
         <source>&amp;File</source>
         <translation>&amp;Файл</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="64"/>
+        <location filename="../src/mainwindow.cpp" line="77"/>
         <source>&amp;Modeling</source>
         <translation>&amp;Моделирование</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="66"/>
+        <location filename="../src/mainwindow.cpp" line="79"/>
         <source>&amp;Analysis</source>
         <translation>&amp;Анализ</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="68"/>
+        <location filename="../src/mainwindow.cpp" line="81"/>
         <source>&amp;Filter</source>
         <translation>&amp;Фильтрация</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="70"/>
+        <location filename="../src/mainwindow.cpp" line="83"/>
         <source>&amp;Settings</source>
         <translation>&amp;Настройки</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="72"/>
+        <location filename="../src/mainwindow.cpp" line="85"/>
         <source>Help</source>
         <translation>Справка</translation>
     </message>

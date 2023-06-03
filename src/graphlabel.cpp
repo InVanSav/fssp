@@ -45,20 +45,12 @@ void GraphLabel::deleteGraph(int number) {
 	GraphLabel::setAllGraphLabels(graphLabels);
 }
 
-void GraphLabel::deleteGraphs() {
-	QList<GraphLabel *> graphLabels = GraphLabel::getAllGraphLabels();
-	for (GraphLabel *graphLabel : graphLabels) {
-		graphLabels.removeAll(graphLabel);
-		delete graphLabel;
-	}
-	GraphLabel::setAllGraphLabels(graphLabels);
-}
-
 QList<GraphLabel *> GraphLabel::getAllGraphLabels() {
 	return allGraphLabels;
 }
 
 void GraphLabel::setAllGraphLabels(QList<GraphLabel *> graphLabels) {
+	allGraphLabels.clear();
 	allGraphLabels = graphLabels;
 }
 

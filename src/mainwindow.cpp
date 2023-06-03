@@ -41,7 +41,20 @@ void MainWindow::aboutSignal() {
 	} else {
 		QMessageBox::about(this,
 				tr("About signal"),
-				tr("Total number of channels - ") + QString::number(signal->reader->channels_num) + tr("\nTotal number of sampels - ") + QString::number(signal->reader->data_num) + tr("\nSampling frequency - ") + QString::number(signal->reader->rate) + tr(" HZ (step between samples ") + QString::number(signal->reader->time_for_r) + tr(" sec)\nDate and time the recording started - ") + signal->reader->start.toString() + tr("\nEnd date and time of recording - ") + signal->reader->end.toString() + tr("\nDuration - ") + signal->reader->durance.toString());
+				tr("Total number of channels - ") +
+						QString::number(signal->reader->channels_num) +
+						tr("\nTotal number of sampels - ") +
+						QString::number(signal->reader->data_num) +
+						tr("\nSampling frequency - ") +
+						QString::number(signal->reader->rate) +
+						tr(" HZ (step between samples ") +
+						QString::number(signal->reader->time_for_r) +
+						tr(" sec)\nDate and time the recording started - ") +
+						signal->reader->start.toString() +
+						tr("\nEnd date and time of recording - ") +
+						signal->reader->end.toString() +
+						tr("\nDuration - ") +
+						signal->reader->durance.toString());
 	}
 }
 

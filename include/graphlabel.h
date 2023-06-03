@@ -14,7 +14,6 @@ public:
 	int getNumber();
 
 	static bool containsGraph(int number_);
-	static void deleteGraphs();
 
 	static void deleteGraph(int number);
 	static QList<int> getNumbers();

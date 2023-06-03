@@ -32,6 +32,7 @@ connect(action, &QAction::triggered, this, &GraphsDialog::handleButtonClicked);
 
 	graphLayout = new QVBoxLayout(scrollContent);
 	graphLayout->setAlignment(Qt::AlignTop);
+
 	scrollArea->setWidget(scrollContent);
 	scrollArea->setWidgetResizable(true);
 
@@ -42,11 +43,14 @@ connect(action, &QAction::triggered, this, &GraphsDialog::handleButtonClicked);
 }
 
 void GraphsDialog::handleButtonClicked() {
-	QLineEdit *scaleFromValue = new QLineEdit(QString::number(leftTime));
-	QLineEdit *scaleToValue = new QLineEdit(QString::number(rightTime));
-
 	QPushButton *acceptScale = new QPushButton(tr("Accept"));
 	QPushButton *denyScale = new QPushButton(tr("Deny"));
+
+	scaleFromValue = new QLineEdit(QString::number(leftTime));
+	scaleToValue = new QLineEdit(QString::number(rightTime));
+
+	connect(acceptScale, &QPushButton::clicked, this, &GraphsDialog::pushAcceptButton);
+	connect(denyScale, &QPushButton::clicked, this, &GraphsDialog::pushDenyButton);
 
 	QFormLayout *formLayout = new QFormLayout(this);
 
@@ -58,10 +62,57 @@ void GraphsDialog::handleButtonClicked() {
 	buttons->addWidget(denyScale);
 	formLayout->addRow(buttons);
 
-	QWidget *scaleForm = new QWidget();
+	scaleForm = new QWidget();
 	scaleForm->setLayout(formLayout);
 	scaleForm->setWindowTitle(tr("Scale Graph"));
 	scaleForm->show();
+}
+
+void GraphsDialog::pushDenyButton() {
+	if (!scaleForm)
+		return;
+	scaleForm->close();
+	delete scaleForm;
+	scaleForm = nullptr;
+}
+
+void GraphsDialog::pushAcceptButton() {
+	QTextStream ts(stdout);
+	bool ok;
+
+	double from = scaleFromValue->text().toDouble(&ok);
+	if (!ok) {
+		ts << "1\n";
+		return;
+	}
+
+	double to = scaleToValue->text().toDouble(&ok);
+	if (!ok) {
+		ts << "2\n";
+		return;
+	}
+
+	if (from < 0 || to < 0) {
+		ts << "3\n";
+		return;
+	}
+
+	if (from > reader->all_time || to > reader->all_time) {
+		ts << "4\n";
+		return;
+	}
+
+	if (from >= to) {
+		ts << "5\n";
+		return;
+	}
+
+	leftTime = from;
+	rightTime = to;
+
+	pushDenyButton();
+
+	redrawAllGraphs();
 }
 
 void GraphsDialog::closeEvent(QCloseEvent *event) {
@@ -69,28 +120,47 @@ void GraphsDialog::closeEvent(QCloseEvent *event) {
 	QDialog::closeEvent(event);
 }
 
-void GraphsDialog::onSelectionFinished(const QRect &rect) {
-	QList<GraphLabel *> allGraphLabels = GraphLabel::getAllGraphLabels();
+void GraphsDialog::onSelectionFinished(const QRect rect) {
+	double timePerPixel = (rightTime - leftTime) / GRAPH_WIDTH;
+
+	rightTime = leftTime + (rect.topRight().x() - OFFSET_START_X) * timePerPixel;
+	leftTime += (rect.topLeft().x() - OFFSET_START_X) * timePerPixel;
+
+	redrawAllGraphs();
+}
+
+void GraphsDialog::redrawAllGraphs() {
 	QList<int> numbers = GraphLabel::getNumbers();
 
-	//	GraphLabel::deleteGraphs();
+	for (int i = 0; i < numbers.size(); ++i) {
+		GraphLabel::deleteGraph(numbers[i]);
+	}
 
-	for (int i = 0; i < allGraphLabels.size(); ++i) {
-		QImage image(WIDTH, HEIGHT, QImage::Format_ARGB32);
-		image.fill(Qt::white);
+	int elementsPerTime = reader->data_num / reader->all_time;
+
+	rightArray = elementsPerTime * rightTime;
+	leftArray = elementsPerTime * leftTime;
+
+	for (int i = 0; i < numbers.size(); ++i) {
 		int number = numbers[i];
 
+		QImage image(WIDTH, HEIGHT, QImage::Format_ARGB32);
+		image.fill(Qt::white);
 		drawGraph(reader->data[number], image, reader, number, rect);
 	}
 }
 
 void GraphsDialog::drawGraph(const QVector<double> &channel, QImage &image,
 		FileReader *reader, int number, QRect rect) {
+	if (GraphLabel::containsGraph(number)) {
+		GraphLabel::deleteGraph(number);
+	}
+
 	QPainter painter(&image);
 	painter.setPen(Qt::black);
 
 	// Значения для вычисления меток осей координат
-	double minVal, maxVal, rangeY, labelStepY, rangeX, labelStepX;
+	double minVal, maxVal, rangeY, labelStepY, rangeX = rightTime - leftTime, labelStepX;
 	const int numLabelsX = 6, numLabelsY = 6;
 	QVector<double> labelValuesY(numLabelsY), labelValuesX(numLabelsX);
 
@@ -101,50 +171,20 @@ void GraphsDialog::drawGraph(const QVector<double> &channel, QImage &image,
 	const int axisYEnd = HEIGHT - OFFSET_END_Y;
 
 	// Вычисляем значения меток на осях координат
-	if (rect.isNull()) {
-		minVal = *std::min_element(channel.begin(), channel.end());
-		maxVal = *std::max_element(channel.begin(), channel.end());
+	labelStepX = (rightTime - leftTime) / (numLabelsX - 1);
 
-		rangeY = maxVal - minVal;
-		labelStepY = rangeY / (numLabelsY - 1);
+	for (int i = 0; i < numLabelsX; ++i) {
+		labelValuesX[i] = i * labelStepX + leftTime;
+	}
 
-		for (int i = 0; i < numLabelsY; ++i) {
-			labelValuesY[i] = minVal + i * labelStepY;
-		}
+	minVal = *std::min_element(channel.begin() + leftArray, channel.begin() + rightArray);
+	maxVal = *std::max_element(channel.begin() + leftArray, channel.begin() + rightArray);
 
-		rangeX = reader->all_time;
-		labelStepX = rangeX / (numLabelsX - 1);
+	rangeY = maxVal - minVal;
+	labelStepY = rangeY / (numLabelsY - 1);
 
-		for (int i = 0; i < numLabelsX; ++i) {
-			labelValuesX[i] = i * labelStepX;
-		}
-	} else {
-		rangeX = rightTime - leftTime;
-		double timePerPixel = rangeX / GRAPH_WIDTH;
-
-		rightTime = leftTime + (rect.topRight().x() - OFFSET_START_X) * timePerPixel;
-		leftTime += (rect.topLeft().x() - OFFSET_START_X) * timePerPixel;
-
-		rangeX = rightTime - leftTime;
-		labelStepX = rangeX / (numLabelsX - 1);
-
-		for (int i = 0; i < numLabelsX; ++i) {
-			labelValuesX[i] = i * labelStepX + leftTime;
-		}
-
-		int elementsPerTime = reader->data_num / reader->all_time;
-		rightArray = elementsPerTime * rightTime;
-		leftArray = elementsPerTime * leftTime;
-
-		minVal = *std::min_element(channel.begin() + leftArray, channel.begin() + rightArray);
-		maxVal = *std::max_element(channel.begin() + leftArray, channel.begin() + rightArray);
-
-		rangeY = maxVal - minVal;
-		labelStepY = rangeY / (numLabelsY - 1);
-
-		for (int i = 0; i < numLabelsY; ++i) {
-			labelValuesY[i] = i * labelStepY + minVal;
-		}
+	for (int i = 0; i < numLabelsY; ++i) {
+		labelValuesY[i] = i * labelStepY + minVal;
 	}
 
 	// Рисуем координатные оси x и y
@@ -216,35 +256,18 @@ void GraphsDialog::drawGraph(const QVector<double> &channel, QImage &image,
 	painter.setPen(graphPen);
 
 	QPointF lastPoint;
+	for (int i = 0; i < rightArray - leftArray; ++i) {
+		double x = axisXStart + i / reader->rate * scaleX;
+		double y = axisYEnd - (channel[i + leftArray] - minVal) * scaleY;
 
-	if (rect.isNull()) {
-		for (int i = 0; i < channel.size(); ++i) {
-			double x = axisXStart + i / reader->rate * scaleX;
-			double y = axisYEnd - (channel[i] - minVal) * scaleY;
-
-			QPointF point(x, y);
-			if (i == 0) {
-				lastPoint = point;
-				continue;
-			}
-
-			painter.drawLine(lastPoint, point);
+		QPointF point(x, y);
+		if (i == 0) {
 			lastPoint = point;
+			continue;
 		}
-	} else {
-		for (int i = 0; i < rightArray - leftArray; ++i) {
-			double x = axisXStart + i / reader->rate * scaleX;
-			double y = axisYEnd - (channel[i + leftArray] - minVal) * scaleY;
 
-			QPointF point(x, y);
-			if (i == 0) {
-				lastPoint = point;
-				continue;
-			}
-
-			painter.drawLine(lastPoint, point);
-			lastPoint = point;
-		}
+		painter.drawLine(lastPoint, point);
+		lastPoint = point;
 	}
 
 	GraphLabel *graphLabel = new GraphLabel(scrollContent);

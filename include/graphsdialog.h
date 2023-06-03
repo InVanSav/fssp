@@ -22,7 +22,9 @@ class CustomLabel;
 class GraphsDialog : public QDialog {
 	Q_OBJECT
 public:
-    GraphsDialog(FileReader *reader_, QWidget *parent = nullptr);
+	GraphsDialog(FileReader *reader_, QWidget *parent = nullptr);
+
+	void redrawAllGraphs();
 
 protected:
 	void closeEvent(QCloseEvent *event) override;
@@ -30,7 +32,10 @@ protected:
 public slots:
 	void drawGraph(const QVector<double> &channel, QImage &image,
 			FileReader *reader, int number, QRect rect = QRect());
-	void onSelectionFinished(const QRect &rect);
+	void onSelectionFinished(const QRect rect);
+
+	void pushDenyButton();
+	void pushAcceptButton();
 
 private slots:
 	void handleButtonClicked();
@@ -52,4 +57,10 @@ private:
 	QScrollArea *scrollArea;
 	QWidget *scrollContent;
 	QVBoxLayout *graphLayout;
+	QRect rect;
+
+	QLineEdit *scaleFromValue;
+	QLineEdit *scaleToValue;
+
+	QWidget *scaleForm;
 };
