@@ -2,11 +2,14 @@
 
 #include <QMainWindow>
 
-class MainWindow : public QMainWindow
-{
-    Q_OBJECT
+namespace fssp {
 
-public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+class MainWindow : public QMainWindow {
+  Q_OBJECT
+
+ public:
+  MainWindow(QWidget *parent = nullptr);
+  ~MainWindow();
 };
+
+}  // namespace fssp

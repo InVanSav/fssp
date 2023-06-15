@@ -1,11 +1,9 @@
 #include "mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-{
-}
+namespace fssp {
 
-MainWindow::~MainWindow()
-{
-}
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {}
 
+MainWindow::~MainWindow() {}
+
+}  // namespace fssp
