@@ -4,8 +4,6 @@
 
 #include "mainwindow.h"
 
-namespace fssp {
-
 int main(int argc, char *argv[]) {
   QApplication a(argc, argv);
 
@@ -19,10 +17,8 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  MainWindow w;
+  fssp::MainWindow w;
   w.show();
 
   return a.exec();
 }
-
-}  // namespace fssp
