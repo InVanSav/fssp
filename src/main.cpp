@@ -6,6 +6,7 @@
 
 int main(int argc, char *argv[]) {
   QApplication a(argc, argv);
+  QApplication::setApplicationName("FSSP");
 
   QTranslator translator;
   const QStringList uiLanguages = QLocale::system().uiLanguages();
@@ -19,6 +20,7 @@ int main(int argc, char *argv[]) {
 
   fssp::MainWindow w;
   w.show();
+  w.showMaximized();
 
   return a.exec();
 }
