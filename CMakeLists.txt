@@ -18,6 +18,8 @@ set(PROJECT_SOURCES
         src/main.cpp
         src/mainwindow.cpp
         src/mainwindow.h
+        src/signaldata.cpp
+        src/signaldata.h
         ${TS_FILES}
 )
 
