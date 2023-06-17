@@ -6,10 +6,18 @@ namespace fssp {
 
 class SignalData {
  public:
-  SignalData(QDateTime startTime, QDateTime endTime, double rate,
-             double timeForOne, double allTime,
-             std::vector<std::string> &&channelsName,
-             std::vector<std::vector<double>> &&data);
+  explicit SignalData(QDateTime startTime, QDateTime endTime, double rate,
+                      double timeForOne, double allTime,
+                      std::vector<std::string> &&channelsName,
+                      std::vector<std::vector<double>> &&data);
+
+  SignalData(const SignalData &that);
+
+  SignalData(SignalData &&that);
+
+  SignalData &operator=(SignalData that);
+
+  friend void swap(SignalData &first, SignalData &second);
 
   QDateTime startTime() const;
   QDateTime endTime() const;

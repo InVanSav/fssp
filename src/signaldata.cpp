@@ -13,6 +13,44 @@ SignalData::SignalData(QDateTime startTime, QDateTime endTime, double rate,
   m_data = std::move(data);
 }
 
+SignalData::SignalData(const SignalData &that) {
+  m_startTime = that.m_startTime;
+  m_endTime = that.m_endTime;
+  m_rate = that.m_rate;
+  m_timeForOne = that.m_timeForOne;
+  m_allTime = that.m_allTime;
+  m_channelsName = that.m_channelsName;
+  m_data = that.m_data;
+}
+
+SignalData::SignalData(SignalData &&that) {
+  m_startTime = that.m_startTime;
+  m_endTime = that.m_endTime;
+  m_rate = that.m_rate;
+  m_timeForOne = that.m_timeForOne;
+  m_allTime = that.m_allTime;
+  m_channelsName = std::move(that.m_channelsName);
+  m_data = std::move(that.m_data);
+}
+
+SignalData &SignalData::operator=(SignalData that) {
+  swap(*this, that);
+
+  return *this;
+}
+
+void swap(SignalData &first, SignalData &second) {
+  using std::swap;
+
+  swap(first.m_startTime, second.m_startTime);
+  swap(first.m_endTime, second.m_endTime);
+  swap(first.m_rate, second.m_rate);
+  swap(first.m_timeForOne, second.m_timeForOne);
+  swap(first.m_allTime, second.m_allTime);
+  swap(first.m_channelsName, second.m_channelsName);
+  swap(first.m_data, second.m_data);
+}
+
 QDateTime SignalData::startTime() const { return m_startTime; }
 
 QDateTime SignalData::endTime() const { return m_endTime; }
