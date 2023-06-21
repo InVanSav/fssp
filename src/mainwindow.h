@@ -20,16 +20,19 @@ class MainWindow : public QMainWindow {
   void createActions();
   void createMenus();
 
-  QMenu *fileMenu;
-  QMenu *modelingMenu;
-  QMenu *analizeMenu;
-  QMenu *filterMenu;
-  QMenu *settingsMenu;
-  QMenu *helpMenu;
+  QString m_lastDir;
+  QTabWidget *m_tabWidget;
 
-  QAction *aboutFsspAct;
-  QAction *openAct;
-  QAction *aboutSignalAct;
+  QMenu *m_fileMenu;
+  QMenu *m_modelingMenu;
+  QMenu *m_analizeMenu;
+  QMenu *m_filterMenu;
+  QMenu *m_settingsMenu;
+  QMenu *m_helpMenu;
+
+  QAction *m_aboutFsspAct;
+  QAction *m_openAct;
+  QAction *m_aboutSignalAct;
 };
 
 }  // namespace fssp

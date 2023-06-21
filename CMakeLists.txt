@@ -20,6 +20,13 @@ set(PROJECT_SOURCES
         src/mainwindow.h
         src/signaldata.cpp
         src/signaldata.h
+        src/signalpage.cpp
+        src/signalpage.h
+        src/signalbuilder.cpp
+        src/signalbuilder.h
+        src/ideserializer.h
+        src/txtdeserializer.cpp
+        src/txtdeserializer.h
         ${TS_FILES}
 )
 
