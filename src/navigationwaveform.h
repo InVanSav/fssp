@@ -4,12 +4,12 @@
 
 namespace fssp {
 
-class NavigationLabel : public QLabel {
+class NavigationWaveform : public QLabel {
   Q_OBJECT
  public:
-  explicit NavigationLabel(const int number, QWidget *parent = nullptr);
+  explicit NavigationWaveform(const int number, QWidget *parent = nullptr);
 
-  void Draw(const std::vector<double> &data, int leftSelection,
+  void drawWaveform(const std::vector<double> &data, int leftSelection,
             int rightSelection);
 
  private:

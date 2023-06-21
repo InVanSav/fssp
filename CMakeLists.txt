@@ -27,6 +27,12 @@ set(PROJECT_SOURCES
         src/ideserializer.h
         src/txtdeserializer.cpp
         src/txtdeserializer.h
+        src/navigationdialog.cpp
+        src/navigationdialog.h
+        src/navigationwaveform.cpp
+        src/navigationwaveform.h
+        src/utils.cpp
+        src/utils.h
         ${TS_FILES}
 )
 
