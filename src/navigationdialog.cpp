@@ -6,7 +6,7 @@ namespace fssp {
 
 NavigationDialog::NavigationDialog(std::shared_ptr<SignalData> data,
                                    QWidget *parent)
-    : QWidget{parent} {
+    : QGroupBox{parent} {
   m_data = data;
   m_waveforms = std::vector<NavigationWaveform *>(m_data->data()->size());
 
@@ -33,21 +33,18 @@ NavigationDialog::NavigationDialog(std::shared_ptr<SignalData> data,
   drawWaveforms();
 
   QScrollArea *scrollArea = new QScrollArea();
+  scrollArea->setFrameShape(QFrame::NoFrame);
   scrollArea->setWidget(scrollContent);
   scrollArea->setWidgetResizable(true);
 
-  QLabel *widgetTitle = new QLabel(tr("<b>Signals<\b>"));
-
   QVBoxLayout *mainLayout = new QVBoxLayout();
-  mainLayout->addSpacing(5);
-  mainLayout->addWidget(widgetTitle);
-  mainLayout->setAlignment(widgetTitle, Qt::AlignHCenter);
-  mainLayout->addSpacing(5);
   mainLayout->addWidget(scrollArea);
 
   setLayout(mainLayout);
 
   setFixedWidth(sizeHint().rwidth() + 40);
+
+  setTitle(tr("Signals"));
 }
 
 void NavigationDialog::drawWaveforms() {

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QGroupBox>
 #include <QVBoxLayout>
 #include <QWidget>
 
@@ -8,7 +9,7 @@
 
 namespace fssp {
 
-class NavigationDialog : public QWidget {
+class NavigationDialog : public QGroupBox {
   Q_OBJECT
  public:
   explicit NavigationDialog(std::shared_ptr<SignalData> data,
