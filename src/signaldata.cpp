@@ -5,7 +5,7 @@ namespace fssp {
 SignalData::SignalData(const QDateTime &startTime, const QDateTime &endTime,
                        const double &rate, const double &timeForOne,
                        const double &allTime,
-                       std::vector<QString> &&channelsName,
+                       std::vector<std::string> &&channelsName,
                        std::vector<std::vector<double>> &&data) {
   m_startTime = startTime;
   m_endTime = endTime;
@@ -62,7 +62,7 @@ double SignalData::timeForOne() const { return m_timeForOne; }
 
 double SignalData::allTime() const { return m_allTime; }
 
-std::vector<QString> *SignalData::channelsName() { return &m_channelsName; }
+std::vector<std::string> *SignalData::channelsName() { return &m_channelsName; }
 
 std::vector<std::vector<double>> *SignalData::data() { return &m_data; }
 
