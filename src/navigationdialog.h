@@ -23,7 +23,7 @@ class NavigationDialog : public QWidget {
   int m_leftSelection;
   int m_rightSelection;
 
-  QVBoxLayout *vBox;
+  QWidget *scrollContent;
 };
 
 }  // namespace fssp

@@ -10,7 +10,7 @@ class NavigationWaveform : public QLabel {
   explicit NavigationWaveform(const int number, QWidget *parent = nullptr);
 
   void drawWaveform(const std::vector<double> &data, int leftSelection,
-            int rightSelection);
+                    int rightSelection);
 
  private:
   int m_number;
