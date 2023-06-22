@@ -15,6 +15,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
   m_lastDir = QDir::homePath();
   m_tabWidget = new QTabWidget();
+
+  m_tabWidget->setTabsClosable(true);
+  connect(m_tabWidget, &QTabWidget::tabCloseRequested, this,
+          &MainWindow::handleCloseTabEvent);
   setCentralWidget(m_tabWidget);
 }
 
@@ -52,6 +56,12 @@ void MainWindow::open() {
 }
 
 void MainWindow::aboutSignal() {}
+
+void MainWindow::handleCloseTabEvent(int index) {
+  QWidget *signalPage = m_tabWidget->widget(index);
+  m_tabWidget->removeTab(index);
+  delete signalPage;
+}
 
 void MainWindow::createActions() {
   m_aboutFsspAct = new QAction(tr("About"), this);

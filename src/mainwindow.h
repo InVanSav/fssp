@@ -15,6 +15,7 @@ class MainWindow : public QMainWindow {
   void aboutFssp();
   void open();
   void aboutSignal();
+  void handleCloseTabEvent(int index);
 
  private:
   void createActions();
