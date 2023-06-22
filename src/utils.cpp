@@ -31,10 +31,13 @@ void bresenhamDraw(const std::vector<double> &data, QImage &image,
       int x = x1;
       int y = localHeight - y1 + offsetStartY;
 
-      int byteOffset = y * image.bytesPerLine() + offsetStartX * 4;
+      int byteOffset = y * image.bytesPerLine() + offsetStartX * 4 + x1 * 4;
 
       uchar *pixel = image.bits() + byteOffset;
-      *static_cast<int *>(static_cast<void *>(pixel)) = color;
+      uchar *colorPointer = (uchar *)(&color);
+      for (int i = 0; i < 4; ++i) {
+        pixel[i] = colorPointer[i];
+      }
 
       if (x == x2 && y == (localHeight - y2)) {
         break;
