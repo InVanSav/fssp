@@ -15,8 +15,7 @@ NavigationDialog::NavigationDialog(std::shared_ptr<SignalData> data,
     NavigationWaveform *waveform = new NavigationWaveform(i, this);
     m_waveforms[i] = waveform;
     vBox->addWidget(waveform);
-    QLabel *title =
-        new QLabel(QString::fromStdString((*m_data->channelsName())[i]));
+    QLabel *title = new QLabel((*m_data->channelsName())[i]);
     vBox->addWidget(title);
   }
 
