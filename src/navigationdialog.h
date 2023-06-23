@@ -22,10 +22,6 @@ class NavigationDialog : public QGroupBox {
   std::shared_ptr<SignalData> m_data;
   std::vector<NavigationWaveform *> m_waveforms;
 
-  bool m_isSelected;
-  int m_leftSelection;
-  int m_rightSelection;
-
   QWidget *scrollContent;
 
   int m_waveformWidth;

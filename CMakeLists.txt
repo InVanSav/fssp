@@ -86,3 +86,5 @@ install(TARGETS fssp
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(fssp)
 endif()
+
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fno-omit-frame-pointer -g")

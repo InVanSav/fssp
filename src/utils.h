@@ -6,9 +6,10 @@
 
 namespace fssp {
 
-void bresenhamDraw(const std::vector<double> &data, QImage &image,
-                   const int width, const int height, const int offsetStartX,
-                   const int offsetStartY, const int offsetEndX,
-                   const int offsetEndY, const QRgb &color);
+void bresenhamDraw(const std::vector<double> &data, int from, int to,
+                   QImage &image, const int width, const int height,
+                   const int offsetStartX, const int offsetStartY,
+                   const int offsetEndX, const int offsetEndY,
+                   const QRgb &color);
 
 }  // namespace fssp

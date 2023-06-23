@@ -12,6 +12,9 @@ SignalData::SignalData(const QDateTime &startTime, const QDateTime &endTime,
   m_rate = rate;
   m_channelsName = std::move(channelsName);
   m_data = std::move(data);
+  m_isSelected = false;
+  m_leftSelection = 0;
+  m_rightSelection = m_data[0].size() - 1;
 }
 
 SignalData::SignalData(const SignalData &that) {
@@ -22,6 +25,9 @@ SignalData::SignalData(const SignalData &that) {
   m_allTime = that.m_allTime;
   m_channelsName = that.m_channelsName;
   m_data = that.m_data;
+  m_isSelected = that.m_isSelected;
+  m_leftSelection = that.m_leftSelection;
+  m_rightSelection = that.m_rightSelection;
 }
 
 SignalData::SignalData(SignalData &&that) {
@@ -32,6 +38,9 @@ SignalData::SignalData(SignalData &&that) {
   m_allTime = that.m_allTime;
   m_channelsName = std::move(that.m_channelsName);
   m_data = std::move(that.m_data);
+  m_isSelected = that.m_isSelected;
+  m_leftSelection = that.m_leftSelection;
+  m_rightSelection = that.m_rightSelection;
 }
 
 SignalData &SignalData::operator=(SignalData that) {
@@ -50,6 +59,9 @@ void swap(SignalData &first, SignalData &second) {
   swap(first.m_allTime, second.m_allTime);
   swap(first.m_channelsName, second.m_channelsName);
   swap(first.m_data, second.m_data);
+  swap(first.m_isSelected, second.m_isSelected);
+  swap(first.m_leftSelection, second.m_leftSelection);
+  swap(first.m_rightSelection, second.m_rightSelection);
 }
 
 QDateTime SignalData::startTime() const { return m_startTime; }
@@ -65,5 +77,26 @@ double SignalData::allTime() const { return m_allTime; }
 std::vector<QString> *SignalData::channelsName() { return &m_channelsName; }
 
 std::vector<std::vector<double>> *SignalData::data() { return &m_data; }
+
+bool SignalData::isSelected() const { return m_isSelected; }
+
+int SignalData::leftSelection() const { return m_leftSelection; }
+
+int SignalData::rightSelection() const { return m_rightSelection; }
+
+bool SignalData::setIsSelected(bool isSelected) {
+  m_isSelected = isSelected;
+  return this->isSelected();
+}
+
+int SignalData::setLeftSelection(int leftSelection) {
+  m_leftSelection = leftSelection;
+  return this->leftSelection();
+}
+
+int SignalData::setRightSelection(int rightSelection) {
+  m_rightSelection = rightSelection;
+  return this->rightSelection();
+}
 
 }  // namespace fssp

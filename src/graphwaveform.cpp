@@ -8,11 +8,23 @@ GraphWaveform::GraphWaveform(int number, QWidget *parent) : QLabel{parent} {
 }
 
 void GraphWaveform::drawWaveform(const std::vector<double> &data,
-                                 double allTime, int width, int height) {
+                                 double allTime, int width, int height,
+                                 bool isSelected, int leftSelection,
+                                 int rightSelection) {
   QImage image(width, height, QImage::Format_ARGB32);
   image.fill(qRgb(255, 255, 255));
-  bresenhamDraw(data, image, width, height, m_OFFSET_START_X, m_OFFSET_START_Y,
-                m_OFFSET_END_X, m_OFFSET_END_Y, qRgb(0, 127, 255));
+
+  int from = 0;
+  int to = data.size() - 1;
+
+  if (isSelected) {
+    from = leftSelection;
+    to = rightSelection;
+  }
+
+  bresenhamDraw(data, from, to, image, width, height, m_OFFSET_START_X,
+                m_OFFSET_START_Y, m_OFFSET_END_X, m_OFFSET_END_Y,
+                qRgb(0, 127, 255));
 
   QPixmap pixmap = QPixmap::fromImage(image);
 
@@ -61,7 +73,15 @@ void GraphWaveform::mouseMoveEvent(QMouseEvent *event) {
   update();
 }
 
-void GraphWaveform::mouseReleaseEvent(QMouseEvent *event) {}
+void GraphWaveform::mouseReleaseEvent(QMouseEvent *event) {
+  if (event->button() == Qt::LeftButton && m_isSelecting &&
+      !m_selectionRect.isNull()) {
+    m_isSelecting = false;
+    emit selectionFinished(m_selectionRect.topLeft().x() - m_OFFSET_START_X,
+                           m_selectionRect.bottomRight().x() - m_OFFSET_START_X,
+                           width() - (m_OFFSET_START_X + m_OFFSET_END_X));
+  }
+}
 
 void GraphWaveform::paintEvent(QPaintEvent *event) {
   QLabel::paintEvent(event);

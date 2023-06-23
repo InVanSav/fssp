@@ -2,11 +2,12 @@
 
 namespace fssp {
 
-void bresenhamDraw(const std::vector<double> &data, QImage &image,
-                   const int width, const int height, const int offsetStartX,
-                   const int offsetStartY, const int offsetEndX,
-                   const int offsetEndY, const QRgb &color) {
-  int numSamples = data.size();
+void bresenhamDraw(const std::vector<double> &data, int from, int to,
+                   QImage &image, const int width, const int height,
+                   const int offsetStartX, const int offsetStartY,
+                   const int offsetEndX, const int offsetEndY,
+                   const QRgb &color) {
+  int numSamples = to - from;
   int localWidth = width - (offsetStartX + offsetEndX);
   int localHeight = height - (offsetStartY + offsetEndY);
 
@@ -15,11 +16,11 @@ void bresenhamDraw(const std::vector<double> &data, QImage &image,
   double range = maxVal - minVal + 1;
   double scale = localHeight / range;
 
-  for (int i = 0; i < numSamples - 1; ++i) {
+  for (int i = 0; i < numSamples; ++i) {
     int x1 = std::round(i * localWidth / numSamples) + offsetStartX;
     int x2 = std::round((i + 1) * localWidth / numSamples) + offsetStartX;
-    int y1 = localHeight - std::round((data[i] - minVal) * scale);
-    int y2 = localHeight - std::round((data[i + 1] - minVal) * scale);
+    int y1 = localHeight - std::floor((data[i + from] - minVal) * scale);
+    int y2 = localHeight - std::floor((data[i + from + 1] - minVal) * scale);
 
     int dx = std::abs(x2 - x1);
     int dy = std::abs(y2 - y1);

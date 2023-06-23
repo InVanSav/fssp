@@ -15,9 +15,13 @@ class GraphWaveform : public QLabel {
   explicit GraphWaveform(int number, QWidget *parent = nullptr);
 
   void drawWaveform(const std::vector<double> &data, double allTime, int width,
-                    int height);
+                    int height, bool isSelected = false, int leftSelection = 0,
+                    int rightSelection = 0);
 
   int number() const;
+
+ signals:
+  void selectionFinished(int leftX, int rightX, int realWidth);
 
  protected:
   void mousePressEvent(QMouseEvent *event) override;

@@ -2,11 +2,18 @@
 
 namespace fssp {
 
-SignalPage::SignalPage(SignalData &&data, QWidget *parent) : QWidget{parent} {
+SignalPage::SignalPage(SignalData data, QWidget *parent) : QWidget{parent} {
   m_data = std::make_shared<SignalData>(std::move(data));
+
+  m_isSelected = false;
+  m_leftSelection = 0;
+  m_rightSelection = 0;
 
   m_navDialog = new NavigationDialog(m_data);
   m_graphDialog = new GraphDialog(m_data);
+
+  connect(m_data.get(), &SignalData::selectionEvent, this,
+          &SignalPage::handleSelection);
 
   QHBoxLayout *hBox = new QHBoxLayout();
   hBox->addWidget(m_navDialog);
@@ -15,6 +22,11 @@ SignalPage::SignalPage(SignalData &&data, QWidget *parent) : QWidget{parent} {
   hBox->addWidget(m_graphDialog);
 
   setLayout(hBox);
+}
+
+void SignalPage::handleSelection() {
+  m_navDialog->drawWaveforms();
+  m_graphDialog->drawWaveforms();
 }
 
 }  // namespace fssp

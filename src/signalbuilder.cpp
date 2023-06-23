@@ -14,7 +14,7 @@ SignalPage *SignalBuilder::FromFile(const QString &absoluteFilePath,
   }
 
   SignalData data = deserializer->operator()(absoluteFilePath);
-  return new SignalPage(std::move(data));
+  return new SignalPage(data);
 }
 
 }  // namespace fssp

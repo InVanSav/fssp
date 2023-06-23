@@ -12,7 +12,8 @@ void NavigationWaveform::drawWaveform(const std::vector<double> &data,
                                       int leftSelection, int rightSelection) {
   QImage image(width, height, QImage::Format_ARGB32);
   image.fill(qRgb(255, 255, 255));
-  bresenhamDraw(data, image, width, height, 0, 0, 0, 0, qRgb(0, 127, 255));
+  bresenhamDraw(data, 0, data.size() - 1, image, width, height, 0, 0, 0, 0,
+                qRgb(0, 127, 255));
 
   QPixmap pixmap = QPixmap::fromImage(image);
 
