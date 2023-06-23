@@ -1,5 +1,8 @@
 #pragma once
 
+#include <QFile>
+#include <QTextStream>
+
 #include "ideserializer.h"
 
 namespace fssp {

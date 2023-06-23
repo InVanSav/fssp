@@ -2,7 +2,9 @@
 
 #include <QString>
 
+#include "ideserializer.h"
 #include "signalpage.h"
+#include "txtdeserializer.h"
 
 namespace fssp {
 

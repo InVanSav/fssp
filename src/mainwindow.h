@@ -1,6 +1,12 @@
 #pragma once
 
+#include <QFileDialog>
+#include <QLabel>
 #include <QMainWindow>
+#include <QMenuBar>
+#include <QMessageBox>
+
+#include "signalbuilder.h"
 
 namespace fssp {
 

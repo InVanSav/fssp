@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QHBoxLayout>
 #include <QWidget>
 
 #include "graphdialog.h"

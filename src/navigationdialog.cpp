@@ -1,7 +1,5 @@
 #include "navigationdialog.h"
 
-#include <QScrollArea>
-
 namespace fssp {
 
 NavigationDialog::NavigationDialog(std::shared_ptr<SignalData> data,

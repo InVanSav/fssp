@@ -1,6 +1,9 @@
 #pragma once
 
 #include <QLabel>
+#include <QPainter>
+
+#include "utils.h"
 
 namespace fssp {
 

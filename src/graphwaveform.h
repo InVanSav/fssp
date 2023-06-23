@@ -3,6 +3,8 @@
 #include <QLabel>
 #include <QWidget>
 
+#include "utils.h"
+
 namespace fssp {
 
 class GraphWaveform : public QLabel {

@@ -1,8 +1,5 @@
 #include "txtdeserializer.h"
 
-#include <QFile>
-#include <QTextStream>
-
 namespace fssp {
 
 SignalData TxtDeserializer::operator()(const QString &absoluteFilePath) {

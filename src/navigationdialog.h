@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QGroupBox>
+#include <QScrollArea>
 #include <QVBoxLayout>
 #include <QWidget>
 

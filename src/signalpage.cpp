@@ -1,7 +1,5 @@
 #include "signalpage.h"
 
-#include <QHBoxLayout>
-
 namespace fssp {
 
 SignalPage::SignalPage(SignalData &&data, QWidget *parent) : QWidget{parent} {

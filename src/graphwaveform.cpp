@@ -1,7 +1,5 @@
 #include "graphwaveform.h"
 
-#include "utils.h"
-
 namespace fssp {
 
 GraphWaveform::GraphWaveform(int number, QWidget *parent) : QLabel{parent} {

@@ -1,12 +1,5 @@
 #include "mainwindow.h"
 
-#include <QFileDialog>
-#include <QLabel>
-#include <QMenuBar>
-#include <QMessageBox>
-
-#include "signalbuilder.h"
-
 namespace fssp {
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {

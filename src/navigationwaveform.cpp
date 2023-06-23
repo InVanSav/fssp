@@ -1,9 +1,5 @@
 #include "navigationwaveform.h"
 
-#include <QPainter>
-
-#include "utils.h"
-
 namespace fssp {
 
 NavigationWaveform::NavigationWaveform(const int number, QWidget *parent)
