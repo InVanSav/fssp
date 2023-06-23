@@ -27,6 +27,9 @@ class NavigationDialog : public QGroupBox {
   int m_rightSelection;
 
   QWidget *scrollContent;
+
+  int m_waveformWidth;
+  int m_waveformHeight;
 };
 
 }  // namespace fssp

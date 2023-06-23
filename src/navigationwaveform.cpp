@@ -8,11 +8,11 @@ NavigationWaveform::NavigationWaveform(const int number, QWidget *parent)
 }
 
 void NavigationWaveform::drawWaveform(const std::vector<double> &data,
-                                      bool isSelected, int leftSelection,
-                                      int rightSelection) {
-  QImage image(m_WIDTH, m_HEIGHT, QImage::Format_ARGB32);
+                                      int width, int height, bool isSelected,
+                                      int leftSelection, int rightSelection) {
+  QImage image(width, height, QImage::Format_ARGB32);
   image.fill(qRgb(255, 255, 255));
-  bresenhamDraw(data, image, m_WIDTH, m_HEIGHT, 0, 0, 0, 0, qRgb(0, 127, 255));
+  bresenhamDraw(data, image, width, height, 0, 0, 0, 0, qRgb(0, 127, 255));
 
   QPixmap pixmap = QPixmap::fromImage(image);
 
@@ -21,18 +21,18 @@ void NavigationWaveform::drawWaveform(const std::vector<double> &data,
     return;
   }
 
-  double dataPerPixel = data.size() / m_WIDTH;
-  int leftBorder = (leftSelection * m_WIDTH) / data.size();
-  int rightBorder = (rightSelection * m_WIDTH) / data.size();
+  int leftBorder = (leftSelection * width) / data.size();
+  int rightBorder = (rightSelection * width) / data.size();
 
   QPainter *painter = new QPainter(&pixmap);
   painter->setRenderHint(QPainter::Antialiasing);
   painter->setPen(Qt::red);
   painter->setBrush(QColor{255, 0, 0, 100});
-  painter->drawRect(
-      QRect{QPoint{leftBorder, 0}, QPoint{rightBorder, m_HEIGHT}});
+  painter->drawRect(QRect{QPoint{leftBorder, 0}, QPoint{rightBorder, height}});
 
   setPixmap(pixmap);
 }
+
+int NavigationWaveform::number() const { return m_number; }
 
 }  // namespace fssp

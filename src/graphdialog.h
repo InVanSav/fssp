@@ -23,6 +23,9 @@ class GraphDialog : public QGroupBox {
   std::vector<GraphWaveform *> m_waveforms;
 
   QWidget *scrollContent;
+
+  int m_waveformWidth;
+  int m_wavefromHeight;
 };
 
 }  // namespace fssp

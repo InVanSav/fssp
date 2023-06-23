@@ -2,11 +2,12 @@
 
 namespace fssp {
 
-GraphDialog::GraphDialog(std::shared_ptr<SignalData> data,
-                         QWidget *parent)
+GraphDialog::GraphDialog(std::shared_ptr<SignalData> data, QWidget *parent)
     : QGroupBox{parent} {
   m_data = data;
   m_waveforms = std::vector<GraphWaveform *>(m_data->data()->size());
+  m_waveformWidth = 900;
+  m_wavefromHeight = 300;
 
   scrollContent = new QWidget();
 
@@ -40,14 +41,15 @@ GraphDialog::GraphDialog(std::shared_ptr<SignalData> data,
 
   setLayout(mainLayout);
 
-//  setFixedWidth(sizeHint().rwidth() + 40);
+  //  setFixedWidth(sizeHint().rwidth() + 40);
 
   setTitle(tr("Graphs"));
 }
 
 void GraphDialog::drawWaveforms() {
   for (int i = 0; i < m_waveforms.size(); ++i) {
-    m_waveforms[i]->drawWaveform((*m_data->data())[i], m_data->allTime());
+    m_waveforms[i]->drawWaveform((*m_data->data())[i], m_data->allTime(),
+                                 m_waveformWidth, m_wavefromHeight);
   }
 }
 
