@@ -20,6 +20,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
   connect(m_tabWidget, &QTabWidget::tabCloseRequested, this,
           &MainWindow::handleCloseTabEvent);
   setCentralWidget(m_tabWidget);
+
+  setMinimumWidth(900);
+  setMinimumHeight(600);
 }
 
 MainWindow::~MainWindow() {}
