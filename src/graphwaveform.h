@@ -1,6 +1,8 @@
 #pragma once
 
 #include <QLabel>
+#include <QMouseEvent>
+#include <QPainter>
 #include <QWidget>
 
 #include "utils.h"
@@ -17,6 +19,13 @@ class GraphWaveform : public QLabel {
 
   int number() const;
 
+ protected:
+  void mousePressEvent(QMouseEvent *event) override;
+  void mouseMoveEvent(QMouseEvent *event) override;
+  void mouseReleaseEvent(QMouseEvent *event) override;
+
+  void paintEvent(QPaintEvent *event) override;
+
  private:
   int m_number;
 
@@ -24,6 +33,10 @@ class GraphWaveform : public QLabel {
   const int m_OFFSET_START_Y = 15;
   const int m_OFFSET_END_X = 30;
   const int m_OFFSET_END_Y = 15;
+
+  bool m_isSelecting;
+  QPoint m_startPoint;
+  QRect m_selectionRect;
 };
 
 }  // namespace fssp
