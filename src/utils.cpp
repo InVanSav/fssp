@@ -12,7 +12,7 @@ void bresenhamDraw(const std::vector<double> &data, QImage &image,
 
   double minVal = *std::min_element(data.begin(), data.end());
   double maxVal = *std::max_element(data.begin(), data.end());
-  double range = maxVal - minVal;
+  double range = maxVal - minVal + 1;
   double scale = localHeight / range;
 
   for (int i = 0; i < numSamples - 1; ++i) {
@@ -31,15 +31,12 @@ void bresenhamDraw(const std::vector<double> &data, QImage &image,
       int x = x1;
       int y = localHeight - y1 + offsetStartY;
 
-      int byteOffset = y * image.bytesPerLine() + offsetStartX * 4 + x1 * 4;
+      QRgb *line = reinterpret_cast<QRgb *>(image.scanLine(y));
 
-      uchar *pixel = image.bits() + byteOffset;
-      uchar *colorPointer = (uchar *)(&color);
-      for (int i = 0; i < 4; ++i) {
-        pixel[i] = colorPointer[i];
-      }
+      QRgb &pixel = line[x];
+      pixel = color;
 
-      if (x == x2 && y == (localHeight - y2)) {
+      if (x == x2 && y == (localHeight - y2 + offsetStartY)) {
         break;
       }
 
