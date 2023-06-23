@@ -9,6 +9,9 @@ NavigationDialog::NavigationDialog(std::shared_ptr<SignalData> data,
     : QGroupBox{parent} {
   m_data = data;
   m_waveforms = std::vector<NavigationWaveform *>(m_data->data()->size());
+  m_isSelected = false;
+  m_leftSelection = 0;
+  m_rightSelection = 0;
 
   scrollContent = new QWidget();
 
@@ -49,8 +52,8 @@ NavigationDialog::NavigationDialog(std::shared_ptr<SignalData> data,
 
 void NavigationDialog::drawWaveforms() {
   for (int i = 0; i < m_waveforms.size(); ++i) {
-    m_waveforms[i]->drawWaveform((*m_data->data())[i], m_leftSelection,
-                                 m_rightSelection);
+    m_waveforms[i]->drawWaveform((*m_data->data())[i], m_isSelected,
+                                 m_leftSelection, m_rightSelection);
   }
 }
 

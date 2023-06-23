@@ -33,6 +33,10 @@ set(PROJECT_SOURCES
         src/navigationwaveform.h
         src/utils.cpp
         src/utils.h
+        src/graphdialog.cpp
+        src/graphdialog.h
+        src/graphwaveform.cpp
+        src/graphwaveform.h
         ${TS_FILES}
 )
 
