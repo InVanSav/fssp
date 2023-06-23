@@ -2,6 +2,7 @@
 
 #include <QWidget>
 
+#include "graphdialog.h"
 #include "navigationdialog.h"
 #include "signaldata.h"
 
@@ -16,6 +17,7 @@ class SignalPage : public QWidget {
   std::shared_ptr<SignalData> m_data;
 
   NavigationDialog *m_navDialog;
+  GraphDialog *m_graphDialog;
 };
 
 }  // namespace fssp
