@@ -8,9 +8,8 @@ class SignalData : public QObject {
   Q_OBJECT
  public:
   explicit SignalData(const QDateTime &startTime, const QDateTime &endTime,
-                      const double &rate, const double &timeForOne,
-                      const double &allTime,
-                      std::vector<QString> &&channelsName,
+                      const double rate, const double timeForOne,
+                      const double allTime, std::vector<QString> &&channelsName,
                       std::vector<std::vector<double>> &&data);
 
   SignalData(const SignalData &that);
@@ -28,8 +27,11 @@ class SignalData : public QObject {
   double timeForOne() const;
   double allTime() const;
 
-  std::vector<QString> *channelsName();
-  std::vector<std::vector<double>> *data();
+  const std::vector<QString> &channelsName();
+  const std::vector<std::vector<double>> &data();
+
+  int channelsNumber() const;
+  int samplesNumber() const;
 
   bool isSelected() const;
   int leftSelection() const;
@@ -52,6 +54,9 @@ class SignalData : public QObject {
 
   std::vector<QString> m_channelsName;
   std::vector<std::vector<double>> m_data;
+
+  int m_channelsNumber;
+  int m_samplesNumber;
 
   bool m_isSelected;
   int m_leftSelection;

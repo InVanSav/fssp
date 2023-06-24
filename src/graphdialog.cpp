@@ -5,7 +5,7 @@ namespace fssp {
 GraphDialog::GraphDialog(std::shared_ptr<SignalData> data, QWidget *parent)
     : QGroupBox{parent} {
   m_data = data;
-  m_waveforms = std::vector<GraphWaveform *>(m_data->data()->size());
+  m_waveforms = std::vector<GraphWaveform *>(m_data->channelsNumber());
   m_waveformWidth = 900;
   m_waveformHeight = 300;
 
@@ -13,18 +13,18 @@ GraphDialog::GraphDialog(std::shared_ptr<SignalData> data, QWidget *parent)
 
   QVBoxLayout *vBox = new QVBoxLayout();
   vBox->addSpacing(10);
-  for (int i = 0; i < m_data->data()->size(); ++i) {
+  for (int i = 0; i < m_data->channelsNumber(); ++i) {
     GraphWaveform *waveform = new GraphWaveform(i, this);
     connect(waveform, &GraphWaveform::selectionFinished, this,
             &GraphDialog::onSelectionFinished);
     m_waveforms[i] = waveform;
     vBox->addWidget(waveform);
 
-    QLabel *title = new QLabel((*m_data->channelsName())[i]);
+    QLabel *title = new QLabel(m_data->channelsName()[i]);
     vBox->addWidget(title);
     vBox->setAlignment(title, Qt::AlignHCenter);
 
-    if (i != m_data->data()->size() - 1) {
+    if (i != m_data->channelsNumber() - 1) {
       vBox->addSpacing(20);
     }
   }
@@ -50,7 +50,7 @@ GraphDialog::GraphDialog(std::shared_ptr<SignalData> data, QWidget *parent)
 
 void GraphDialog::drawWaveforms() {
   for (int i = 0; i < m_waveforms.size(); ++i) {
-    m_waveforms[i]->drawWaveform((*m_data->data())[i], m_data->allTime(),
+    m_waveforms[i]->drawWaveform(m_data->data()[i], m_data->allTime(),
                                  m_waveformWidth, m_waveformHeight,
                                  m_data->isSelected(), m_data->leftSelection(),
                                  m_data->rightSelection());
@@ -70,8 +70,8 @@ void GraphDialog::onSelectionFinished(int leftX, int rightX, int realWidth) {
     std::swap(leftSelection, rightSelection);
   }
 
-  if (rightSelection - leftSelection < 8 && (*m_data->data())[0].size() > 16) {
-    if ((*m_data->data())[0].size() - rightSelection > 8) {
+  if (rightSelection - leftSelection < 8 && m_data->samplesNumber() > 16) {
+    if (m_data->samplesNumber() - rightSelection > 8) {
       leftSelection = rightSelection;
       rightSelection += 8;
     } else {
