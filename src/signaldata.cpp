@@ -42,6 +42,8 @@ SignalData::SignalData(const SignalData &that) {
   m_isSelected = that.m_isSelected;
   m_leftSelection = that.m_leftSelection;
   m_rightSelection = that.m_rightSelection;
+
+  m_visibleWaveforms = std::vector<bool>(m_channelsNumber, false);
 }
 
 SignalData::SignalData(SignalData &&that) {
@@ -61,6 +63,8 @@ SignalData::SignalData(SignalData &&that) {
   m_isSelected = that.m_isSelected;
   m_leftSelection = that.m_leftSelection;
   m_rightSelection = that.m_rightSelection;
+
+  m_visibleWaveforms = std::move(that.m_visibleWaveforms);
 }
 
 SignalData &SignalData::operator=(SignalData that) {
@@ -88,6 +92,8 @@ void swap(SignalData &first, SignalData &second) {
   swap(first.m_isSelected, second.m_isSelected);
   swap(first.m_leftSelection, second.m_leftSelection);
   swap(first.m_rightSelection, second.m_rightSelection);
+
+  swap(first.m_visibleWaveforms, second.m_visibleWaveforms);
 }
 
 QDateTime SignalData::startTime() const { return m_startTime; }
@@ -100,11 +106,13 @@ double SignalData::timeForOne() const { return m_timeForOne; }
 
 double SignalData::allTime() const { return m_allTime; }
 
-const std::vector<QString> &SignalData::channelsName() {
+const std::vector<QString> &SignalData::channelsName() const {
   return m_channelsName;
 }
 
-const std::vector<std::vector<double>> &SignalData::data() { return m_data; }
+const std::vector<std::vector<double>> &SignalData::data() const {
+  return m_data;
+}
 
 int SignalData::channelsNumber() const { return m_channelsNumber; }
 
@@ -129,6 +137,14 @@ int SignalData::setLeftSelection(int leftSelection) {
 int SignalData::setRightSelection(int rightSelection) {
   m_rightSelection = rightSelection;
   return this->rightSelection();
+}
+
+const std::vector<bool> &SignalData::visibleWaveforms() const {
+  return m_visibleWaveforms;
+}
+
+void SignalData::setWaveformVisibility(int number, bool isVisible) {
+  m_visibleWaveforms[number] = isVisible;
 }
 
 }  // namespace fssp

@@ -1,6 +1,8 @@
 #pragma once
 
 #include <QLabel>
+#include <QMenu>
+#include <QMouseEvent>
 #include <QPainter>
 
 #include "utils.h"
@@ -17,8 +19,20 @@ class NavigationWaveform : public QLabel {
 
   int number() const;
 
+ signals:
+  void visibilityChange(int number, int isVisible);
+
+ protected:
+  void mousePressEvent(QMouseEvent *event) override;
+  void showContextMenu(const QPoint &pos);
+
+ private slots:
+  void onVisibilityAction(bool isVisible);
+
  private:
   int m_number;
+
+  bool m_waveformVisible;
 };
 
 }  // namespace fssp

@@ -27,8 +27,8 @@ class SignalData : public QObject {
   double timeForOne() const;
   double allTime() const;
 
-  const std::vector<QString> &channelsName();
-  const std::vector<std::vector<double>> &data();
+  const std::vector<QString> &channelsName() const;
+  const std::vector<std::vector<double>> &data() const;
 
   int channelsNumber() const;
   int samplesNumber() const;
@@ -41,8 +41,12 @@ class SignalData : public QObject {
   int setLeftSelection(int leftSelection);
   int setRightSelection(int rightSelection);
 
+  const std::vector<bool> &visibleWaveforms() const;
+  void setWaveformVisibility(int number, bool isVisible);
+
  signals:
   void selectionEvent();
+  void waveformVisibilityEvent();
 
  private:
   QDateTime m_startTime;
@@ -61,6 +65,8 @@ class SignalData : public QObject {
   bool m_isSelected;
   int m_leftSelection;
   int m_rightSelection;
+
+  std::vector<bool> m_visibleWaveforms;
 };
 
 }  // namespace fssp

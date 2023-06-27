@@ -14,6 +14,8 @@ SignalPage::SignalPage(SignalData data, QWidget *parent) : QWidget{parent} {
 
   connect(m_data.get(), &SignalData::selectionEvent, this,
           &SignalPage::handleSelection);
+  connect(m_data.get(), &SignalData::waveformVisibilityEvent, this,
+          &SignalPage::handleWaveformVisibility);
 
   QHBoxLayout *hBox = new QHBoxLayout();
   hBox->addWidget(m_navDialog);
@@ -28,5 +30,7 @@ void SignalPage::handleSelection() {
   m_navDialog->drawWaveforms();
   m_graphDialog->drawWaveforms();
 }
+
+void SignalPage::handleWaveformVisibility() { m_graphDialog->drawWaveforms(); }
 
 }  // namespace fssp

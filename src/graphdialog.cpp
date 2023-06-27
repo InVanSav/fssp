@@ -50,6 +50,7 @@ GraphDialog::GraphDialog(std::shared_ptr<SignalData> data, QWidget *parent)
 
 void GraphDialog::drawWaveforms() {
   for (int i = 0; i < m_waveforms.size(); ++i) {
+    //    if (!m_data->visibleWaveforms()[i]) continue;
     m_waveforms[i]->drawWaveform(m_data->data()[i], m_data->allTime(),
                                  m_waveformWidth, m_waveformHeight,
                                  m_data->isSelected(), m_data->leftSelection(),

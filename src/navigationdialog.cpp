@@ -18,9 +18,14 @@ NavigationDialog::NavigationDialog(std::shared_ptr<SignalData> data,
     NavigationWaveform *waveform = new NavigationWaveform(i, this);
     m_waveforms[i] = waveform;
     vBox->addWidget(waveform);
+
+    connect(waveform, &NavigationWaveform::visibilityChange, this,
+            &NavigationDialog::onWaveformVisibilityChange);
+
     QLabel *title = new QLabel(m_data->channelsName()[i]);
     vBox->addWidget(title);
     vBox->setAlignment(title, Qt::AlignHCenter);
+
     if (i != m_data->channelsNumber() - 1) {
       vBox->addSpacing(20);
     }
@@ -54,6 +59,12 @@ void NavigationDialog::drawWaveforms() {
                                  m_data->leftSelection(),
                                  m_data->rightSelection());
   }
+}
+
+void NavigationDialog::onWaveformVisibilityChange(int number, bool isVisible) {
+  m_data->setWaveformVisibility(number, isVisible);
+
+  emit m_data->waveformVisibilityEvent();
 }
 
 }  // namespace fssp

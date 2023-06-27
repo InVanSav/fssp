@@ -18,6 +18,9 @@ class NavigationDialog : public QGroupBox {
 
   void drawWaveforms();
 
+ private slots:
+  void onWaveformVisibilityChange(int number, bool isVisible);
+
  private:
   std::shared_ptr<SignalData> m_data;
   std::vector<NavigationWaveform *> m_waveforms;
