@@ -15,24 +15,22 @@ class BaseModel : public QWidget {
  public:
   explicit BaseModel(QWidget *parent = nullptr);
 
-  explicit BaseModel(const SignalData &signalData, QWidget *parent = nullptr);
+  explicit BaseModel(std::shared_ptr<SignalData> signalData,
+                     QWidget *parent = nullptr);
 
   SignalData getData();
 
   virtual void calc() = 0;
 
-  QFormLayout *formLayout;
+ protected:
+  QFormLayout *p_formLayout;
 
-  QDoubleSpinBox *freqSpinBox;
-  QSpinBox *sampleNumberSpinBox;
-  QLineEdit *channelNameLineEdit;
-  QDateTimeEdit *dateTimeEdit;
+  QDoubleSpinBox *p_freqSpinBox;
+  QSpinBox *p_sampleNumberSpinBox;
+  QLineEdit *p_channelNameLineEdit;
+  QDateTimeEdit *p_dateTimeEdit;
 
-  double timeForOne;
-  double allTime;
-  QDateTime endTime;
-
-  std::vector<double> data;
+  std::vector<double> p_data;
 
  private:
   void createFields();
