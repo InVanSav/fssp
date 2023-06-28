@@ -2,7 +2,7 @@
 
 #include <QString>
 
-#include "ideserializer.h"
+#include "basedeserializer.h"
 #include "signalpage.h"
 #include "txtdeserializer.h"
 

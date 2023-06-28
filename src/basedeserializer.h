@@ -4,7 +4,7 @@
 
 namespace fssp {
 
-struct IDeserializer {
+struct BaseDeserializer {
   virtual SignalData operator()(const QString &absoluteFilePath) = 0;
 };
 

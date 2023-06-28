@@ -24,7 +24,7 @@ set(PROJECT_SOURCES
         src/signalpage.h
         src/signalbuilder.cpp
         src/signalbuilder.h
-        src/ideserializer.h
+        src/basedeserializer.h
         src/txtdeserializer.cpp
         src/txtdeserializer.h
         src/navigationdialog.cpp

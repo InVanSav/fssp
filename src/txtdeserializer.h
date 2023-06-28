@@ -3,11 +3,11 @@
 #include <QFile>
 #include <QTextStream>
 
-#include "ideserializer.h"
+#include "basedeserializer.h"
 
 namespace fssp {
 
-struct TxtDeserializer : public IDeserializer {
+struct TxtDeserializer : public BaseDeserializer {
  public:
   explicit TxtDeserializer() = default;
   SignalData operator()(const QString &absoluteFilePath) override;

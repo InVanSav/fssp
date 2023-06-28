@@ -6,7 +6,7 @@ SignalBuilder::SignalBuilder() {}
 
 SignalPage *SignalBuilder::FromFile(const QString &absoluteFilePath,
                                     const QString &fileExtension) {
-  IDeserializer *deserializer;
+  BaseDeserializer *deserializer;
   if (fileExtension == "txt") {
     deserializer = new TxtDeserializer();
   } else {
@@ -14,6 +14,7 @@ SignalPage *SignalBuilder::FromFile(const QString &absoluteFilePath,
   }
 
   SignalData data = deserializer->operator()(absoluteFilePath);
+
   return new SignalPage(data);
 }
 
