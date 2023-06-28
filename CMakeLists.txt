@@ -37,6 +37,10 @@ set(PROJECT_SOURCES
         src/graphdialog.h
         src/graphwaveform.cpp
         src/graphwaveform.h
+        src/basemodel.cpp
+        src/basemodel.h
+        src/signalmodels.cpp
+        src/signalmodels.h
         ${TS_FILES}
 )
 

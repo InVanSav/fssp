@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 
+#include "signalmodels.h"
+
 namespace fssp {
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
@@ -53,6 +55,13 @@ void MainWindow::open() {
 
 void MainWindow::aboutSignal() {}
 
+void MainWindow::modNewSignal() {
+  DelayedSingleImpulseModel *a = new DelayedSingleImpulseModel();
+  a->show();
+}
+
+void MainWindow::modInCurSignal() {}
+
 void MainWindow::handleCloseTabEvent(int index) {
   QWidget *signalPage = m_tabWidget->widget(index);
   m_tabWidget->removeTab(index);
@@ -69,6 +78,14 @@ void MainWindow::createActions() {
   m_aboutSignalAct = new QAction(tr("About signal"), this);
   connect(m_aboutSignalAct, &QAction::triggered, this,
           &MainWindow::aboutSignal);
+
+  m_modNewSignalAct = new QAction(tr("Model new signal..."), this);
+  connect(m_modNewSignalAct, &QAction::triggered, this,
+          &MainWindow::modNewSignal);
+
+  m_modInCurSignalAct = new QAction(tr("Model in current signal..."), this);
+  connect(m_modInCurSignalAct, &QAction::triggered, this,
+          &MainWindow::modInCurSignal);
 }
 
 void MainWindow::createMenus() {
@@ -77,6 +94,8 @@ void MainWindow::createMenus() {
   m_fileMenu->addAction(m_aboutSignalAct);
 
   m_modelingMenu = menuBar()->addMenu(tr("&Modeling"));
+  m_modelingMenu->addAction(m_modNewSignalAct);
+  m_modelingMenu->addAction(m_modInCurSignalAct);
 
   m_analizeMenu = menuBar()->addMenu(tr("&Analysis"));
 
