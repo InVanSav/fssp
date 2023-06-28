@@ -20,17 +20,18 @@ void DelayedSingleImpulseModel::initialize() {
   delaySpinBox->setRange(INT_MIN, INT_MAX);
   delaySpinBox->setValue(333);
 
-  formLayout->addRow(tr("Задержка:"), delaySpinBox);
+  p_formLayout->addRow(tr("Задержка:"), delaySpinBox);
 }
 
 void DelayedSingleImpulseModel::calc() {
   int n = delaySpinBox->value();
+  p_data = std::vector<double>(n);
 
   for (int i = 0; i < n; ++i) {
     if (i == n) {
-      data[i] = 1.;
+      p_data[i] = 1.;
     } else {
-      data[i] = 0;
+      p_data[i] = 0;
     }
   }
 }
