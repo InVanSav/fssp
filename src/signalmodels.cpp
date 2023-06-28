@@ -9,9 +9,9 @@ DelayedSingleImpulseModel::DelayedSingleImpulseModel(QWidget *parent)
   initialize();
 }
 
-DelayedSingleImpulseModel::DelayedSingleImpulseModel(const SignalData &data,
-                                                     QWidget *parent)
-    : BaseModel{data, parent} {
+DelayedSingleImpulseModel::DelayedSingleImpulseModel(
+    std::shared_ptr<SignalData> signalData, QWidget *parent)
+    : BaseModel{signalData, parent} {
   initialize();
 }
 

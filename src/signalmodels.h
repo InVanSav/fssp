@@ -11,7 +11,7 @@ class DelayedSingleImpulseModel : public BaseModel {
  public:
   explicit DelayedSingleImpulseModel(QWidget *parent = nullptr);
 
-  explicit DelayedSingleImpulseModel(const SignalData &data,
+  explicit DelayedSingleImpulseModel(std::shared_ptr<SignalData> signalData,
                                      QWidget *parent = nullptr);
 
   void calc() override;
