@@ -44,8 +44,6 @@ class BaseWaveform : public QLabel {
 
   void drawAxes(BaseWaveform::AxisType axisType);
 
-  void drawAxesLabels(BaseWaveform::AxisType axisType);
-
   void drawName(BaseWaveform::NameType nameType);
 
  protected:

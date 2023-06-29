@@ -221,15 +221,6 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
   painter.drawLine(axisStart, axisEnd);
 }
 
-void BaseWaveform::drawAxesLabels(BaseWaveform::AxisType axisType) {
-  if (isImageNull()) {
-    throw BaseWaveform::ImageIsNull();
-  }
-
-  QPainter painter(&p_image);
-  painter.setPen(mainColor);
-}
-
 void BaseWaveform::drawName(BaseWaveform::NameType nameType) {}
 
 }  // namespace fssp
