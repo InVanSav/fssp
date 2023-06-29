@@ -78,6 +78,7 @@ class BaseWaveform : public QLabel {
   double p_dataRange;
 
   double p_pixelPerData;
+  double p_pixelPerTime;
 
   int p_xLabelsNumber;
   int p_yLabelsNumber;
