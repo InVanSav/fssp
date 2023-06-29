@@ -7,23 +7,54 @@
 namespace fssp {
 
 BaseWaveform::BaseWaveform(std::shared_ptr<SignalData> signalData, int number,
-                           QWidget *parent)
+                           int minWidth, int minHeight, QWidget *parent)
     : QLabel{parent} {
   p_signalData = signalData;
   p_number = number;
 
-  p_width = p_minWidth;
-  p_height = p_minHeight;
+  p_minWidth = minWidth;
+  p_minHeight = minHeight;
 
   p_image = QImage();
 
   p_leftArray = 0;
   p_rightArray = p_signalData->samplesNumber() - 1;
-
-  updateRelative();
 }
 
 int BaseWaveform::number() const { return p_number; }
+
+void BaseWaveform::setWidth(int width) {
+  if (width > p_minWidth) {
+    p_width = width;
+  }
+}
+
+void BaseWaveform::setheight(int height) {
+  if (height > p_minHeight) {
+    p_height = height;
+  }
+}
+
+void BaseWaveform::setPadding(int left, int right, int top, int bottom) {
+  p_paddingLeft = left;
+  p_paddingRight = right;
+  p_paddingTop = top;
+  p_paddingBottom = bottom;
+}
+
+void BaseWaveform::setOffset(int left, int right, int top, int bottom) {
+  p_offsetLeft = left;
+  p_offsetRight = right;
+  p_offsetTop = top;
+  p_offsetBottom = bottom;
+}
+
+void BaseWaveform::setTextMargin(int left, int right, int top, int bottom) {
+  p_textMarginLeft = left;
+  p_textMarginRight = right;
+  p_textMarginTop = top;
+  p_textMarginBottom = bottom;
+}
 
 void BaseWaveform::updateRelative() {
   p_arrayRange = p_rightArray - p_leftArray + 1;
@@ -351,7 +382,7 @@ void BaseWaveform::drawName(BaseWaveform::NameType nameType) {
     }
   }
 
-  painter.drawText(textRect, Qt::AlignCenter,
+  painter.drawText(textRect, Qt::AlignCenter | Qt::TextWordWrap,
                    p_signalData->channelsName()[p_number]);
 }
 
