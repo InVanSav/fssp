@@ -1,5 +1,7 @@
 #include "graphdialog.h"
 
+#include "test.h"
+
 namespace fssp {
 
 GraphDialog::GraphDialog(std::shared_ptr<SignalData> data, QWidget *parent)
@@ -12,6 +14,9 @@ GraphDialog::GraphDialog(std::shared_ptr<SignalData> data, QWidget *parent)
   scrollContent = new QWidget();
 
   QVBoxLayout *vBox = new QVBoxLayout();
+  test *t = new test(data, 0);
+  t->drawWaveform();
+  vBox->addWidget(t);
   vBox->addSpacing(10);
   for (int i = 0; i < m_data->channelsNumber(); ++i) {
     GraphWaveform *waveform = new GraphWaveform(i, this);
