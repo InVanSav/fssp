@@ -55,10 +55,7 @@ void MainWindow::open() {
 
 void MainWindow::aboutSignal() {}
 
-void MainWindow::modNewSignal() {
-  DelayedSingleImpulseModel *a = new DelayedSingleImpulseModel();
-  a->show();
-}
+void MainWindow::modNewSignal() {}
 
 void MainWindow::modInCurSignal() {}
 
