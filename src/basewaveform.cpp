@@ -18,7 +18,13 @@ BaseWaveform::BaseWaveform(std::shared_ptr<SignalData> signalData, int number,
   p_leftArray = 0;
   p_rightArray = p_signalData->samplesNumber() - 1;
 
-  p_timeRange = p_rightArray - p_leftArray + 1;
+  updateRelative();
+}
+
+int BaseWaveform::number() const { return p_number; }
+
+void BaseWaveform::updateRelative() {
+  p_timeRange = (p_rightArray - p_leftArray + 1) * p_signalData->timeForOne();
 
   p_minValue =
       *std::min_element(p_signalData->data()[p_number].begin() + p_leftArray,
@@ -42,20 +48,10 @@ BaseWaveform::BaseWaveform(std::shared_ptr<SignalData> signalData, int number,
                      (p_offsetLeft + p_paddingLeft)) /
                     p_maxAxisTextWidth;
 
-  if (p_yLabelsNumber > p_timeRange) {
-    p_yLabelsNumber =
-        std::floor(p_timeRange) >= 2 ? std::floor(p_timeRange) : 2;
-  }
-
   p_pixelPerData = ((p_height - (p_offsetBottom + p_paddingBottom)) -
                     (p_offsetTop + p_paddingTop)) /
                    p_dataRange;
-
-  p_stepX = p_dataRange / p_xLabelsNumber;
-  p_stepY = p_timeRange / p_yLabelsNumber;
 }
-
-int BaseWaveform::number() const { return p_number; }
 
 bool BaseWaveform::isImageNull() const { return p_image.isNull(); }
 

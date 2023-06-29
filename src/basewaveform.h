@@ -36,6 +36,8 @@ class BaseWaveform : public QLabel {
 
   virtual void drawWaveform() = 0;
 
+  void updateRelative();
+
   bool isImageNull() const;
 
   void fill(QColor color);
@@ -75,9 +77,6 @@ class BaseWaveform : public QLabel {
   int p_yLabelsNumber;
 
   int p_lineWidth = 2;
-
-  int p_stepX;
-  int p_stepY;
 
   int p_minWidth = 900;
   int p_minHeight = 300;
