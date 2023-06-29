@@ -24,7 +24,13 @@ BaseWaveform::BaseWaveform(std::shared_ptr<SignalData> signalData, int number,
 int BaseWaveform::number() const { return p_number; }
 
 void BaseWaveform::updateRelative() {
-  p_timeRange = (p_rightArray - p_leftArray + 1) * p_signalData->timeForOne();
+  p_arrayRange = p_rightArray - p_leftArray + 1;
+
+  p_timeRange = p_arrayRange * p_signalData->timeForOne();
+
+  p_pixelPerTime = ((p_width - (p_offsetRight + p_paddingRight)) -
+                    (p_offsetLeft + p_paddingLeft)) /
+                   p_timeRange;
 
   p_minValue =
       *std::min_element(p_signalData->data()[p_number].begin() + p_leftArray,
@@ -72,7 +78,7 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
       100000000, 200000000, 500000000, 1000000000};
 
   QPainter painter(&p_image);
-  painter.setPen(QPen(mainColor, p_lineWidth));
+  painter.setPen(QPen(p_mainColor, p_lineWidth));
   painter.setFont(p_font);
 
   QPoint axisStart;
@@ -218,5 +224,61 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
 }
 
 void BaseWaveform::drawName(BaseWaveform::NameType nameType) {}
+
+void BaseWaveform::drawBresenham() {
+  if (isImageNull()) {
+    throw BaseWaveform::ImageIsNull();
+  }
+
+  int localWidth = p_width - (p_offsetLeft + p_offsetRight);
+  int localHeight = p_height - (p_offsetTop + p_offsetBottom);
+
+  double scale = localHeight / (p_dataRange + 1);
+
+  for (int i = 0; i < p_arrayRange; ++i) {
+    int x1 = std::round(i * localWidth / p_arrayRange) + p_offsetLeft;
+    int x2 = std::round((i + 1) * localWidth / p_arrayRange) + p_offsetLeft;
+    int y1 = localHeight -
+             std::floor((p_signalData->data()[p_number][i + p_rightArray] -
+                         p_minValue) *
+                        scale);
+    int y2 = localHeight -
+             std::floor((p_signalData->data()[p_number][i + p_rightArray + 1] -
+                         p_minValue) *
+                        scale);
+
+    int dx = std::abs(x2 - x1);
+    int dy = std::abs(y2 - y1);
+    int sx = (x1 < x2) ? 1 : -1;
+    int sy = (y1 < y2) ? 1 : -1;
+    int err = dx - dy;
+
+    while (true) {
+      int x = x1;
+      int y = localHeight - y1 + p_offsetTop;
+
+      QRgb *line = reinterpret_cast<QRgb *>(p_image.scanLine(y));
+
+      QRgb &pixel = line[x];
+      pixel = p_graphColor.rgb();
+
+      if (x == x2 && y == (localHeight - y2 + p_offsetTop)) {
+        break;
+      }
+
+      int err2 = 2 * err;
+
+      if (err2 > -dy) {
+        err -= dy;
+        x1 += sx;
+      }
+
+      if (err2 < dx) {
+        err += dx;
+        y1 += sy;
+      }
+    }
+  }
+}
 
 }  // namespace fssp

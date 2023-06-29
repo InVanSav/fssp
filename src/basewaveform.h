@@ -48,15 +48,17 @@ class BaseWaveform : public QLabel {
 
   void drawName(BaseWaveform::NameType nameType);
 
+  void drawBresenham();
+
  protected:
   QImage p_image;
 
   QImage::Format p_imageFormat = QImage::Format_ARGB32;
   QFont p_font{"Monospace", 10};
 
-  QColor mainColor{0, 0, 0};
-  QColor graphColor{0, 127, 255};
-  QColor gridColor{153, 153, 153};
+  QColor p_mainColor{0, 0, 0};
+  QColor p_graphColor{0, 127, 255};
+  QColor p_gridColor{153, 153, 153};
 
   std::shared_ptr<SignalData> p_signalData;
   int p_number;
@@ -64,7 +66,11 @@ class BaseWaveform : public QLabel {
   int p_leftArray;
   int p_rightArray;
 
+  int p_arrayRange;
+
   int p_timeRange;
+
+  int p_pixelPerTime;
 
   double p_maxValue;
   double p_minValue;
