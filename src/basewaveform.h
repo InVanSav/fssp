@@ -62,7 +62,7 @@ class BaseWaveform : public QLabel {
   int p_leftArray;
   int p_rightArray;
 
-  int p_timeRange;
+  size_t p_timeRange;
 
   double p_maxValue;
   double p_minValue;
@@ -70,6 +70,7 @@ class BaseWaveform : public QLabel {
   double p_dataRange;
 
   double p_pixelPerData;
+  double p_pixelPerTime;
 
   int p_xLabelsNumber;
   int p_yLabelsNumber;
@@ -90,8 +91,8 @@ class BaseWaveform : public QLabel {
 
   int p_textMarginLeft = 3;
   int p_textMarginRight = 10;
-  int p_textMarginTop = 10;
-  int p_textMarginBottom = 1;
+  int p_textMarginTop = 2;
+  int p_textMarginBottom = 2;
 
   int p_maxTextHeight =
       QFontMetrics(p_font).height() + p_textMarginTop + p_textMarginBottom;
@@ -105,10 +106,10 @@ class BaseWaveform : public QLabel {
   int p_paddingTop = 0;
   int p_paddingBottom = 0;
 
-  int p_offsetLeft = 200;
-  int p_offsetRight = 0;
-  int p_offsetTop = 10;
-  int p_offsetBottom = 10;
+  int p_offsetLeft = 100;
+  int p_offsetRight = 10;
+  int p_offsetTop = 100;
+  int p_offsetBottom = 50;
 };
 
 }  // namespace fssp
