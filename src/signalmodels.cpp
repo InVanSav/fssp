@@ -401,8 +401,8 @@ void TonalEnvelopeModel::calc() {
   double T = p_freqSpinBox->value();
 
   for (int i = 0; i < n; ++i) {
-    p_data[i] = a * (1 + m * std::cos(2 * M_PI * f_0 * i * T) *
-                             std::cos(2 * M_PI * f_n * i * T + p));
+    p_data[i] = a * (1 + m * std::cos(2 * M_PI * f_0 * i * T)) *
+                std::cos(2 * M_PI * f_n * i * T + p);
   }
 }
 
