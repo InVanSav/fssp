@@ -43,8 +43,8 @@ set(PROJECT_SOURCES
         src/signalmodels.h
         src/basewaveform.cpp
         src/basewaveform.h
-        src/test.cpp
-        src/test.h
+#        src/test.cpp
+#        src/test.h
         ${TS_FILES}
 )
 
