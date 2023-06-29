@@ -58,7 +58,7 @@ void BaseWaveform::updateRelative() {
 
   p_pixelPerTime = ((p_width - (p_offsetRight + p_paddingRight)) -
                     (p_offsetLeft + p_paddingLeft)) /
-                   p_timeRange;
+                   static_cast<double>(p_timeRange);
 }
 
 bool BaseWaveform::isImageNull() const { return p_image.isNull(); }
@@ -196,8 +196,8 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
     }
 
     int step = std::round(p_pixelPerData * delimiter);
-    int startY = p_offsetTop + p_paddingTop +
-                 std::abs(p_pixelPerData * (p_maxValue - curValue));
+    int startY =
+        axisStart.y() + std::abs(p_pixelPerData * (p_maxValue - curValue));
     for (int i = 0; i < curDelimitersNumber; ++i) {
       int y = startY + step * i;
       painter.drawLine(QPoint{p1, y}, QPoint{p2, y});
@@ -273,9 +273,8 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
 
     int step = std::round(p_pixelPerTime * delimiter);
     int startX =
-        p_width - (p_offsetRight + p_paddingRight +
-                   std::abs(p_pixelPerTime *
-                            ((p_signalData->allTime() * 1000) - curValue)));
+        axisEnd.x() - std::abs(p_pixelPerTime *
+                               ((p_signalData->allTime() * 1000) - curValue));
     for (int i = 0; i < curDelimitersNumber; ++i) {
       int x = startX - step * i;
       painter.drawLine(QPoint{x, p1}, QPoint{x, p2});
@@ -303,10 +302,12 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
 
     if (std::abs(p_minValue - curValue) >= delimiter) {
       int x = startX - step * curDelimitersNumber;
+
+      if (x < axisStart.x()) return;
+
       curValue -= delimiter;
 
       painter.drawLine(QPoint{x, p1}, QPoint{x, p2});
-
       QRect textRect{QPoint{x - (p_maxAxisTextWidth / 2 +
                                  p_maxAxisTextWidth % 2 + p_lineWidth),
                             textY1},

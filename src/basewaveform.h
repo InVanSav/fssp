@@ -68,7 +68,7 @@ class BaseWaveform : public QLabel {
 
   int p_arrayRange;
 
-  int p_timeRange;
+  size_t p_timeRange;
 
   double p_pixelPerTime;
 
@@ -78,7 +78,6 @@ class BaseWaveform : public QLabel {
   double p_dataRange;
 
   double p_pixelPerData;
-  double p_pixelPerTime;
 
   int p_xLabelsNumber;
   int p_yLabelsNumber;
@@ -113,7 +112,7 @@ class BaseWaveform : public QLabel {
 
   int p_offsetLeft = 125;
   int p_offsetRight = 10;
-  int p_offsetTop = 10;
+  int p_offsetTop = 50;
   int p_offsetBottom = 25;
 };
 

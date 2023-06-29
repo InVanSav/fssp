@@ -9,6 +9,7 @@ void test::drawWaveform() {
   p_image = QImage(p_width, p_height, p_imageFormat);
   fill(QColor{255, 255, 255});
   drawAxes(BaseWaveform::AxisType::AxisXLeft);
+  drawAxes(BaseWaveform::AxisType::AxisYTop);
   drawName(BaseWaveform::NameType::HorizontalBottom);
   drawBresenham();
   QPixmap pixmap = QPixmap::fromImage(p_image);
