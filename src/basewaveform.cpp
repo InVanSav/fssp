@@ -57,6 +57,11 @@ void BaseWaveform::setTextMargin(int left, int right, int top, int bottom) {
   p_textMarginRight = right;
   p_textMarginTop = top;
   p_textMarginBottom = bottom;
+
+  p_maxTextHeight =
+      QFontMetrics(p_font).height() + p_textMarginTop + p_textMarginBottom;
+  p_maxAxisTextWidth = QFontMetrics(p_font).averageCharWidth() * 11 +
+                       p_textMarginLeft + p_textMarginRight;
 }
 
 void BaseWaveform::updateRelative() {
@@ -290,9 +295,9 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
       }
     }
 
-    QString unitOfTime;
-    int divisionBase;
-    if (delimiter < 10000) {
+    QString unitOfTime = "";
+    int divisionBase = 1;
+    if (delimiter < 1000) {
       unitOfTime = "ms";
       divisionBase = 1;
     } else if (delimiter < 60000) {

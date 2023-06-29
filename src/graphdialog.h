@@ -18,17 +18,11 @@ class GraphDialog : public QGroupBox {
 
   void drawWaveforms();
 
- private slots:
-  void onSelectionFinished(int leftX, int rightX, int realWidth);
-
  private:
-  std::shared_ptr<SignalData> m_data;
+  std::shared_ptr<SignalData> m_signalData;
   std::vector<GraphWaveform *> m_waveforms;
 
   QWidget *scrollContent;
-
-  int m_waveformWidth;
-  int m_waveformHeight;
 };
 
 }  // namespace fssp
