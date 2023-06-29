@@ -418,11 +418,15 @@ void BaseWaveform::drawBresenham() {
     int y1 = localHeight -
              std::floor((p_signalData->data()[p_number][i + p_leftArray] -
                          p_minValue) *
-                        scale);
+                        scale) +
+             p_offsetTop + p_paddingTop;
+    ;
     int y2 = localHeight -
              std::floor((p_signalData->data()[p_number][i + p_leftArray + 1] -
                          p_minValue) *
-                        scale);
+                        scale) +
+             p_offsetTop + p_paddingTop;
+    ;
 
     int dx = std::abs(x2 - x1);
     int dy = std::abs(y2 - y1);
@@ -432,14 +436,14 @@ void BaseWaveform::drawBresenham() {
 
     while (true) {
       int x = x1;
-      int y = localHeight - y1 + p_offsetTop + p_paddingTop;
+      int y = y1;
 
       QRgb *line = reinterpret_cast<QRgb *>(p_image.scanLine(y));
 
       QRgb &pixel = line[x];
       pixel = p_graphColor.rgb();
 
-      if (x == x2 && y == (localHeight - y2 + p_offsetTop + p_paddingTop)) {
+      if (x == x2 && y == y2) {
         break;
       }
 
