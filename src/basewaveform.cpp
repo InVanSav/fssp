@@ -26,11 +26,7 @@ int BaseWaveform::number() const { return p_number; }
 void BaseWaveform::updateRelative() {
   p_arrayRange = p_rightArray - p_leftArray + 1;
 
-  p_timeRange = p_arrayRange * p_signalData->timeForOne();
-
-  p_pixelPerTime = ((p_width - (p_offsetRight + p_paddingRight)) -
-                    (p_offsetLeft + p_paddingLeft)) /
-                   p_timeRange;
+  p_timeRange = p_arrayRange * p_signalData->timeForOne() * 1000;
 
   p_minValue =
       *std::min_element(p_signalData->data()[p_number].begin() + p_leftArray,
@@ -57,6 +53,10 @@ void BaseWaveform::updateRelative() {
   p_pixelPerData = ((p_height - (p_offsetBottom + p_paddingBottom)) -
                     (p_offsetTop + p_paddingTop)) /
                    p_dataRange;
+
+  p_pixelPerTime = ((p_width - (p_offsetRight + p_paddingRight)) -
+                    (p_offsetLeft + p_paddingLeft)) /
+                   p_timeRange;
 }
 
 bool BaseWaveform::isImageNull() const { return p_image.isNull(); }
@@ -114,6 +114,8 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
       break;
     }
   }
+
+  painter.drawLine(axisStart, axisEnd);
 
   if (axisType == BaseWaveform::AxisType::AxisXLeft) {
     if (p_xLabelsNumber == 2) {
@@ -183,8 +185,8 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
     }
 
     int step = std::round(p_pixelPerData * delimiter);
-    int startY = p_offsetTop + p_paddingTop +
-                 std::abs(p_pixelPerData * (p_maxValue - startValue));
+    int startY =
+        axisStart.y() + std::abs(p_pixelPerData * (p_maxValue - startValue));
     int curValue = startValue;
     for (int i = 0; i < curDelimitersNumber; ++i) {
       int y = startY + step * i;
@@ -205,6 +207,9 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
 
     if (std::abs(p_minValue - curValue) >= delimiter) {
       int y = startY + step * curDelimitersNumber;
+
+      if (y > axisEnd.y()) return;
+
       curValue -= delimiter;
 
       painter.drawLine(QPoint{p1, y}, QPoint{p2, y});
@@ -219,31 +224,67 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
   } else if (axisType == BaseWaveform::AxisType::AxisYTop ||
              axisType == BaseWaveform::AxisType::AxisYBottom) {
   }
-
-  painter.drawLine(axisStart, axisEnd);
 }
 
-void BaseWaveform::drawName(BaseWaveform::NameType nameType) {}
+void BaseWaveform::drawName(BaseWaveform::NameType nameType) {
+  if (isImageNull()) {
+    throw BaseWaveform::ImageIsNull();
+  }
+
+  QPainter painter(&p_image);
+  painter.setPen(p_mainColor);
+  painter.setFont(p_font);
+
+  QRect textRect;
+
+  switch (nameType) {
+    case BaseWaveform::NameType::VerticalLeft: {
+      textRect = {p_paddingLeft, p_paddingTop, p_maxTextHeight,
+                  p_height - (p_paddingTop + p_paddingBottom)};
+
+      painter.translate(textRect.center());
+      painter.rotate(-90);
+      painter.translate(-textRect.height() / 2 - p_paddingLeft,
+                        -textRect.width() / 2 - p_paddingTop);
+
+      textRect.setWidth(p_height - (p_paddingTop + p_paddingBottom));
+      textRect.setHeight(p_maxTextHeight * 2);
+
+      break;
+    }
+    case BaseWaveform::NameType::HorizontalBottom: {
+      textRect = {p_paddingLeft, p_height - (p_maxTextHeight + p_paddingBottom),
+                  p_width - (p_paddingRight + p_paddingLeft), p_maxTextHeight};
+    }
+  }
+
+  painter.drawText(textRect, Qt::AlignCenter,
+                   p_signalData->channelsName()[p_number]);
+}
 
 void BaseWaveform::drawBresenham() {
   if (isImageNull()) {
     throw BaseWaveform::ImageIsNull();
   }
 
-  int localWidth = p_width - (p_offsetLeft + p_offsetRight);
-  int localHeight = p_height - (p_offsetTop + p_offsetBottom);
+  int localWidth =
+      p_width - (p_offsetLeft + p_offsetRight + p_paddingLeft + p_paddingRight);
+  int localHeight = p_height - (p_offsetTop + p_offsetBottom + p_paddingTop +
+                                p_paddingBottom);
 
   double scale = localHeight / (p_dataRange + 1);
 
-  for (int i = 0; i < p_arrayRange; ++i) {
-    int x1 = std::round(i * localWidth / p_arrayRange) + p_offsetLeft;
-    int x2 = std::round((i + 1) * localWidth / p_arrayRange) + p_offsetLeft;
+  for (int i = 0; i < p_arrayRange - 1; ++i) {
+    int x1 = std::round(i * localWidth / p_arrayRange) + p_offsetLeft +
+             p_paddingLeft;
+    int x2 = std::round((i + 1) * localWidth / p_arrayRange) + p_offsetLeft +
+             p_paddingLeft;
     int y1 = localHeight -
-             std::floor((p_signalData->data()[p_number][i + p_rightArray] -
+             std::floor((p_signalData->data()[p_number][i + p_leftArray] -
                          p_minValue) *
                         scale);
     int y2 = localHeight -
-             std::floor((p_signalData->data()[p_number][i + p_rightArray + 1] -
+             std::floor((p_signalData->data()[p_number][i + p_leftArray + 1] -
                          p_minValue) *
                         scale);
 
@@ -255,14 +296,14 @@ void BaseWaveform::drawBresenham() {
 
     while (true) {
       int x = x1;
-      int y = localHeight - y1 + p_offsetTop;
+      int y = localHeight - y1 + p_offsetTop + p_paddingTop;
 
       QRgb *line = reinterpret_cast<QRgb *>(p_image.scanLine(y));
 
       QRgb &pixel = line[x];
       pixel = p_graphColor.rgb();
 
-      if (x == x2 && y == (localHeight - y2 + p_offsetTop)) {
+      if (x == x2 && y == (localHeight - y2 + p_offsetTop + p_paddingTop)) {
         break;
       }
 
