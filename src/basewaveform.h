@@ -49,6 +49,8 @@ class BaseWaveform : public QLabel {
 
   bool isImageNull() const;
 
+  void initImage();
+
   void fill(QColor color);
 
   void drawGrid();
@@ -58,6 +60,8 @@ class BaseWaveform : public QLabel {
   void drawName(BaseWaveform::NameType nameType);
 
   void drawBresenham();
+
+  void showWaveform();
 
   virtual void drawWaveform() = 0;
 

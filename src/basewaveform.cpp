@@ -15,6 +15,9 @@ BaseWaveform::BaseWaveform(std::shared_ptr<SignalData> signalData, int number,
   p_minWidth = minWidth;
   p_minHeight = minHeight;
 
+  p_width = p_minWidth;
+  p_height = p_minHeight;
+
   p_image = QImage();
 
   p_leftArray = 0;
@@ -93,6 +96,10 @@ void BaseWaveform::updateRelative() {
 }
 
 bool BaseWaveform::isImageNull() const { return p_image.isNull(); }
+
+void BaseWaveform::initImage() {
+  p_image = QImage(p_width, p_height, p_imageFormat);
+}
 
 void BaseWaveform::fill(QColor color) { p_image.fill(color.toRgb()); }
 
@@ -444,6 +451,11 @@ void BaseWaveform::drawBresenham() {
       }
     }
   }
+}
+
+void BaseWaveform::showWaveform() {
+  QPixmap pixmap = QPixmap::fromImage(p_image);
+  setPixmap(pixmap);
 }
 
 }  // namespace fssp
