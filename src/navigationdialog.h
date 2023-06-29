@@ -6,7 +6,6 @@
 #include <QWidget>
 
 #include "navigationwaveform.h"
-#include "signaldata.h"
 
 namespace fssp {
 
@@ -18,17 +17,11 @@ class NavigationDialog : public QGroupBox {
 
   void drawWaveforms();
 
- private slots:
-  void onWaveformVisibilityChange(int number, bool isVisible);
-
  private:
-  std::shared_ptr<SignalData> m_data;
+  std::shared_ptr<SignalData> m_signalData;
   std::vector<NavigationWaveform *> m_waveforms;
 
   QWidget *scrollContent;
-
-  int m_waveformWidth;
-  int m_waveformHeight;
 };
 
 }  // namespace fssp

@@ -5,30 +5,19 @@ namespace fssp {
 NavigationDialog::NavigationDialog(std::shared_ptr<SignalData> data,
                                    QWidget *parent)
     : QGroupBox{parent} {
-  m_data = data;
-  m_waveforms = std::vector<NavigationWaveform *>(m_data->channelsNumber());
-  m_waveformWidth = 200;
-  m_waveformHeight = 50;
+  m_signalData = data;
+  m_waveforms =
+      std::vector<NavigationWaveform *>(m_signalData->channelsNumber());
 
   scrollContent = new QWidget();
 
   QVBoxLayout *vBox = new QVBoxLayout();
   vBox->addSpacing(10);
-  for (int i = 0; i < m_data->channelsNumber(); ++i) {
-    NavigationWaveform *waveform = new NavigationWaveform(i, this);
+  for (int i = 0; i < m_signalData->channelsNumber(); ++i) {
+    NavigationWaveform *waveform = new NavigationWaveform(m_signalData, i);
+
     m_waveforms[i] = waveform;
     vBox->addWidget(waveform);
-
-    connect(waveform, &NavigationWaveform::visibilityChange, this,
-            &NavigationDialog::onWaveformVisibilityChange);
-
-    QLabel *title = new QLabel(m_data->channelsName()[i]);
-    vBox->addWidget(title);
-    vBox->setAlignment(title, Qt::AlignHCenter);
-
-    if (i != m_data->channelsNumber() - 1) {
-      vBox->addSpacing(20);
-    }
   }
   vBox->addSpacing(10);
 
@@ -54,17 +43,8 @@ NavigationDialog::NavigationDialog(std::shared_ptr<SignalData> data,
 
 void NavigationDialog::drawWaveforms() {
   for (int i = 0; i < m_waveforms.size(); ++i) {
-    m_waveforms[i]->drawWaveform(m_data->data()[i], m_waveformWidth,
-                                 m_waveformHeight, m_data->isSelected(),
-                                 m_data->leftSelection(),
-                                 m_data->rightSelection());
+    m_waveforms[i]->drawWaveform();
   }
-}
-
-void NavigationDialog::onWaveformVisibilityChange(int number, bool isVisible) {
-  m_data->setWaveformVisibility(number, isVisible);
-
-  emit m_data->waveformVisibilityEvent();
 }
 
 }  // namespace fssp
