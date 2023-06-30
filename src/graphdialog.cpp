@@ -25,7 +25,8 @@ GraphDialog::GraphDialog(std::shared_ptr<SignalData> data, QWidget *parent)
   }
 
   if (m_signalData->channelsNumber() > 1) {
-    GraphWaveform *botWaveform = new GraphWaveform(m_signalData, 0);
+    GraphWaveform *botWaveform =
+        new GraphWaveform(m_signalData, m_signalData->channelsNumber() - 1);
     botWaveform->setBottom();
     m_waveforms[m_signalData->channelsNumber() - 1] = botWaveform;
     vBox->addWidget(botWaveform);
