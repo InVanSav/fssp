@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QComboBox>
 #include <QFileDialog>
 #include <QLabel>
 #include <QMainWindow>

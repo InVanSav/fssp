@@ -295,20 +295,20 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
       }
     }
 
-    QString unitOfTime = "";
-    int divisionBase = 1;
-    if (delimiter < 1000) {
+    QString unitOfTime;
+    int divisionBase;
+    if (delimiter < timeMultiples[1]) {
       unitOfTime = "ms";
       divisionBase = 1;
-    } else if (delimiter < 60000) {
+    } else if (delimiter < timeMultiples[6]) {
       unitOfTime = "s";
-      divisionBase = 1000;
-    } else if (delimiter < 3600000) {
+      divisionBase = timeMultiples[1];
+    } else if (delimiter < timeMultiples[11]) {
       unitOfTime = "m";
-      divisionBase = 60000;
-    } else if (delimiter < 86400000) {
+      divisionBase = timeMultiples[6];
+    } else if (delimiter <= timeMultiples[12]) {
       unitOfTime = "h";
-      divisionBase = 3600000;
+      divisionBase = timeMultiples[11];
     }
 
     int curValue = std::floor(p_signalData->allTime() * 1000);
