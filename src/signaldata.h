@@ -25,7 +25,7 @@ class SignalData : public QObject {
 
   double rate() const;
   double timeForOne() const;
-  double allTime() const;
+  long double allTime() const;
 
   const std::vector<QString> &channelsName() const;
   const std::vector<std::vector<double>> &data() const;
@@ -54,7 +54,8 @@ class SignalData : public QObject {
 
   double m_rate;
   double m_timeForOne;
-  double m_allTime;
+
+  long double m_allTime;
 
   std::vector<QString> m_channelsName;
   std::vector<std::vector<double>> m_data;

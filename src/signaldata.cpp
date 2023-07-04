@@ -104,7 +104,7 @@ double SignalData::rate() const { return m_rate; }
 
 double SignalData::timeForOne() const { return m_timeForOne; }
 
-double SignalData::allTime() const { return m_allTime; }
+long double SignalData::allTime() const { return m_allTime; }
 
 const std::vector<QString> &SignalData::channelsName() const {
   return m_channelsName;

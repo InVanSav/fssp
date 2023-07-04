@@ -82,11 +82,6 @@ void BaseWaveform::updateRelative() {
                      (p_offsetTop + p_paddingTop)) /
                     p_maxTextHeight;
 
-  if (p_xLabelsNumber > p_dataRange) {
-    p_xLabelsNumber =
-        std::floor(p_dataRange) >= 2 ? std::floor(p_dataRange) : 2;
-  }
-
   p_yLabelsNumber = ((p_width - (p_offsetRight + p_paddingRight)) -
                      (p_offsetLeft + p_paddingLeft)) /
                     p_maxAxisTextWidth;
@@ -115,16 +110,23 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
     throw BaseWaveform::ImageIsNull();
   }
 
-  std::vector<int> dataMultiples = {
+  std::vector<size_t> dataMultiples = {
       1,         2,         5,         10,        20,       50,
       100,       200,       500,       1000,      2000,     5000,
       10000,     20000,     50000,     100000,    200000,   500000,
       1000000,   2000000,   5000000,   10000000,  20000000, 50000000,
       100000000, 200000000, 500000000, 1000000000};
 
-  std::vector<int> timeMultiples = {500,     1000,    2000,    5000,   10000,
-                                    30000,   60000,   120000,  300000, 600000,
-                                    1800000, 3600000, 86400000};
+  std::vector<double> dataMultiplesDouble = {0.001, 0.002, 0.005, 0.01, 0.02,
+                                             0.05,  0.1,   0.2,   0.5};
+
+  std::vector<size_t> timeMultiples = {
+      1,           2,          5,          10,         50,         100,
+      200,         500,        1000,       2000,       5000,       10000,
+      30000,       60000,      120000,     300000,     600000,     1800000,
+      3600000,     7200000,    14400000,   28800000,   57600000,   86400000,
+      604800000,   1209600000, 2419200000, 4838400000, 9676800000, 19353600000,
+      29030400000, 38707200000};
 
   QPainter painter(&p_image);
   painter.setPen(QPen(p_mainColor, p_lineWidth));
@@ -175,46 +177,65 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
   if (axisType == BaseWaveform::AxisType::AxisXLeft) {
     int textX1 = p1 - (p_textMarginRight + p_maxAxisTextWidth);
     int textX2 = p1 - p_textMarginRight;
-    if (p_xLabelsNumber == 2) {
-      painter.drawLine(QPoint{p1, axisStart.y()}, QPoint{p2, axisStart.y()});
-      painter.drawLine(QPoint{p1, axisEnd.y()}, QPoint{p2, axisEnd.y()});
 
-      QRect textRect{
-          QPoint{textX1, axisStart.y() - (p_maxTextHeight / 2 +
-                                          p_maxTextHeight % 2 + p_lineWidth)},
-          QPoint{textX2, axisStart.y() + p_maxTextHeight / 2}};
+    if (p_dataRange <= 3) {
+      int curDelimitersNumber = 1;
+      double delimiter = dataMultiplesDouble[0];
+      for (int i = 0; i < dataMultiplesDouble.size(); ++i) {
+        curDelimitersNumber = p_dataRange / dataMultiplesDouble[i];
 
-      painter.drawText(textRect, Qt::AlignRight | Qt::AlignVCenter,
-                       QString::number(p_maxValue));
-
-      textRect.setTopLeft(
-          QPoint{textX1, axisEnd.y() - (p_maxTextHeight / 2 +
-                                        p_maxTextHeight % 2 + p_lineWidth)});
-
-      textRect.setBottomRight(
-          QPoint{textX2, axisEnd.y() + p_maxTextHeight / 2});
-
-      painter.drawText(textRect, Qt::AlignRight | Qt::AlignVCenter,
-                       QString::number(p_minValue));
-
-      if (p_minValue < 0 && p_maxValue > 0) {
-        int y0 =
-            p_offsetTop + p_paddingTop + p_pixelPerData * std::abs(p_maxValue);
-
-        if (y0 - axisStart.y() < p_maxTextHeight * 1.5 ||
-            axisEnd.y() - y0 < p_maxTextHeight * 1.5) {
-          return;
+        if (curDelimitersNumber <= p_xLabelsNumber) {
+          delimiter = dataMultiplesDouble[i];
+          break;
         }
+      }
 
-        textRect.setTopLeft(QPoint{
-            textX1,
-            y0 - (p_maxTextHeight / 2 + p_maxTextHeight % 2 + p_lineWidth)});
+      int factor = 1000;
+      int intermediateValue = p_maxValue * factor;
+      if (p_maxValue > 0) {
+        while (intermediateValue % static_cast<int>(delimiter * factor))
+          --intermediateValue;
+      } else {
+        while (std::abs(intermediateValue) %
+               static_cast<int>(delimiter * factor))
+          ++intermediateValue;
+      }
 
-        textRect.setBottomRight(QPoint{textX2, y0 + p_maxTextHeight / 2});
+      double curValue = static_cast<double>(intermediateValue) / factor;
 
-        painter.drawText(textRect, Qt::AlignRight | Qt::AlignVCenter, "0");
+      double step = p_pixelPerData * delimiter;
+      int startY =
+          axisStart.y() + std::abs(p_pixelPerData * (p_maxValue - curValue));
+      for (int i = 0; i < curDelimitersNumber; ++i) {
+        int y = startY + step * i;
+        painter.drawLine(QPoint{p1, y}, QPoint{p2, y});
 
-        painter.drawLine(QPoint{p1, y0}, QPoint{p2, y0});
+        QRect textRect{QPoint{textX1, y - (p_maxTextHeight / 2 +
+                                           p_maxTextHeight % 2 + p_lineWidth)},
+                       QPoint{textX2, y + p_maxTextHeight / 2}};
+
+        painter.drawText(textRect, Qt::AlignRight | Qt::AlignVCenter,
+                         QString::number(curValue));
+
+        if (i != curDelimitersNumber - 1) {
+          curValue -= delimiter;
+        }
+      }
+
+      if (std::abs(p_minValue - curValue) >= delimiter) {
+        int y = startY + step * curDelimitersNumber;
+
+        if (y > axisEnd.y()) return;
+
+        curValue -= delimiter;
+
+        painter.drawLine(QPoint{p1, y}, QPoint{p2, y});
+        QRect textRect{QPoint{textX1, y - (p_maxTextHeight / 2 +
+                                           p_maxTextHeight % 2 + p_lineWidth)},
+                       QPoint{textX2, y + p_maxTextHeight / 2}};
+
+        painter.drawText(textRect, Qt::AlignRight | Qt::AlignVCenter,
+                         QString::number(curValue));
       }
 
       return;
@@ -284,8 +305,8 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
       textY2 = p1 + p_textMarginTop;
     }
 
-    int curDelimitersNumber = 1;
-    int delimiter = timeMultiples[0];
+    size_t curDelimitersNumber = 1;
+    size_t delimiter = timeMultiples[0];
     for (int i = 0; i < timeMultiples.size(); ++i) {
       curDelimitersNumber = p_timeRange / timeMultiples[i];
 
@@ -296,7 +317,7 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
     }
 
     QString unitOfTime;
-    int divisionBase;
+    size_t divisionBase;
     if (delimiter < timeMultiples[1]) {
       unitOfTime = "ms";
       divisionBase = 1;
@@ -306,15 +327,27 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
     } else if (delimiter < timeMultiples[11]) {
       unitOfTime = "m";
       divisionBase = timeMultiples[6];
-    } else if (delimiter <= timeMultiples[12]) {
+    } else if (delimiter < timeMultiples[16]) {
       unitOfTime = "h";
       divisionBase = timeMultiples[11];
+    } else if (delimiter < timeMultiples[17]) {
+      unitOfTime = "d";
+      divisionBase = timeMultiples[16];
+    } else if (delimiter < timeMultiples[19]) {
+      unitOfTime = "w";
+      divisionBase = timeMultiples[17];
+    } else if (delimiter < timeMultiples[23]) {
+      unitOfTime = "mnth";
+      divisionBase = timeMultiples[19];
+    } else if (delimiter <= timeMultiples[24]) {
+      unitOfTime = "y";
+      divisionBase = timeMultiples[23];
     }
 
-    int curValue = std::floor(p_signalData->allTime() * 1000);
+    size_t curValue = std::floor(p_signalData->allTime() * 1000);
     while (curValue % delimiter) --curValue;
 
-    int step = std::round(p_pixelPerTime * delimiter);
+    size_t step = std::round(p_pixelPerTime * delimiter);
     int startX =
         axisEnd.x() - std::abs(p_pixelPerTime *
                                ((p_signalData->allTime() * 1000) - curValue));
