@@ -125,6 +125,66 @@ class BaseWaveform : public QLabel {
       QFontMetrics(p_font).height() + p_textMarginTop + p_textMarginBottom;
   int p_maxAxisTextWidth = QFontMetrics(p_font).averageCharWidth() * 11 +
                            p_textMarginLeft + p_textMarginRight;
+
+  int p_curDataDelimitersNumber = 1;
+  int p_curTimeDelimitersNumber = 1;
+
+  const std::vector<double> p_dataMultiples = {
+      0.001,     0.002,     0.005,    0.01,     0.02,     0.05,      0.1,
+      0.2,       0.5,       1,        2,        5,        10,        20,
+      50,        100,       200,      500,      1000,     2000,      5000,
+      10000,     20000,     50000,    100000,   200000,   500000,    1000000,
+      2000000,   5000000,   10000000, 20000000, 50000000, 100000000, 200000000,
+      500000000, 1000000000};
+
+  const std::vector<size_t> p_timeMultiples = {
+      1,
+      2,
+      5,
+      10,
+      50,
+      100,
+      200,
+      500,
+      1000,  // msec 8
+      2000,
+      5000,
+      10000,
+      15000,
+      30000,
+      60000,  // sec 14
+      120'000,
+      300'000,
+      600'000,
+      900'000,
+      1'800'000,
+      3'600'000,  // min 20
+      7'200'000,
+      14'400'000,
+      28'800'000,
+      57'600'000,
+      86'400'000,  // hours 25
+      172'800'000,
+      604'800'000,  // days 27
+      1'209'600'000,
+      2'592'000'000,  // weeks 29
+      5'184'000'000,
+      7'776'000'000,
+      15'552'000'000,
+      31'104'000'000,  // months 33
+      62'208'000'000,
+      155'520'000'000,
+      311'040'000'000,
+      622'080'000'000  // years 37
+  };
+
+  double p_dataDelimiter = p_dataMultiples[0];
+  size_t p_timeDelimiter = p_timeMultiples[0];
+
+ private:
+  void calculateDataDelimiter();
+
+  void calculateTimeDelimiter();
 };
 
 }  // namespace fssp

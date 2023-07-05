@@ -110,57 +110,6 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
     throw BaseWaveform::ImageIsNull();
   }
 
-  std::vector<size_t> dataMultiples = {
-      1,         2,         5,         10,        20,       50,
-      100,       200,       500,       1000,      2000,     5000,
-      10000,     20000,     50000,     100000,    200000,   500000,
-      1000000,   2000000,   5000000,   10000000,  20000000, 50000000,
-      100000000, 200000000, 500000000, 1000000000};
-
-  std::vector<double> dataMultiplesDouble = {0.001, 0.002, 0.005, 0.01, 0.02,
-                                             0.05,  0.1,   0.2,   0.5};
-
-  std::vector<size_t> timeMultiples = {
-      1,
-      2,
-      5,
-      10,
-      50,
-      100,
-      200,
-      500,
-      1000,  // msec 8
-      2000,
-      5000,
-      10000,
-      15000,
-      30000,
-      60000,  // sec 14
-      120'000,
-      300'000,
-      600'000,
-      900'000,
-      1'800'000,
-      3'600'000,  // min 20
-      7'200'000,
-      14'400'000,
-      28'800'000,
-      57'600'000,
-      86'400'000,  // hours 25
-      172'800'000,
-      604'800'000,  // days 27
-      1'209'600'000,
-      2'592'000'000,  // weeks 29
-      5'184'000'000,
-      7'776'000'000,
-      15'552'000'000,
-      31'104'000'000,  // months 33
-      62'208'000'000,
-      155'520'000'000,
-      311'040'000'000,
-      622'080'000'000  // years 37
-  };
-
   QPainter painter(&p_image);
   painter.setPen(QPen(p_mainColor, p_lineWidth));
   painter.setFont(p_font);
@@ -211,89 +160,23 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
     int textX1 = p1 - (p_textMarginRight + p_maxAxisTextWidth);
     int textX2 = p1 - p_textMarginRight;
 
-    if (p_dataRange <= 3) {
-      int curDelimitersNumber = 1;
-      double delimiter = dataMultiplesDouble[0];
-      for (int i = 0; i < dataMultiplesDouble.size(); ++i) {
-        curDelimitersNumber = p_dataRange / dataMultiplesDouble[i];
+    calculateDataDelimiter();
 
-        if (curDelimitersNumber <= p_xLabelsNumber) {
-          delimiter = dataMultiplesDouble[i];
-          break;
-        }
-      }
-
-      double curValue = p_maxValue;
-      if (p_maxValue > 0) {
-        curValue -= std::fmod(p_maxValue, delimiter);
-      } else {
-        curValue += std::fmod(p_maxValue, delimiter);
-      }
-
-      int count = 0;
-      for (; delimiter < 1; ++count) delimiter *= 10;
-      delimiter /= std::pow(10, count);
-
-      double step = p_pixelPerData * delimiter;
-      int startY =
-          axisStart.y() + std::abs(p_pixelPerData * (p_maxValue - curValue));
-      for (int i = 0; i < curDelimitersNumber; ++i) {
-        int y = startY + step * i;
-        painter.drawLine(QPoint{p1, y}, QPoint{p2, y});
-
-        QRect textRect{QPoint{textX1, y - (p_maxTextHeight / 2 +
-                                           p_maxTextHeight % 2 + p_lineWidth)},
-                       QPoint{textX2, y + p_maxTextHeight / 2}};
-
-        painter.drawText(textRect, Qt::AlignRight | Qt::AlignVCenter,
-                         QString::number(curValue, 'f', count));
-
-        if (i != curDelimitersNumber - 1) {
-          curValue -= delimiter;
-        }
-      }
-
-      if (std::abs(p_minValue - curValue) >= delimiter) {
-        int y = startY + step * curDelimitersNumber;
-
-        if (y > axisEnd.y()) return;
-
-        curValue -= delimiter;
-
-        painter.drawLine(QPoint{p1, y}, QPoint{p2, y});
-        QRect textRect{QPoint{textX1, y - (p_maxTextHeight / 2 +
-                                           p_maxTextHeight % 2 + p_lineWidth)},
-                       QPoint{textX2, y + p_maxTextHeight / 2}};
-
-        painter.drawText(textRect, Qt::AlignRight | Qt::AlignVCenter,
-                         QString::number(curValue, 'f', count));
-      }
-
-      return;
-    }
-
-    int curDelimitersNumber = 1;
-    int delimiter = dataMultiples[0];
-    for (int i = 0; i < dataMultiples.size(); ++i) {
-      curDelimitersNumber = p_dataRange / dataMultiples[i];
-
-      if (curDelimitersNumber <= p_xLabelsNumber) {
-        delimiter = dataMultiples[i];
-        break;
-      }
-    }
-
-    int curValue = std::floor(p_maxValue);
+    double curValue = p_maxValue;
     if (p_maxValue > 0) {
-      curValue -= (curValue % delimiter);
+      curValue -= std::fmod(p_maxValue, p_dataDelimiter);
     } else {
-      curValue += (curValue % delimiter);
+      curValue += std::fmod(p_maxValue, p_dataDelimiter);
     }
 
-    int step = std::round(p_pixelPerData * delimiter);
+    int count = 0;
+    for (; p_dataDelimiter < 1; ++count) p_dataDelimiter *= 10;
+    p_dataDelimiter /= std::pow(10, count);
+
+    double step = p_pixelPerData * p_dataDelimiter;
     int startY =
         axisStart.y() + std::abs(p_pixelPerData * (p_maxValue - curValue));
-    for (int i = 0; i < curDelimitersNumber; ++i) {
+    for (int i = 0; i < p_curDataDelimitersNumber; ++i) {
       int y = startY + step * i;
       painter.drawLine(QPoint{p1, y}, QPoint{p2, y});
 
@@ -302,19 +185,19 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
                      QPoint{textX2, y + p_maxTextHeight / 2}};
 
       painter.drawText(textRect, Qt::AlignRight | Qt::AlignVCenter,
-                       QString::number(curValue));
+                       QString::number(curValue, 'f', count));
 
-      if (i != curDelimitersNumber - 1) {
-        curValue -= delimiter;
+      if (i != p_curDataDelimitersNumber - 1) {
+        curValue -= p_dataDelimiter;
       }
     }
 
-    if (std::abs(p_minValue - curValue) >= delimiter) {
-      int y = startY + step * curDelimitersNumber;
+    if (std::abs(p_minValue - curValue) >= p_dataDelimiter) {
+      int y = startY + step * p_curDataDelimitersNumber;
 
       if (y > axisEnd.y()) return;
 
-      curValue -= delimiter;
+      curValue -= p_dataDelimiter;
 
       painter.drawLine(QPoint{p1, y}, QPoint{p2, y});
       QRect textRect{QPoint{textX1, y - (p_maxTextHeight / 2 +
@@ -322,7 +205,7 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
                      QPoint{textX2, y + p_maxTextHeight / 2}};
 
       painter.drawText(textRect, Qt::AlignRight | Qt::AlignVCenter,
-                       QString::number(curValue));
+                       QString::number(curValue, 'f', count));
     }
   } else if (axisType == BaseWaveform::AxisType::AxisYTop ||
              axisType == BaseWaveform::AxisType::AxisYBottom) {
@@ -336,52 +219,43 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
       textY2 = p1 + p_textMarginTop;
     }
 
-    size_t curDelimitersNumber = 1;
-    size_t delimiter = timeMultiples[0];
-    for (int i = 0; i < timeMultiples.size(); ++i) {
-      curDelimitersNumber = p_timeRange / timeMultiples[i];
-
-      if (curDelimitersNumber <= p_yLabelsNumber) {
-        delimiter = timeMultiples[i];
-        break;
-      }
-    }
+    calculateTimeDelimiter();
 
     QString unitOfTime;
     size_t divisionBase;
-    if (delimiter < timeMultiples[8]) {
+    if (p_timeDelimiter < p_timeMultiples[8]) {
       unitOfTime = "msec";
       divisionBase = 1;
-    } else if (delimiter < timeMultiples[14]) {
+    } else if (p_timeDelimiter < p_timeMultiples[14]) {
       unitOfTime = "sec";
-      divisionBase = timeMultiples[8];
-    } else if (delimiter < timeMultiples[20]) {
+      divisionBase = p_timeMultiples[8];
+    } else if (p_timeDelimiter < p_timeMultiples[20]) {
       unitOfTime = "min";
-      divisionBase = timeMultiples[14];
-    } else if (delimiter < timeMultiples[25]) {
+      divisionBase = p_timeMultiples[14];
+    } else if (p_timeDelimiter < p_timeMultiples[25]) {
       unitOfTime = "h";
-      divisionBase = timeMultiples[20];
-    } else if (delimiter < timeMultiples[27]) {
+      divisionBase = p_timeMultiples[20];
+    } else if (p_timeDelimiter < p_timeMultiples[27]) {
       unitOfTime = "d";
-      divisionBase = timeMultiples[25];
-    } else if (delimiter < timeMultiples[29]) {
+      divisionBase = p_timeMultiples[25];
+    } else if (p_timeDelimiter < p_timeMultiples[29]) {
       unitOfTime = "w";
-      divisionBase = timeMultiples[27];
-    } else if (delimiter < timeMultiples[33]) {
+      divisionBase = p_timeMultiples[27];
+    } else if (p_timeDelimiter < p_timeMultiples[33]) {
       unitOfTime = "m";
-      divisionBase = timeMultiples[29];
-    } else if (delimiter <= timeMultiples[37]) {
+      divisionBase = p_timeMultiples[29];
+    } else if (p_timeDelimiter <= p_timeMultiples[37]) {
       unitOfTime = "y";
-      divisionBase = timeMultiples[33];
+      divisionBase = p_timeMultiples[33];
     }
 
     size_t curValue = std::floor(p_signalData->allTime());
-    curValue -= curValue % delimiter;
+    curValue -= curValue % p_timeDelimiter;
 
-    size_t step = std::round(p_pixelPerTime * delimiter);
+    size_t step = std::round(p_pixelPerTime * p_timeDelimiter);
     int startX = axisEnd.x() - std::abs(p_pixelPerTime *
                                         (p_signalData->allTime() - curValue));
-    for (int i = 0; i < curDelimitersNumber; ++i) {
+    for (int i = 0; i < p_curTimeDelimitersNumber; ++i) {
       int x = startX - step * i;
       painter.drawLine(QPoint{x, p1}, QPoint{x, p2});
 
@@ -401,17 +275,17 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
       painter.drawText(textRect, Qt::AlignHCenter | Qt::AlignVCenter,
                        QString::number(curValue / divisionBase) + unitOfTime);
 
-      if (i != curDelimitersNumber - 1) {
-        curValue -= delimiter;
+      if (i != p_curTimeDelimitersNumber - 1) {
+        curValue -= p_timeDelimiter;
       }
     }
 
-    if (std::abs(p_minValue - curValue) >= delimiter) {
-      int x = startX - step * curDelimitersNumber;
+    if (std::abs(p_minValue - curValue) >= p_timeDelimiter) {
+      int x = startX - step * p_curTimeDelimitersNumber;
 
       if (x < axisStart.x()) return;
 
-      curValue -= delimiter;
+      curValue -= p_timeDelimiter;
 
       if (!curValue) return;
 
@@ -530,6 +404,28 @@ void BaseWaveform::drawBresenham() {
 void BaseWaveform::showWaveform() {
   QPixmap pixmap = QPixmap::fromImage(p_image);
   setPixmap(pixmap);
+}
+
+void BaseWaveform::calculateDataDelimiter() {
+  for (int i = 0; i < p_dataMultiples.size(); ++i) {
+    p_curDataDelimitersNumber = p_dataRange / p_dataMultiples[i];
+
+    if (p_curDataDelimitersNumber <= p_xLabelsNumber) {
+      p_dataDelimiter = p_dataMultiples[i];
+      break;
+    }
+  }
+}
+
+void BaseWaveform::calculateTimeDelimiter() {
+  for (int i = 0; i < p_timeMultiples.size(); ++i) {
+    p_curTimeDelimitersNumber = p_timeRange / p_timeMultiples[i];
+
+    if (p_curTimeDelimitersNumber <= p_yLabelsNumber) {
+      p_timeDelimiter = p_timeMultiples[i];
+      break;
+    }
+  }
 }
 
 }  // namespace fssp
