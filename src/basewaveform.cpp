@@ -121,12 +121,45 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
                                              0.05,  0.1,   0.2,   0.5};
 
   std::vector<size_t> timeMultiples = {
-      1,           2,          5,          10,         50,         100,
-      200,         500,        1000,       2000,       5000,       10000,
-      30000,       60000,      120000,     300000,     600000,     1800000,
-      3600000,     7200000,    14400000,   28800000,   57600000,   86400000,
-      604800000,   1209600000, 2419200000, 4838400000, 9676800000, 19353600000,
-      29030400000, 38707200000};
+      1,
+      2,
+      5,
+      10,
+      50,
+      100,
+      200,
+      500,
+      1000,  // msec 8
+      2000,
+      5000,
+      10000,
+      15000,
+      30000,
+      60000,  // sec 14
+      120'000,
+      300'000,
+      600'000,
+      900'000,
+      1'800'000,
+      3'600'000,  // min 20
+      7'200'000,
+      14'400'000,
+      28'800'000,
+      57'600'000,
+      86'400'000,  // hours 25
+      172'800'000,
+      604'800'000,  // days 27
+      1'209'600'000,
+      2'592'000'000,  // weeks 29
+      5'184'000'000,
+      7'776'000'000,
+      15'552'000'000,
+      31'104'000'000,  // months 33
+      62'208'000'000,
+      155'520'000'000,
+      311'040'000'000,
+      622'080'000'000  // years 37
+  };
 
   QPainter painter(&p_image);
   painter.setPen(QPen(p_mainColor, p_lineWidth));
@@ -190,18 +223,16 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
         }
       }
 
-      int factor = 1000;
-      int intermediateValue = p_maxValue * factor;
+      double curValue = p_maxValue;
       if (p_maxValue > 0) {
-        while (intermediateValue % static_cast<int>(delimiter * factor))
-          --intermediateValue;
+        curValue -= std::fmod(p_maxValue, delimiter);
       } else {
-        while (std::abs(intermediateValue) %
-               static_cast<int>(delimiter * factor))
-          ++intermediateValue;
+        curValue += std::fmod(p_maxValue, delimiter);
       }
 
-      double curValue = static_cast<double>(intermediateValue) / factor;
+      int count = 0;
+      for (; delimiter < 1; ++count) delimiter *= 10;
+      delimiter /= std::pow(10, count);
 
       double step = p_pixelPerData * delimiter;
       int startY =
@@ -215,7 +246,7 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
                        QPoint{textX2, y + p_maxTextHeight / 2}};
 
         painter.drawText(textRect, Qt::AlignRight | Qt::AlignVCenter,
-                         QString::number(curValue));
+                         QString::number(curValue, 'f', count));
 
         if (i != curDelimitersNumber - 1) {
           curValue -= delimiter;
@@ -235,7 +266,7 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
                        QPoint{textX2, y + p_maxTextHeight / 2}};
 
         painter.drawText(textRect, Qt::AlignRight | Qt::AlignVCenter,
-                         QString::number(curValue));
+                         QString::number(curValue, 'f', count));
       }
 
       return;
@@ -254,9 +285,9 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
 
     int curValue = std::floor(p_maxValue);
     if (p_maxValue > 0) {
-      while (curValue % delimiter) --curValue;
+      curValue -= (curValue % delimiter);
     } else {
-      while (std::abs(curValue) % delimiter) ++curValue;
+      curValue += (curValue % delimiter);
     }
 
     int step = std::round(p_pixelPerData * delimiter);
@@ -318,39 +349,38 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
 
     QString unitOfTime;
     size_t divisionBase;
-    if (delimiter < timeMultiples[1]) {
-      unitOfTime = "ms";
+    if (delimiter < timeMultiples[8]) {
+      unitOfTime = "msec";
       divisionBase = 1;
-    } else if (delimiter < timeMultiples[6]) {
-      unitOfTime = "s";
-      divisionBase = timeMultiples[1];
-    } else if (delimiter < timeMultiples[11]) {
-      unitOfTime = "m";
-      divisionBase = timeMultiples[6];
-    } else if (delimiter < timeMultiples[16]) {
+    } else if (delimiter < timeMultiples[14]) {
+      unitOfTime = "sec";
+      divisionBase = timeMultiples[8];
+    } else if (delimiter < timeMultiples[20]) {
+      unitOfTime = "min";
+      divisionBase = timeMultiples[14];
+    } else if (delimiter < timeMultiples[25]) {
       unitOfTime = "h";
-      divisionBase = timeMultiples[11];
-    } else if (delimiter < timeMultiples[17]) {
+      divisionBase = timeMultiples[20];
+    } else if (delimiter < timeMultiples[27]) {
       unitOfTime = "d";
-      divisionBase = timeMultiples[16];
-    } else if (delimiter < timeMultiples[19]) {
+      divisionBase = timeMultiples[25];
+    } else if (delimiter < timeMultiples[29]) {
       unitOfTime = "w";
-      divisionBase = timeMultiples[17];
-    } else if (delimiter < timeMultiples[23]) {
-      unitOfTime = "mnth";
-      divisionBase = timeMultiples[19];
-    } else if (delimiter <= timeMultiples[24]) {
+      divisionBase = timeMultiples[27];
+    } else if (delimiter < timeMultiples[33]) {
+      unitOfTime = "m";
+      divisionBase = timeMultiples[29];
+    } else if (delimiter <= timeMultiples[37]) {
       unitOfTime = "y";
-      divisionBase = timeMultiples[23];
+      divisionBase = timeMultiples[33];
     }
 
-    size_t curValue = std::floor(p_signalData->allTime() * 1000);
-    while (curValue % delimiter) --curValue;
+    size_t curValue = std::floor(p_signalData->allTime());
+    curValue -= curValue % delimiter;
 
     size_t step = std::round(p_pixelPerTime * delimiter);
-    int startX =
-        axisEnd.x() - std::abs(p_pixelPerTime *
-                               ((p_signalData->allTime() * 1000) - curValue));
+    int startX = axisEnd.x() - std::abs(p_pixelPerTime *
+                                        (p_signalData->allTime() - curValue));
     for (int i = 0; i < curDelimitersNumber; ++i) {
       int x = startX - step * i;
       painter.drawLine(QPoint{x, p1}, QPoint{x, p2});
@@ -382,6 +412,8 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
       if (x < axisStart.x()) return;
 
       curValue -= delimiter;
+
+      if (!curValue) return;
 
       painter.drawLine(QPoint{x, p1}, QPoint{x, p2});
       QRect textRect{QPoint{x - (p_maxAxisTextWidth / 2 +

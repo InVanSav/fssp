@@ -34,7 +34,8 @@ SignalData TxtDeserializer::operator()(const QString &absoluteFilePath) {
   // количество записей
   qint64 data_num;
   // частота, время для одной записи(сек), полное время работы(сек).
-  double rate, time_for_r, all_time;
+  double rate, time_for_r;
+  size_t all_time;
   // вектор значений всех каналов.
   std::vector<std::vector<double>> data;
 
@@ -65,7 +66,7 @@ SignalData TxtDeserializer::operator()(const QString &absoluteFilePath) {
   str = in.readLine();
   rate = str.toDouble();
   time_for_r = 1. / rate;
-  all_time = time_for_r * data_num;
+  all_time = (time_for_r * data_num) * 1000;
 
   str = in.readLine();
   str = in.readLine();
@@ -112,7 +113,7 @@ SignalData TxtDeserializer::operator()(const QString &absoluteFilePath) {
   start_time = QTime(hour, minute, sec, msec);
 
   start = QDateTime(start_date, start_time);
-  end = start.addMSecs((qint64)(all_time * 1000));
+  end = start.addMSecs(all_time);
   dur = QTime(0, 0, 0);
   dur = dur.addMSecs((end - start).count() % MILLIS_IN_DAY);
   dur_days = ((end - start).count() / MILLIS_IN_DAY);
