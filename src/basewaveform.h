@@ -126,8 +126,8 @@ class BaseWaveform : public QLabel {
   int p_maxAxisTextWidth = QFontMetrics(p_font).averageCharWidth() * 11 +
                            p_textMarginLeft + p_textMarginRight;
 
-  int p_curDataDelimitersNumber = 1;
-  int p_curTimeDelimitersNumber = 1;
+  size_t p_curDataDelimitersNumber = 1;
+  size_t p_curTimeDelimitersNumber = 1;
 
   const std::vector<double> p_dataMultiples = {
       0.001,     0.002,     0.005,    0.01,     0.02,     0.05,      0.1,

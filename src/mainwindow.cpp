@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 
-#include "signalmodels.h"
+#include "modelingwindow.h"
 
 namespace fssp {
 
@@ -56,41 +56,8 @@ void MainWindow::open() {
 void MainWindow::aboutSignal() {}
 
 void MainWindow::modNewSignal() {
-  QDialog dialog;
-  dialog.setWindowTitle("Моделирование");
-  dialog.setGeometry(100, 100, 400, 200);
-
-  QHBoxLayout *mainLayout = new QHBoxLayout(&dialog);
-
-  QGroupBox *groupBox1 = new QGroupBox("Выберите сигнал", &dialog);
-  QVBoxLayout *groupBoxLayout1 = new QVBoxLayout(groupBox1);
-
-  QComboBox *comboBox = new QComboBox(groupBox1);
-  comboBox->addItem("Задержанный единичный импульс");
-  comboBox->addItem("Задержанный единичный скачок");
-  comboBox->addItem("Дискретизированная убывающая экспонента");
-  comboBox->addItem("Дискретизированная синусоида");
-  comboBox->addItem("'Меандр' (прямоугольная решетка)");
-  comboBox->addItem("'Пила'");
-
-  QFormLayout *formLayout = new QFormLayout(groupBox1);
-
-  QLineEdit *lineEdit1 = new QLineEdit(groupBox1);
-  formLayout->addRow("Поле 1:", lineEdit1);
-
-  QLineEdit *lineEdit2 = new QLineEdit(groupBox1);
-  formLayout->addRow("Поле 2:", lineEdit2);
-
-  groupBoxLayout1->addWidget(comboBox);
-  groupBoxLayout1->addLayout(formLayout);
-  mainLayout->addWidget(groupBox1);
-
-  QGroupBox *groupBox2 = new QGroupBox("График канала", &dialog);
-  QHBoxLayout *groupBoxLayout2 = new QHBoxLayout(groupBox2);
-
-  mainLayout->addWidget(groupBox2);
-
-  dialog.exec();
+  ModelingWindow *mwindow = new ModelingWindow();
+  mwindow->show();
 }
 
 void MainWindow::modInCurSignal() {}
