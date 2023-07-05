@@ -144,11 +144,11 @@ void BaseWaveform::drawGrid() {
   if (std::abs(p_minValue - curValueY) >= p_dataDelimiter) {
     int y = startY + stepY * p_curDataDelimitersNumber;
 
-    if (y > axisEnd.y()) return;
+    if (y <= axisEnd.y()) {
+      curValueY -= p_dataDelimiter;
 
-    curValueY -= p_dataDelimiter;
-
-    painter.drawLine(QPoint{p1, y}, QPoint{p2, y});
+      painter.drawLine(QPoint{p1, y}, QPoint{p2, y});
+    }
   }
 
   axisStart = {p_offsetLeft + p_paddingLeft, p_offsetTop + p_paddingTop};
