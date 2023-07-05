@@ -122,7 +122,9 @@ void GraphWaveform::drawWaveform() {
     drawAxes(BaseWaveform::AxisType::AxisYBottom);
   }
 
+  drawGrid();
   drawBresenham();
+
   showWaveform();
 }
 

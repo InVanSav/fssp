@@ -73,7 +73,7 @@ class BaseWaveform : public QLabel {
 
   QColor p_mainColor{0, 0, 0};
   QColor p_graphColor{0, 127, 255};
-  QColor p_gridColor{153, 153, 153};
+  QColor p_gridColor{153, 153, 153, 100};
 
   std::shared_ptr<SignalData> p_signalData;
   int p_number;
@@ -97,7 +97,8 @@ class BaseWaveform : public QLabel {
   int p_xLabelsNumber;
   int p_yLabelsNumber;
 
-  int p_lineWidth = 2;
+  int p_axisLineWidth = 2;
+  int p_gridLineWidth = 1;
 
   int p_minWidth;
   int p_minHeight;

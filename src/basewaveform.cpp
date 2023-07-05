@@ -103,7 +103,74 @@ void BaseWaveform::initImage() {
 
 void BaseWaveform::fill(QColor color) { p_image.fill(color.toRgb()); }
 
-void BaseWaveform::drawGrid() {}
+void BaseWaveform::drawGrid() {
+  QPainter painter(&p_image);
+  painter.setPen(QPen(p_gridColor, p_gridLineWidth));
+  painter.setFont(p_font);
+
+  int p1;
+  int p2;
+
+  QPoint axisStart;
+  QPoint axisEnd;
+
+  calculateDataDelimiter();
+  calculateTimeDelimiter();
+
+  double curValueY = p_maxValue;
+  if (p_maxValue > 0) {
+    curValueY -= std::fmod(p_maxValue, p_dataDelimiter);
+  } else {
+    curValueY += std::fmod(p_maxValue, p_dataDelimiter);
+  }
+
+  axisStart = {p_offsetLeft + p_paddingLeft, p_offsetTop + p_paddingTop};
+  axisEnd = {p_offsetLeft + p_paddingLeft,
+             p_height - (p_offsetBottom + p_paddingBottom)};
+
+  double stepY = p_pixelPerData * p_dataDelimiter;
+  int startY =
+      axisStart.y() + std::abs(p_pixelPerData * (p_maxValue - curValueY));
+
+  p1 = axisStart.x();
+  p2 = axisStart.x() + (p_width - ((p_paddingLeft + p_offsetLeft) +
+                                   (p_paddingRight + p_offsetRight)));
+
+  for (int i = 0; i < p_curDataDelimitersNumber; ++i) {
+    int y = startY + stepY * i;
+    painter.drawLine(QPoint{p1, y}, QPoint{p2, y});
+  }
+
+  if (std::abs(p_minValue - curValueY) >= p_dataDelimiter) {
+    int y = startY + stepY * p_curDataDelimitersNumber;
+
+    if (y > axisEnd.y()) return;
+
+    curValueY -= p_dataDelimiter;
+
+    painter.drawLine(QPoint{p1, y}, QPoint{p2, y});
+  }
+
+  axisStart = {p_offsetLeft + p_paddingLeft, p_offsetTop + p_paddingTop};
+  axisEnd = {p_width - (p_offsetRight + p_paddingRight),
+             p_offsetTop + p_paddingTop};
+
+  size_t curValueX = std::floor(p_signalData->allTime());
+  curValueX -= curValueX % p_timeDelimiter;
+
+  size_t stepX = std::round(p_pixelPerTime * p_timeDelimiter);
+  int startX = axisEnd.x() -
+               std::abs(p_pixelPerTime * (p_signalData->allTime() - curValueX));
+
+  p1 = axisStart.y();
+  p2 = axisStart.y() + (p_height - ((p_paddingTop + p_offsetTop) +
+                                    (p_paddingBottom + p_offsetBottom)));
+
+  for (int i = 0; i < p_curTimeDelimitersNumber; ++i) {
+    int x = startX - stepX * i;
+    painter.drawLine(QPoint{x, p1}, QPoint{x, p2});
+  }
+}
 
 void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
   if (isImageNull()) {
@@ -111,7 +178,7 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
   }
 
   QPainter painter(&p_image);
-  painter.setPen(QPen(p_mainColor, p_lineWidth));
+  painter.setPen(QPen(p_mainColor, p_axisLineWidth));
   painter.setFont(p_font);
 
   QPoint axisStart;
@@ -180,9 +247,10 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
       int y = startY + step * i;
       painter.drawLine(QPoint{p1, y}, QPoint{p2, y});
 
-      QRect textRect{QPoint{textX1, y - (p_maxTextHeight / 2 +
-                                         p_maxTextHeight % 2 + p_lineWidth)},
-                     QPoint{textX2, y + p_maxTextHeight / 2}};
+      QRect textRect{
+          QPoint{textX1, y - (p_maxTextHeight / 2 + p_maxTextHeight % 2 +
+                              p_axisLineWidth)},
+          QPoint{textX2, y + p_maxTextHeight / 2}};
 
       painter.drawText(textRect, Qt::AlignRight | Qt::AlignVCenter,
                        QString::number(curValue, 'f', count));
@@ -200,9 +268,10 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
       curValue -= p_dataDelimiter;
 
       painter.drawLine(QPoint{p1, y}, QPoint{p2, y});
-      QRect textRect{QPoint{textX1, y - (p_maxTextHeight / 2 +
-                                         p_maxTextHeight % 2 + p_lineWidth)},
-                     QPoint{textX2, y + p_maxTextHeight / 2}};
+      QRect textRect{
+          QPoint{textX1, y - (p_maxTextHeight / 2 + p_maxTextHeight % 2 +
+                              p_axisLineWidth)},
+          QPoint{textX2, y + p_maxTextHeight / 2}};
 
       painter.drawText(textRect, Qt::AlignRight | Qt::AlignVCenter,
                        QString::number(curValue, 'f', count));
@@ -262,12 +331,12 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
       QRect textRect;
       if (axisType == BaseWaveform::AxisType::AxisYTop) {
         textRect = {QPoint{x - (p_maxAxisTextWidth / 2 +
-                                p_maxAxisTextWidth % 2 + p_lineWidth),
+                                p_maxAxisTextWidth % 2 + p_axisLineWidth),
                            textY1},
                     QPoint{x + p_maxAxisTextWidth / 2, textY2}};
       } else if (axisType == BaseWaveform::AxisType::AxisYBottom) {
         textRect = {QPoint{x - (p_maxAxisTextWidth / 2 +
-                                p_maxAxisTextWidth % 2 + p_lineWidth),
+                                p_maxAxisTextWidth % 2 + p_axisLineWidth),
                            textY1},
                     QPoint{x + p_maxAxisTextWidth / 2, textY2}};
       }
@@ -291,7 +360,7 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
 
       painter.drawLine(QPoint{x, p1}, QPoint{x, p2});
       QRect textRect{QPoint{x - (p_maxAxisTextWidth / 2 +
-                                 p_maxAxisTextWidth % 2 + p_lineWidth),
+                                 p_maxAxisTextWidth % 2 + p_axisLineWidth),
                             textY1},
                      QPoint{x + p_maxAxisTextWidth / 2, textY2}};
 
