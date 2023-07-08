@@ -17,6 +17,10 @@ class GraphDialog : public QGroupBox {
                        QWidget *parent = nullptr);
 
   void drawWaveforms();
+  void hideWaveforms();
+
+ public slots:
+  void onChangedWaveformVisibility();
 
  private:
   std::shared_ptr<SignalData> m_signalData;

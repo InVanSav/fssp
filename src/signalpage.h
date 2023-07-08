@@ -14,10 +14,6 @@ class SignalPage : public QWidget {
  public:
   explicit SignalPage(SignalData data, QWidget *parent = nullptr);
 
- private slots:
-  void handleSelection();
-  void handleWaveformVisibility();
-
  private:
   std::shared_ptr<SignalData> m_data;
 
