@@ -46,7 +46,7 @@ class SignalData : public QObject {
 
  signals:
   void selectionEvent();
-  void waveformVisibilityEvent();
+  void changedWaveformVisibility();
 
  private:
   QDateTime m_startTime;

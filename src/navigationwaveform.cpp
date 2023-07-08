@@ -34,7 +34,17 @@ void NavigationWaveform::showContextMenu(const QPoint &pos) {
   waveformAction->setCheckable(true);
   waveformAction->setChecked(m_isVisible);
 
+  connect(waveformAction, &QAction::triggered, this,
+          &NavigationWaveform::changeVisibilityAction);
+
   menu.exec(mapToGlobal(pos));
+}
+
+void NavigationWaveform::changeVisibilityAction(bool visible) {
+  m_isVisible = visible;
+  p_signalData->setWaveformVisibility(number(), visible);
+
+  emit p_signalData->changedWaveformVisibility();
 }
 
 }  // namespace fssp

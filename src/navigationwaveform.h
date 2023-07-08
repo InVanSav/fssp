@@ -21,6 +21,9 @@ class NavigationWaveform : public BaseWaveform {
   void showContextMenu(const QPoint &pos);
 
  private:
+  void changeVisibilityAction(bool visible);
+
+ private:
   bool m_isVisible;
 };
 

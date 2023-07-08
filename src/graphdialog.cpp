@@ -37,8 +37,6 @@ GraphDialog::GraphDialog(std::shared_ptr<SignalData> data, QWidget *parent)
   vBox->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
   scrollContent->setLayout(vBox);
 
-  drawWaveforms();
-
   QScrollArea *scrollArea = new QScrollArea();
   scrollArea->setFrameShape(QFrame::NoFrame);
   scrollArea->setWidget(scrollContent);
@@ -49,14 +47,32 @@ GraphDialog::GraphDialog(std::shared_ptr<SignalData> data, QWidget *parent)
 
   setLayout(mainLayout);
 
+  connect(m_signalData.get(), &SignalData::changedWaveformVisibility, this,
+          &GraphDialog::onChangedWaveformVisibility);
+
   setTitle(tr("Graphs"));
+}
+
+void GraphDialog::onChangedWaveformVisibility() {
+  deleteWaveforms();
+  drawWaveforms();
 }
 
 void GraphDialog::drawWaveforms() {
   for (int i = 0; i < m_waveforms.size(); ++i) {
-    //    if (!m_data->visibleWaveforms()[i]) continue;
+    if (!m_signalData->visibleWaveforms()[i]) continue;
     m_waveforms[i]->drawWaveform();
+    m_waveforms[i]->show();
   }
+}
+
+void GraphDialog::deleteWaveforms() {
+  QList<GraphWaveform *> scrollChildren =
+      scrollContent->findChildren<GraphWaveform *>();
+
+  if (scrollChildren.isEmpty()) return;
+
+  for (GraphWaveform *child : scrollChildren) child->hide();
 }
 
 // void GraphDialog::onSelectionFinished(int leftX, int rightX, int realWidth) {
