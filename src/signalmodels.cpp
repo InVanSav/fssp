@@ -10,24 +10,10 @@ namespace fssp {
 
 //
 
-DelayedSingleImpulseModel::DelayedSingleImpulseModel(QWidget *parent)
-    : BaseModel{parent} {
-  initialize();
-}
-
 DelayedSingleImpulseModel::DelayedSingleImpulseModel(
     std::shared_ptr<SignalData> signalData, QWidget *parent)
     : BaseModel{signalData, parent} {
-  initialize();
-}
-
-void DelayedSingleImpulseModel::initialize() {
-  delaySpinBox = new QSpinBox();
-  delaySpinBox->setRange(INT_MIN, INT_MAX);
-  delaySpinBox->setValue(333);
-
-  // Задержка
-  p_formLayout->addRow(tr("Delay:"), delaySpinBox);
+  delaySpinBox = addSpinBox(tr("Delay:"), 333);
 }
 
 void DelayedSingleImpulseModel::calc() {
@@ -46,24 +32,10 @@ void DelayedSingleImpulseModel::calc() {
 
 //
 
-DelayedSingleJumpModel::DelayedSingleJumpModel(QWidget *parent)
-    : BaseModel{parent} {
-  initialize();
-}
-
 DelayedSingleJumpModel::DelayedSingleJumpModel(
     std::shared_ptr<SignalData> signalData, QWidget *parent)
     : BaseModel{signalData, parent} {
-  initialize();
-}
-
-void DelayedSingleJumpModel::initialize() {
-  delaySpinBox = new QSpinBox();
-  delaySpinBox->setRange(INT_MIN, INT_MAX);
-  delaySpinBox->setValue(333);
-
-  // Задержка
-  p_formLayout->addRow(tr("Delay:"), delaySpinBox);
+  delaySpinBox = addSpinBox(tr("Delay"), 333);
 }
 
 void DelayedSingleJumpModel::calc() {
@@ -82,24 +54,10 @@ void DelayedSingleJumpModel::calc() {
 
 //
 
-DiscretDecreasingExpModel::DiscretDecreasingExpModel(QWidget *parent)
-    : BaseModel{parent} {
-  initialize();
-}
-
 DiscretDecreasingExpModel::DiscretDecreasingExpModel(
     std::shared_ptr<SignalData> signalData, QWidget *parent)
     : BaseModel{signalData, parent} {
-  initialize();
-}
-
-void DiscretDecreasingExpModel::initialize() {
-  expBaseSpinBox = new QDoubleSpinBox();
-  expBaseSpinBox->setRange(INT_MIN, INT_MAX);
-  expBaseSpinBox->setValue(0.997698);
-
-  // Основание экспоненты
-  p_formLayout->addRow(tr("Exponent base:"), expBaseSpinBox);
+  expBaseSpinBox = addDoubleSpinBox(tr("Exponent base:"), 0.997698);
 }
 
 void DiscretDecreasingExpModel::calc() {
@@ -114,37 +72,12 @@ void DiscretDecreasingExpModel::calc() {
 
 //
 
-DiscretSinModel::DiscretSinModel(QWidget *parent) : BaseModel{parent} {
-  initialize();
-}
-
 DiscretSinModel::DiscretSinModel(std::shared_ptr<SignalData> signalData,
                                  QWidget *parent)
     : BaseModel{signalData, parent} {
-  initialize();
-}
-
-void DiscretSinModel::initialize() {
-  initPhaseSpinBox = new QDoubleSpinBox();
-  initPhaseSpinBox->setRange(INT_MIN, INT_MAX);
-  initPhaseSpinBox->setValue(0);
-
-  // Начальная фаза
-  p_formLayout->addRow(tr("Init phase:"), initPhaseSpinBox);
-
-  circFreqSpinBox = new QDoubleSpinBox();
-  circFreqSpinBox->setRange(INT_MIN, INT_MAX);
-  circFreqSpinBox->setValue(0);
-
-  // Круговая частота
-  p_formLayout->addRow(tr("Circular frequency:"), circFreqSpinBox);
-
-  amplitudeSpinBox = new QDoubleSpinBox();
-  amplitudeSpinBox->setRange(INT_MIN, INT_MAX);
-  amplitudeSpinBox->setValue(1);
-
-  // Амплитуда
-  p_formLayout->addRow(tr("Amplitude:"), amplitudeSpinBox);
+  initPhaseSpinBox = addDoubleSpinBox(tr("Init phase:"), 0);
+  circFreqSpinBox = addDoubleSpinBox(tr("Circular frequency:"), 0);
+  amplitudeSpinBox = addDoubleSpinBox(tr("Amplitude:"), 1);
 }
 
 void DiscretSinModel::calc() {
@@ -162,23 +95,10 @@ void DiscretSinModel::calc() {
 
 //
 
-RectGridModel::RectGridModel(QWidget *parent) : BaseModel{parent} {
-  initialize();
-}
-
 RectGridModel::RectGridModel(std::shared_ptr<SignalData> signalData,
                              QWidget *parent)
     : BaseModel{signalData, parent} {
-  initialize();
-}
-
-void RectGridModel::initialize() {
-  periodSpinBox = new QDoubleSpinBox();
-  periodSpinBox->setRange(INT_MIN, INT_MAX);
-  periodSpinBox->setValue(66);
-
-  // Период
-  p_formLayout->addRow(tr("Period:"), periodSpinBox);
+  periodSpinBox = addDoubleSpinBox(tr("Period:"), 66);
 }
 
 void RectGridModel::calc() {
@@ -197,20 +117,9 @@ void RectGridModel::calc() {
 
 //
 
-SawModel::SawModel(QWidget *parent) : BaseModel{parent} { initialize(); }
-
 SawModel::SawModel(std::shared_ptr<SignalData> signalData, QWidget *parent)
     : BaseModel{signalData, parent} {
-  initialize();
-}
-
-void SawModel::initialize() {
-  periodSpinBox = new QDoubleSpinBox();
-  periodSpinBox->setRange(INT_MIN, INT_MAX);
-  periodSpinBox->setValue(66);
-
-  // Период
-  p_formLayout->addRow(tr("Period:"), periodSpinBox);
+  periodSpinBox = addDoubleSpinBox(tr("Period:"), 66);
 }
 
 void SawModel::calc() {
@@ -225,44 +134,13 @@ void SawModel::calc() {
 
 //
 
-ExpEnvelopeModel::ExpEnvelopeModel(QWidget *parent) : BaseModel{parent} {
-  initialize();
-}
-
 ExpEnvelopeModel::ExpEnvelopeModel(std::shared_ptr<SignalData> signalData,
                                    QWidget *parent)
     : BaseModel{signalData, parent} {
-  initialize();
-}
-
-void ExpEnvelopeModel::initialize() {
-  envelopeWidthSpinBox = new QDoubleSpinBox();
-  envelopeWidthSpinBox->setRange(INT_MIN, INT_MAX);
-  envelopeWidthSpinBox->setValue(0);
-
-  // Ширина огибающей
-  p_formLayout->addRow(tr("Envelope width:"), envelopeWidthSpinBox);
-
-  carrierFreqSpinBox = new QDoubleSpinBox();
-  carrierFreqSpinBox->setRange(INT_MIN, INT_MAX);
-  carrierFreqSpinBox->setValue(0);
-
-  // Частота несущей
-  p_formLayout->addRow(tr("Carrier frequency:"), carrierFreqSpinBox);
-
-  amplitudeSpinBox = new QDoubleSpinBox();
-  amplitudeSpinBox->setRange(INT_MIN, INT_MAX);
-  amplitudeSpinBox->setValue(0);
-
-  // Амплитуда
-  p_formLayout->addRow(tr("Amplitude:"), amplitudeSpinBox);
-
-  initPhaseSpinBox = new QDoubleSpinBox();
-  initPhaseSpinBox->setRange(INT_MIN, INT_MAX);
-  initPhaseSpinBox->setValue(0);
-
-  // Начальная фаза
-  p_formLayout->addRow(tr("Init phase:"), initPhaseSpinBox);
+  envelopeWidthSpinBox = addDoubleSpinBox(tr("Envelope width:"), 0);
+  carrierFreqSpinBox = addDoubleSpinBox(tr("Carrier frequency:"), 0);
+  amplitudeSpinBox = addDoubleSpinBox(tr("Amplitude:"), 0);
+  initPhaseSpinBox = addDoubleSpinBox(tr("Init phase:"), 0);
 }
 
 void ExpEnvelopeModel::calc() {
@@ -283,45 +161,13 @@ void ExpEnvelopeModel::calc() {
 
 //
 
-BalanceEnvelopeModel::BalanceEnvelopeModel(QWidget *parent)
-    : BaseModel{parent} {
-  initialize();
-}
-
 BalanceEnvelopeModel::BalanceEnvelopeModel(
     std::shared_ptr<SignalData> signalData, QWidget *parent)
     : BaseModel{signalData, parent} {
-  initialize();
-}
-
-void BalanceEnvelopeModel::initialize() {
-  freqEnvelopeSpinBox = new QDoubleSpinBox();
-  freqEnvelopeSpinBox->setRange(INT_MIN, INT_MAX);
-  freqEnvelopeSpinBox->setValue(0);
-
-  // Частота огибающей
-  p_formLayout->addRow(tr("Envelope frequency:"), freqEnvelopeSpinBox);
-
-  carrierFreqSpinBox = new QDoubleSpinBox();
-  carrierFreqSpinBox->setRange(INT_MIN, INT_MAX);
-  carrierFreqSpinBox->setValue(0);
-
-  // Частота несущей
-  p_formLayout->addRow(tr("Carrier frequency:"), carrierFreqSpinBox);
-
-  amplitudeSpinBox = new QDoubleSpinBox();
-  amplitudeSpinBox->setRange(INT_MIN, INT_MAX);
-  amplitudeSpinBox->setValue(0);
-
-  // Амплитуда
-  p_formLayout->addRow(tr("Amplitude:"), amplitudeSpinBox);
-
-  initPhaseSpinBox = new QDoubleSpinBox();
-  initPhaseSpinBox->setRange(INT_MIN, INT_MAX);
-  initPhaseSpinBox->setValue(0);
-
-  // Начальная фаза
-  p_formLayout->addRow(tr("Init phase:"), initPhaseSpinBox);
+  freqEnvelopeSpinBox = addDoubleSpinBox(tr("Envelope frequency:"), 0);
+  carrierFreqSpinBox = addDoubleSpinBox(tr("Carrier frequency:"), 0);
+  amplitudeSpinBox = addDoubleSpinBox(tr("Amplitude:"), 0);
+  initPhaseSpinBox = addDoubleSpinBox(tr("Init phase:"), 0);
 }
 
 void BalanceEnvelopeModel::calc() {
@@ -342,109 +188,12 @@ void BalanceEnvelopeModel::calc() {
 
 //
 
-TonalEnvelopeModel::TonalEnvelopeModel(QWidget *parent) : BaseModel{parent} {
-  initialize();
-}
-
 TonalEnvelopeModel::TonalEnvelopeModel(std::shared_ptr<SignalData> signalData,
                                        QWidget *parent)
     : BaseModel{signalData, parent} {
-  initialize();
-}
-
-void TonalEnvelopeModel::initialize() {
-  freqEnvelopeSpinBox = new QDoubleSpinBox();
-  freqEnvelopeSpinBox->setRange(INT_MIN, INT_MAX);
-  freqEnvelopeSpinBox->setValue(0);
-
-  // Частота огибающей
-  p_formLayout->addRow(tr("Envelope frequency:"), freqEnvelopeSpinBox);
-
-  carrierFreqSpinBox = new QDoubleSpinBox();
-  carrierFreqSpinBox->setRange(INT_MIN, INT_MAX);
-  carrierFreqSpinBox->setValue(0);
-
-  // Частота несущей
-  p_formLayout->addRow(tr("Carrier frequency:"), carrierFreqSpinBox);
-
-  amplitudeSpinBox = new QDoubleSpinBox();
-  amplitudeSpinBox->setRange(INT_MIN, INT_MAX);
-  amplitudeSpinBox->setValue(0);
-
-  // Амплитуда
-  p_formLayout->addRow(tr("Amplitude:"), amplitudeSpinBox);
-
-  initPhaseSpinBox = new QDoubleSpinBox();
-  initPhaseSpinBox->setRange(INT_MIN, INT_MAX);
-  initPhaseSpinBox->setValue(0);
-
-  // Начальная фаза
-  p_formLayout->addRow(tr("Init phase:"), initPhaseSpinBox);
-
-  modulationDepthIndexSpinBox = new QDoubleSpinBox();
-  modulationDepthIndexSpinBox->setRange(INT_MIN, INT_MAX);
-  modulationDepthIndexSpinBox->setValue(0);
-
-  // Глубина модуляции
-  p_formLayout->addRow(tr("Modulation depth:"), modulationDepthIndexSpinBox);
-}
-
-void TonalEnvelopeModel::calc() {
-  int n = p_sampleNumberSpinBox->value();
-  p_data = std::vector<double>(n);
-
-  double a = amplitudeSpinBox->value();
-  double f_n = freqEnvelopeSpinBox->value();
-  double f_0 = carrierFreqSpinBox->value();
-  double p = initPhaseSpinBox->value();
-  double m = modulationDepthIndexSpinBox->value();
-  double T = p_freqSpinBox->value();
-
-  for (int i = 0; i < n; ++i) {
-    p_data[i] = a * (1 + m * std::cos(2 * M_PI * f_0 * i * T)) *
-                std::cos(2 * M_PI * f_n * i * T + p);
-  }
-}
-
-//
-
-LinearFreqModulationModel::LinearFreqModulationModel(QWidget *parent)
-    : BaseModel{parent} {
-  initialize();
-}
-
-LinearFreqModulationModel::LinearFreqModulationModel(
-    std::shared_ptr<SignalData> signalData, QWidget *parent)
-    : BaseModel{signalData, parent} {
-  initialize();
-}
-
-void LinearFreqModulationModel::initialize() {
-  amplitudeSpinBox = new QDoubleSpinBox();
-  amplitudeSpinBox->setRange(INT_MIN, INT_MAX);
-  amplitudeSpinBox->setValue(0);
-
-  p_formLayout->addRow(tr("Amplitude:"), amplitudeSpinBox);
-
-  initPhaseSpinBox = new QDoubleSpinBox();
-  initPhaseSpinBox->setRange(INT_MIN, INT_MAX);
-  initPhaseSpinBox->setValue(0);
-
-  p_formLayout->addRow(tr("Init phase:"), initPhaseSpinBox);
-
-  startFreqSpinBox = new QDoubleSpinBox();
-  startFreqSpinBox->setRange(INT_MIN, INT_MAX);
-  startFreqSpinBox->setValue(0);
-
-  // Начальная частота
-  p_formLayout->addRow(tr("Start frequency:"), startFreqSpinBox);
-
-  finishFreqSpinBox = new QDoubleSpinBox();
-  finishFreqSpinBox->setRange(INT_MIN, INT_MAX);
-  finishFreqSpinBox->setValue(0);
-
-  // Конечная частота
-  p_formLayout->addRow(tr("Finish frequency:"), finishFreqSpinBox);
+  freqEnvelopeSpinBox = addDoubleSpinBox(tr("Envelope frequency:"), 0);
+  carrierFreqSpinBox = addDoubleSpinBox(tr("Carrier frequency:"), 0);
+  amplitudeSpinBox = addDoubleSpinBox(tr("Finish frequency:"), 0);
 }
 
 void LinearFreqModulationModel::calc() {
@@ -467,30 +216,13 @@ void LinearFreqModulationModel::calc() {
 
 //
 
-WhiteNoiseModel::WhiteNoiseModel(QWidget *parent) : BaseModel{parent} {
-  initialize();
-}
-
 WhiteNoiseModel::WhiteNoiseModel(std::shared_ptr<SignalData> signalData,
                                  QWidget *parent)
     : BaseModel{signalData, parent} {
-  initialize();
-}
-
-void WhiteNoiseModel::initialize() {
   srand(time(nullptr));
 
-  minSpinBox = new QSpinBox();
-  minSpinBox->setRange(INT_MIN, INT_MAX);
-  minSpinBox->setValue(-1);
-
-  p_formLayout->addRow(tr("Minimum:"), minSpinBox);
-
-  maxSpinBox = new QSpinBox();
-  maxSpinBox->setRange(INT_MIN, INT_MAX);
-  maxSpinBox->setValue(1);
-
-  p_formLayout->addRow(tr("Maximum:"), maxSpinBox);
+  minSpinBox = addSpinBox(tr("Minimum:"), -1);
+  maxSpinBox = addSpinBox(tr("Maximum:"), 1);
 
   randomValue = rand() / RAND_MAX;
 }
@@ -509,33 +241,13 @@ void WhiteNoiseModel::calc() {
 
 //
 
-NormalWhiteNoiseModel::NormalWhiteNoiseModel(QWidget *parent)
-    : BaseModel{parent} {
-  initialize();
-}
-
 NormalWhiteNoiseModel::NormalWhiteNoiseModel(
     std::shared_ptr<SignalData> signalData, QWidget *parent)
     : BaseModel{signalData, parent} {
-  initialize();
-}
-
-void NormalWhiteNoiseModel::initialize() {
   srand(time(nullptr));
 
-  averageSpinBox = new QSpinBox();
-  averageSpinBox->setRange(INT_MIN, INT_MAX);
-  averageSpinBox->setValue(-1);
-
-  // Среднее значение
-  p_formLayout->addRow(tr("Average value:"), averageSpinBox);
-
-  dispersionSpinBox = new QSpinBox();
-  dispersionSpinBox->setRange(INT_MIN, INT_MAX);
-  dispersionSpinBox->setValue(1);
-
-  // Дисперсия
-  p_formLayout->addRow(tr("Dispersion:"), dispersionSpinBox);
+  averageSpinBox = addSpinBox(tr("Average value:"), -1);
+  dispersionSpinBox = addSpinBox(tr("Dispersion:"), 1);
 
   randomValue = rand() / RAND_MAX;
 }
@@ -559,40 +271,14 @@ void NormalWhiteNoiseModel::calc() {
 
 //
 
-MovingAverageAutoregressModel::MovingAverageAutoregressModel(QWidget *parent)
-    : BaseModel{parent} {
-  initialize();
-}
-
 MovingAverageAutoregressModel::MovingAverageAutoregressModel(
     std::shared_ptr<SignalData> signalData, QWidget *parent)
     : BaseModel{signalData, parent} {
-  initialize();
-}
-
-void MovingAverageAutoregressModel::initialize() {
   srand(time(nullptr));
 
-  autoregressionSpinBox = new QSpinBox();
-  autoregressionSpinBox->setRange(INT_MIN, INT_MAX);
-  autoregressionSpinBox->setValue(1);
-
-  // Коэффициенты СС (Скользящего Среднего)
-  p_formLayout->addRow(tr("MA Coefficients:"), autoregressionSpinBox);
-
-  averageSpinBox = new QSpinBox();
-  averageSpinBox->setRange(INT_MIN, INT_MAX);
-  averageSpinBox->setValue(1);
-
-  // Коэффициенты АР (АвтоРегрессии)
-  p_formLayout->addRow(tr("AR Coefficients:"), averageSpinBox);
-
-  dispersionSpinBox = new QSpinBox();
-  dispersionSpinBox->setRange(INT_MIN, INT_MAX);
-  dispersionSpinBox->setValue(1);
-
-  // Дисперсия
-  p_formLayout->addRow(tr("Dispersion:"), dispersionSpinBox);
+  autoregressionSpinBox = addSpinBox(tr("MA Coefficients:"), 1);
+  averageSpinBox = addSpinBox(tr("AR Coefficients:"), 1);
+  dispersionSpinBox = addSpinBox(tr("Dispersion:"), 1);
 
   randomValue = rand() / RAND_MAX;
 }

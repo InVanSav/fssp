@@ -3,18 +3,6 @@
 #include <limits>
 
 namespace fssp {
-
-BaseModel::BaseModel(QWidget *parent) : QWidget{parent} {
-  createFields();
-
-  p_freqSpinBox->setValue(1);
-  p_sampleNumberSpinBox->setValue(1000);
-  p_channelNameLineEdit->setText("Model_1");
-  p_dateTimeEdit->setDateTime(QDateTime::currentDateTime());
-
-  createForm();
-}
-
 BaseModel::BaseModel(std::shared_ptr<SignalData> signalData, QWidget *parent) {
   createFields();
 
@@ -54,7 +42,33 @@ SignalData BaseModel::getData() {
   return SignalData(p_dateTimeEdit->dateTime(),
                     p_dateTimeEdit->dateTime().addSecs(allTime),
                     p_freqSpinBox->value(), 1 / p_freqSpinBox->value(), allTime,
-                    {p_channelNameLineEdit->text()}, {p_data});
+                    {p_channelNameLineEdit->text()}, {std::move(p_data)});
+}
+
+QDoubleSpinBox *BaseModel::addDoubleSpinBox(const QString name,
+                                            const double value,
+                                            const double min,
+                                            const double max) {
+  QDoubleSpinBox *spinBox = new QDoubleSpinBox();
+
+  spinBox->setRange(min, max);
+  spinBox->setValue(value);
+
+  p_formLayout->addRow(name, spinBox);
+
+  return spinBox;
+}
+
+QSpinBox *BaseModel::addSpinBox(const QString name, const int value,
+                                const int min, const int max) {
+  QSpinBox *spinBox = new QSpinBox();
+
+  spinBox->setRange(min, max);
+  spinBox->setValue(value);
+
+  p_formLayout->addRow(name, spinBox);
+
+  return spinBox;
 }
 
 }  // namespace fssp

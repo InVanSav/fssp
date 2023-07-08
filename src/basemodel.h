@@ -13,8 +13,6 @@ namespace fssp {
 class BaseModel : public QWidget {
   Q_OBJECT
  public:
-  explicit BaseModel(QWidget *parent = nullptr);
-
   explicit BaseModel(std::shared_ptr<SignalData> signalData,
                      QWidget *parent = nullptr);
 
@@ -29,6 +27,13 @@ class BaseModel : public QWidget {
   QSpinBox *p_sampleNumberSpinBox;
   QLineEdit *p_channelNameLineEdit;
   QDateTimeEdit *p_dateTimeEdit;
+
+  QDoubleSpinBox *addDoubleSpinBox(const QString name, const double value,
+                                   const double min = INT_MIN,
+                                   const double max = INT_MAX);
+
+  QSpinBox *addSpinBox(const QString name, const int value,
+                       const int min = INT_MIN, const int max = INT_MAX);
 
   std::vector<double> p_data;
 
