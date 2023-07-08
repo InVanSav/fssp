@@ -54,7 +54,7 @@ GraphDialog::GraphDialog(std::shared_ptr<SignalData> data, QWidget *parent)
 }
 
 void GraphDialog::onChangedWaveformVisibility() {
-  deleteWaveforms();
+  hideWaveforms();
   drawWaveforms();
 }
 
@@ -66,7 +66,7 @@ void GraphDialog::drawWaveforms() {
   }
 }
 
-void GraphDialog::deleteWaveforms() {
+void GraphDialog::hideWaveforms() {
   QList<GraphWaveform *> scrollChildren =
       scrollContent->findChildren<GraphWaveform *>();
 

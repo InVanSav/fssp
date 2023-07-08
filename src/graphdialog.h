@@ -17,7 +17,7 @@ class GraphDialog : public QGroupBox {
                        QWidget *parent = nullptr);
 
   void drawWaveforms();
-  void deleteWaveforms();
+  void hideWaveforms();
 
  public slots:
   void onChangedWaveformVisibility();
