@@ -7,7 +7,11 @@
 
 namespace fssp {
 
-ModelingWindow::ModelingWindow(QWidget *parent) : QWidget{parent} {
+ModelingWindow::ModelingWindow(std::shared_ptr<SignalData> signalData,
+                               QWidget *parent)
+    : QWidget{parent} {
+  p_signalData = signalData;
+
   QGroupBox *formGroupBox = new QGroupBox(tr("Model"));
 
   m_comboBox = new QComboBox();
@@ -28,7 +32,7 @@ ModelingWindow::ModelingWindow(QWidget *parent) : QWidget{parent} {
   connect(m_comboBox, &QComboBox::currentIndexChanged, this,
           &ModelingWindow::onComboBoxChange);
 
-  m_model = new DelayedSingleImpulseModel();
+  m_model = new DelayedSingleImpulseModel(p_signalData);
 
   m_formScrollArea = new QScrollArea();
   m_formScrollArea->setWidget(m_model);
@@ -67,55 +71,55 @@ ModelingWindow::ModelingWindow(QWidget *parent) : QWidget{parent} {
 void ModelingWindow::onComboBoxChange(int index) {
   switch (index) {
     case 0: {
-      m_model = new DelayedSingleImpulseModel();
+      m_model = new DelayedSingleImpulseModel(p_signalData);
       break;
     }
     case 1: {
-      m_model = new DelayedSingleJumpModel();
+      m_model = new DelayedSingleJumpModel(p_signalData);
       break;
     }
     case 2: {
-      m_model = new DiscretDecreasingExpModel();
+      m_model = new DiscretDecreasingExpModel(p_signalData);
       break;
     }
     case 3: {
-      m_model = new DiscretSinModel();
+      m_model = new DiscretSinModel(p_signalData);
       break;
     }
     case 4: {
-      m_model = new RectGridModel();
+      m_model = new RectGridModel(p_signalData);
       break;
     }
     case 5: {
-      m_model = new SawModel();
+      m_model = new SawModel(p_signalData);
       break;
     }
     case 6: {
-      m_model = new ExpEnvelopeModel();
+      m_model = new ExpEnvelopeModel(p_signalData);
       break;
     }
     case 7: {
-      m_model = new BalanceEnvelopeModel();
+      m_model = new BalanceEnvelopeModel(p_signalData);
       break;
     }
     case 8: {
-      m_model = new TonalEnvelopeModel();
+      m_model = new TonalEnvelopeModel(p_signalData);
       break;
     }
     case 9: {
-      m_model = new LinearFreqModulationModel();
+      m_model = new LinearFreqModulationModel(p_signalData);
       break;
     }
     case 10: {
-      m_model = new WhiteNoiseModel();
+      m_model = new WhiteNoiseModel(p_signalData);
       break;
     }
     case 11: {
-      m_model = new NormalWhiteNoiseModel();
+      m_model = new NormalWhiteNoiseModel(p_signalData);
       break;
     }
     case 12: {
-      m_model = new MovingAverageAutoregressModel();
+      m_model = new MovingAverageAutoregressModel(p_signalData);
       break;
     }
   }

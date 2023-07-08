@@ -56,7 +56,7 @@ void MainWindow::open() {
 void MainWindow::aboutSignal() {}
 
 void MainWindow::modNewSignal() {
-  ModelingWindow *mwindow = new ModelingWindow();
+  ModelingWindow *mwindow = new ModelingWindow(std::make_shared<SignalData>());
   mwindow->show();
 }
 
