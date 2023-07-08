@@ -196,6 +196,34 @@ TonalEnvelopeModel::TonalEnvelopeModel(std::shared_ptr<SignalData> signalData,
   amplitudeSpinBox = addDoubleSpinBox(tr("Finish frequency:"), 0);
 }
 
+void TonalEnvelopeModel::calc() {
+  int n = p_sampleNumberSpinBox->value();
+  p_data = std::vector<double>(n);
+
+  double a = amplitudeSpinBox->value();
+  double f_n = freqEnvelopeSpinBox->value();
+  double f_0 = carrierFreqSpinBox->value();
+  double p = initPhaseSpinBox->value();
+  double m = modulationDepthIndexSpinBox->value();
+  double T = p_freqSpinBox->value();
+
+  for (int i = 0; i < n; ++i) {
+    p_data[i] = a * (1 + m * std::cos(2 * M_PI * f_0 * i * T)) *
+                std::cos(2 * M_PI * f_n * i * T + p);
+  }
+}
+
+//
+
+LinearFreqModulationModel::LinearFreqModulationModel(
+    std::shared_ptr<SignalData> signalData, QWidget *parent)
+    : BaseModel{signalData, parent} {
+  amplitudeSpinBox = addDoubleSpinBox(tr("amplitude:"), 0);
+  initPhaseSpinBox = addDoubleSpinBox(tr("init phase:"), 0);
+  startFreqSpinBox = addDoubleSpinBox(tr("Start frequency:"), 0);
+  finishFreqSpinBox = addDoubleSpinBox(tr("Finish frequency:"), 0);
+}
+
 void LinearFreqModulationModel::calc() {
   int n = p_sampleNumberSpinBox->value();
   p_data = std::vector<double>(n);
