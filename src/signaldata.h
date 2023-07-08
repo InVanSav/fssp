@@ -7,6 +7,8 @@ namespace fssp {
 class SignalData : public QObject {
   Q_OBJECT
  public:
+  explicit SignalData();
+
   explicit SignalData(const QDateTime &startTime, const QDateTime &endTime,
                       const double rate, const double timeForOne,
                       const size_t allTime, std::vector<QString> &&channelsName,
