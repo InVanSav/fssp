@@ -5,6 +5,7 @@
 #include <QWidget>
 
 #include "basemodel.h"
+#include "graphdialog.h"
 
 namespace fssp {
 
@@ -21,6 +22,8 @@ class ModelingWindow : public QWidget {
 
   QComboBox *m_comboBox;
   QScrollArea *m_formScrollArea;
+
+  GraphDialog *m_graphDialog;
 };
 
 }  // namespace fssp

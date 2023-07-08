@@ -1,6 +1,7 @@
 #include "modelingwindow.h"
 
 #include <QGroupBox>
+#include <QPushButton>
 
 #include "signalmodels.h"
 
@@ -36,93 +37,90 @@ ModelingWindow::ModelingWindow(QWidget *parent) : QWidget{parent} {
   formlayout->addWidget(m_comboBox);
   formlayout->addWidget(m_formScrollArea);
 
-  setLayout(formlayout);
+  formGroupBox->setLayout(formlayout);
+
+  QPushButton *makeModelButton = new QPushButton(tr("Make model"));
+  QPushButton *cancelButton = new QPushButton(tr("Cancel"));
+  QPushButton *okButton = new QPushButton(tr("Add"));
+
+  QHBoxLayout *buttonLayout = new QHBoxLayout();
+  buttonLayout->addWidget(makeModelButton);
+  buttonLayout->setAlignment(makeModelButton, Qt::AlignVCenter | Qt::AlignLeft);
+  buttonLayout->addWidget(cancelButton);
+  buttonLayout->setAlignment(cancelButton, Qt::AlignVCenter | Qt::AlignRight);
+  buttonLayout->addWidget(okButton);
+  buttonLayout->setAlignment(okButton, Qt::AlignVCenter | Qt::AlignRight);
+
+  QWidget *buttons = new QWidget();
+  buttons->setLayout(buttonLayout);
+
+  QVBoxLayout *mainLayout = new QVBoxLayout();
+  mainLayout->addWidget(formGroupBox);
+  mainLayout->addWidget(buttons);
+
+  setLayout(mainLayout);
 
   setMinimumWidth(900);
-  setMinimumHeight(500);
+  setMinimumHeight(300);
 }
 
 void ModelingWindow::onComboBoxChange(int index) {
   switch (index) {
     case 0: {
       m_model = new DelayedSingleImpulseModel();
-      m_formScrollArea->setWidget(m_model);
-
       break;
     }
     case 1: {
       m_model = new DelayedSingleJumpModel();
-      m_formScrollArea->setWidget(m_model);
-
       break;
     }
     case 2: {
       m_model = new DiscretDecreasingExpModel();
-      m_formScrollArea->setWidget(m_model);
-
       break;
     }
     case 3: {
       m_model = new DiscretSinModel();
-      m_formScrollArea->setWidget(m_model);
-
       break;
     }
     case 4: {
       m_model = new RectGridModel();
-      m_formScrollArea->setWidget(m_model);
-
       break;
     }
     case 5: {
       m_model = new SawModel();
-      m_formScrollArea->setWidget(m_model);
-
       break;
     }
     case 6: {
       m_model = new ExpEnvelopeModel();
-      m_formScrollArea->setWidget(m_model);
-
       break;
     }
     case 7: {
       m_model = new BalanceEnvelopeModel();
-      m_formScrollArea->setWidget(m_model);
-
       break;
     }
     case 8: {
       m_model = new TonalEnvelopeModel();
-      m_formScrollArea->setWidget(m_model);
-
       break;
     }
     case 9: {
       m_model = new LinearFreqModulationModel();
-      m_formScrollArea->setWidget(m_model);
-
       break;
     }
     case 10: {
       m_model = new WhiteNoiseModel();
-      m_formScrollArea->setWidget(m_model);
-
       break;
     }
     case 11: {
       m_model = new NormalWhiteNoiseModel();
-      m_formScrollArea->setWidget(m_model);
-
       break;
     }
     case 12: {
       m_model = new MovingAverageAutoregressModel();
-      m_formScrollArea->setWidget(m_model);
-
       break;
     }
   }
+
+  m_formScrollArea->setWidget(m_model);
 }
 
 }  // namespace fssp
