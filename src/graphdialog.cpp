@@ -59,11 +59,30 @@ void GraphDialog::onChangedWaveformVisibility() {
 }
 
 void GraphDialog::drawWaveforms() {
+  bool firstFlag = true;
+  int last = 0;
+  int count = 0;
   for (int i = 0; i < m_waveforms.size(); ++i) {
     if (!m_signalData->visibleWaveforms()[i]) continue;
+
+    if (firstFlag) {
+      m_waveforms[i]->setTop();
+      firstFlag = false;
+    } else {
+      m_waveforms[i]->setMiddle();
+    }
+
     m_waveforms[i]->drawWaveform();
     m_waveforms[i]->show();
+
+    last = i;
+    ++count;
   }
+
+  if (count <= 1) return;
+
+  m_waveforms[last]->setBottom();
+  m_waveforms[last]->drawWaveform();
 }
 
 void GraphDialog::hideWaveforms() {
