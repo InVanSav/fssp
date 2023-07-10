@@ -35,19 +35,11 @@ class SignalData : public QObject {
   int channelsNumber() const;
   int samplesNumber() const;
 
-  bool isSelected() const;
-  int leftSelection() const;
-  int rightSelection() const;
-
-  bool setIsSelected(bool isSelected);
-  int setLeftSelection(int leftSelection);
-  int setRightSelection(int rightSelection);
-
   const std::vector<bool> &visibleWaveforms() const;
   void setWaveformVisibility(int number, bool isVisible);
 
  signals:
-  void selectionEvent();
+  void selectedGraphRange(int leftX, int rightX, int realWidth);
   void changedWaveformVisibility();
 
  private:
@@ -64,10 +56,6 @@ class SignalData : public QObject {
 
   int m_channelsNumber;
   int m_samplesNumber;
-
-  bool m_isSelected;
-  int m_leftSelection;
-  int m_rightSelection;
 
   std::vector<bool> m_visibleWaveforms;
 };

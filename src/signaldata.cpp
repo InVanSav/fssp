@@ -16,10 +16,6 @@ SignalData::SignalData() {
   m_channelsName = std::vector<QString>(m_channelsNumber);
   m_data = std::vector<std::vector<double>>(
       m_channelsNumber, std::vector<double>(m_samplesNumber));
-
-  m_isSelected = false;
-  m_leftSelection = 0;
-  m_rightSelection = m_data[0].size() - 1;
 }
 
 SignalData::SignalData(const QDateTime &startTime, const QDateTime &endTime,
@@ -39,10 +35,6 @@ SignalData::SignalData(const QDateTime &startTime, const QDateTime &endTime,
 
   m_channelsNumber = m_channelsName.size();
   m_samplesNumber = m_data[0].size();
-
-  m_isSelected = false;
-  m_leftSelection = 0;
-  m_rightSelection = m_data[0].size() - 1;
 }
 
 SignalData::SignalData(const SignalData &that) {
@@ -58,10 +50,6 @@ SignalData::SignalData(const SignalData &that) {
 
   m_channelsNumber = that.m_channelsNumber;
   m_samplesNumber = that.m_samplesNumber;
-
-  m_isSelected = that.m_isSelected;
-  m_leftSelection = that.m_leftSelection;
-  m_rightSelection = that.m_rightSelection;
 
   m_visibleWaveforms = std::vector<bool>(m_channelsNumber, false);
 }
@@ -79,10 +67,6 @@ SignalData::SignalData(SignalData &&that) {
 
   m_channelsNumber = that.m_channelsNumber;
   m_samplesNumber = that.m_samplesNumber;
-
-  m_isSelected = that.m_isSelected;
-  m_leftSelection = that.m_leftSelection;
-  m_rightSelection = that.m_rightSelection;
 
   m_visibleWaveforms = std::move(that.m_visibleWaveforms);
 }
@@ -109,10 +93,6 @@ void swap(SignalData &first, SignalData &second) {
   swap(first.m_channelsNumber, second.m_channelsNumber);
   swap(first.m_samplesNumber, second.m_samplesNumber);
 
-  swap(first.m_isSelected, second.m_isSelected);
-  swap(first.m_leftSelection, second.m_leftSelection);
-  swap(first.m_rightSelection, second.m_rightSelection);
-
   swap(first.m_visibleWaveforms, second.m_visibleWaveforms);
 }
 
@@ -137,27 +117,6 @@ const std::vector<std::vector<double>> &SignalData::data() const {
 int SignalData::channelsNumber() const { return m_channelsNumber; }
 
 int SignalData::samplesNumber() const { return m_samplesNumber; }
-
-bool SignalData::isSelected() const { return m_isSelected; }
-
-int SignalData::leftSelection() const { return m_leftSelection; }
-
-int SignalData::rightSelection() const { return m_rightSelection; }
-
-bool SignalData::setIsSelected(bool isSelected) {
-  m_isSelected = isSelected;
-  return this->isSelected();
-}
-
-int SignalData::setLeftSelection(int leftSelection) {
-  m_leftSelection = leftSelection;
-  return this->leftSelection();
-}
-
-int SignalData::setRightSelection(int rightSelection) {
-  m_rightSelection = rightSelection;
-  return this->rightSelection();
-}
 
 const std::vector<bool> &SignalData::visibleWaveforms() const {
   return m_visibleWaveforms;
