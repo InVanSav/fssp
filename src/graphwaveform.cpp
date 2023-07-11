@@ -2,104 +2,20 @@
 
 namespace fssp {
 
-// GraphWaveform::GraphWaveform(int number, QWidget *parent) : QLabel{parent} {
-//   m_number = number;
-//   m_isSelecting = false;
-// }
-
-// void GraphWaveform::drawWaveform(const std::vector<double> &data,
-//                                  double allTime, int width, int height,
-//                                  bool isSelected, int leftSelection,
-//                                  int rightSelection) {
-//   QImage image(width, height, QImage::Format_ARGB32);
-//   image.fill(qRgb(255, 255, 255));
-
-//  int from = 0;
-//  int to = data.size() - 1;
-
-//  if (isSelected) {
-//    from = leftSelection;
-//    to = rightSelection;
-//  }
-
-//  bresenhamDraw(data, from, to, image, width, height, m_OFFSET_START_X,
-//                m_OFFSET_START_Y, m_OFFSET_END_X, m_OFFSET_END_Y,
-//                qRgb(0, 127, 255));
-
-//  QPixmap pixmap = QPixmap::fromImage(image);
-
-//  setPixmap(pixmap);
-//}
-
-// void GraphWaveform::mousePressEvent(QMouseEvent *event) {
-//   if (event->button() != Qt::LeftButton) {
-//     return;
-//   }
-
-//  m_isSelecting = true;
-//  m_startPoint = event->pos();
-
-//  m_startPoint.setY(m_OFFSET_START_Y);
-
-//  if (m_startPoint.x() < m_OFFSET_START_X) {
-//    m_startPoint.setX(m_OFFSET_START_X);
-//  }
-
-//  if (m_startPoint.x() > (width() - m_OFFSET_END_X)) {
-//    m_startPoint.setX(width() - m_OFFSET_END_X);
-//  }
-
-//  m_selectionRect = QRect();
-//}
-
-// void GraphWaveform::mouseMoveEvent(QMouseEvent *event) {
-//   if (!m_isSelecting) return;
-
-//  QPoint currentPos = event->pos();
-
-//  currentPos.setY(height() - m_OFFSET_END_Y);
-
-//  if (currentPos.x() < m_OFFSET_START_X) {
-//    currentPos.setX(m_OFFSET_START_X);
-//  }
-
-//  if (currentPos.x() > (width() - m_OFFSET_END_X)) {
-//    currentPos.setX(width() - m_OFFSET_END_X);
-//  }
-
-//  m_selectionRect = m_startPoint.x() > currentPos.x()
-//                        ? QRect(currentPos, m_startPoint)
-//                        : QRect(m_startPoint, currentPos);
-//  update();
-//}
-
-// void GraphWaveform::mouseReleaseEvent(QMouseEvent *event) {
-//   if (event->button() == Qt::LeftButton && m_isSelecting &&
-//       !m_selectionRect.isNull()) {
-//     m_isSelecting = false;
-//     emit selectionFinished(m_selectionRect.topLeft().x() - m_OFFSET_START_X,
-//                            m_selectionRect.bottomRight().x() -
-//                            m_OFFSET_START_X, width() - (m_OFFSET_START_X +
-//                            m_OFFSET_END_X));
-//   }
-// }
-
-// void GraphWaveform::paintEvent(QPaintEvent *event) {
-//   QLabel::paintEvent(event);
-//   if (!m_isSelecting) return;
-
-//  QPainter painter(this);
-//  painter.setRenderHint(QPainter::Antialiasing);
-//  painter.setPen(Qt::red);
-//  painter.setBrush(QColor(255, 0, 0, 100));
-//  painter.drawRect(m_selectionRect);
-//}
-
 GraphWaveform::GraphWaveform(std::shared_ptr<SignalData> signalData, int number,
                              QWidget *parent)
     : BaseWaveform{signalData, number, 300, 100, parent} {
   m_isTop = false;
   m_isBottom = false;
+
+  connect(p_signalData.get(), &SignalData::selectedGraphRange, this,
+          &GraphWaveform::onSelectedGraphRange);
+
+  connect(p_signalData.get(), &SignalData::changedEnableGrid, this,
+          &GraphWaveform::onChangedEnableGrid);
+
+  connect(p_signalData.get(), &SignalData::changedGraphTimeRange, this,
+          &GraphWaveform::onChangedGraphTimeRange);
 
   setWidth(800);
   setheight(300);
@@ -150,6 +66,119 @@ void GraphWaveform::setBottom() {
 
   setOffset(p_offsetLeft, p_offsetRight, 10, p_maxTextHeight + 5);
   updateRelative();
+}
+
+void GraphWaveform::mousePressEvent(QMouseEvent *event) {
+  if (event->button() != Qt::LeftButton) return;
+
+  m_isSelected = true;
+  m_startPoint = event->pos();
+
+  m_startPoint.setY(p_offsetTop + p_paddingTop);
+
+  if (m_startPoint.x() < (p_offsetLeft + p_paddingLeft)) {
+    m_startPoint.setX(p_offsetLeft + p_paddingLeft);
+  }
+
+  if (m_startPoint.x() > (p_width - (p_offsetRight + p_paddingRight))) {
+    m_startPoint.setX(p_width - (p_offsetRight + p_paddingRight));
+  }
+
+  m_selectionRect = QRect();
+}
+
+void GraphWaveform::mouseMoveEvent(QMouseEvent *event) {
+  if (!m_isSelected) return;
+
+  QPoint currentPos = event->pos();
+
+  currentPos.setY(p_height - (p_offsetBottom + p_paddingBottom));
+
+  if (currentPos.x() < (p_offsetLeft + p_paddingLeft)) {
+    currentPos.setX(p_offsetLeft + p_paddingLeft);
+  }
+
+  if (currentPos.x() > (p_width - (p_offsetRight + p_paddingRight))) {
+    currentPos.setX(p_width - (p_offsetRight + p_paddingRight));
+  }
+
+  m_selectionRect = m_startPoint.x() > currentPos.x()
+                        ? QRect(currentPos, m_startPoint)
+                        : QRect(m_startPoint, currentPos);
+  update();
+}
+
+void GraphWaveform::mouseReleaseEvent(QMouseEvent *event) {
+  if (event->button() == Qt::LeftButton && m_isSelected &&
+      !m_selectionRect.isNull()) {
+    m_isSelected = false;
+
+    emit p_signalData->selectedGraphRange(
+        std::abs(m_selectionRect.topLeft().x() -
+                 (p_offsetLeft + p_paddingLeft)),
+        std::abs(m_selectionRect.bottomRight().x() -
+                 (p_offsetLeft + p_paddingLeft)),
+        p_width -
+            (p_offsetLeft + p_paddingLeft + p_offsetRight + p_paddingRight));
+  }
+}
+
+void GraphWaveform::onChangedEnableGrid() { drawWaveform(); }
+
+void GraphWaveform::paintEvent(QPaintEvent *event) {
+  QLabel::paintEvent(event);
+  if (!m_isSelected) return;
+
+  QPainter painter(this);
+  painter.setRenderHint(QPainter::Antialiasing);
+  painter.setPen(Qt::red);
+  painter.setBrush(QColor(255, 0, 0, 100));
+  painter.drawRect(m_selectionRect);
+}
+
+void GraphWaveform::onSelectedGraphRange(int leftX, int rightX, int realWidth) {
+  double timePerPixel = p_timeRange / realWidth;
+
+  p_rightTime = p_leftTime + rightX * timePerPixel;
+  p_leftTime += leftX * timePerPixel;
+
+  calculateArrayRange();
+
+  updateRelative();
+  drawWaveform();
+}
+
+void GraphWaveform::onChangedGraphTimeRange(size_t leftTime, size_t rightTime) {
+  p_leftTime = leftTime;
+  p_rightTime = rightTime;
+
+  calculateArrayRange();
+
+  updateRelative();
+  drawWaveform();
+}
+
+void GraphWaveform::calculateArrayRange() {
+  m_dataPerTime = static_cast<double>(p_signalData->samplesNumber()) /
+                  static_cast<double>(p_signalData->allTime());
+
+  p_rightArray = m_dataPerTime * p_rightTime;
+  p_leftArray = m_dataPerTime * p_leftTime;
+
+  if (p_leftArray > p_rightArray) {
+    std::swap(p_leftArray, p_rightArray);
+  }
+
+  if ((p_rightArray - p_leftArray < 8) &&
+      (p_signalData->samplesNumber() > 16)) {
+    if (p_signalData->samplesNumber() - p_rightArray > 8) {
+      p_leftArray = p_rightArray;
+      p_rightArray += 8;
+    } else {
+      p_rightArray = p_leftArray;
+      p_leftArray -= 8;
+    }
+  }
 }
 
 }  // namespace fssp
