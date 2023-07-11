@@ -36,7 +36,6 @@ class BaseWaveform : public QLabel {
   };
 
   void setWidth(int width);
-
   void setheight(int height);
 
   void setPadding(int left, int right, int top, int bottom);
@@ -56,7 +55,6 @@ class BaseWaveform : public QLabel {
   void drawGrid();
 
   void drawAxes(BaseWaveform::AxisType axisType);
-
   void drawName(BaseWaveform::NameType nameType);
 
   void drawBresenham();
@@ -81,18 +79,21 @@ class BaseWaveform : public QLabel {
   int p_leftArray;
   int p_rightArray;
 
-  int p_arrayRange;
-
-  size_t p_timeRange;
+  size_t p_leftTime;
+  size_t p_rightTime;
 
   double p_pixelPerTime;
+  double p_pixelPerData;
+
+  double p_curMaxValue;
+  double p_curMinValue;
 
   double p_maxValue;
   double p_minValue;
 
   double p_dataRange;
-
-  double p_pixelPerData;
+  int p_arrayRange;
+  size_t p_timeRange;
 
   int p_xLabelsNumber;
   int p_yLabelsNumber;
@@ -105,6 +106,7 @@ class BaseWaveform : public QLabel {
 
   int p_width;
   int p_height;
+
   int p_paddingLeft = 0;
   int p_paddingRight = 0;
   int p_paddingTop = 0;
