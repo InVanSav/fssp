@@ -5,7 +5,6 @@
 #include <QWidget>
 
 #include "basemodel.h"
-#include "graphdialog.h"
 
 namespace fssp {
 

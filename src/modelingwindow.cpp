@@ -38,6 +38,7 @@ ModelingWindow::ModelingWindow(std::shared_ptr<SignalData> signalData,
   m_model = new DelayedSingleImpulseModel(p_signalData);
 
   m_formScrollArea = new QScrollArea();
+  m_formScrollArea->setFrameShape(QFrame::NoFrame);
   m_formScrollArea->setWidget(m_model);
   m_formScrollArea->setAlignment(Qt::AlignHCenter);
 
@@ -56,6 +57,7 @@ ModelingWindow::ModelingWindow(std::shared_ptr<SignalData> signalData,
   formGroupBox->setFixedWidth(420);
 
   m_previewScrollArea = new QScrollArea();
+  m_previewScrollArea->setFrameShape(QFrame::NoFrame);
 
   QGroupBox *previewGroupBox = new QGroupBox(tr("Preview"));
   QVBoxLayout *previewLayout = new QVBoxLayout();

@@ -434,13 +434,11 @@ void BaseWaveform::drawBresenham() {
                          p_minValue) *
                         scale) +
              p_offsetTop + p_paddingTop;
-    ;
     int y2 = localHeight -
              std::floor((p_signalData->data()[p_number][i + p_leftArray + 1] -
                          p_minValue) *
                         scale) +
              p_offsetTop + p_paddingTop;
-    ;
 
     int dx = std::abs(x2 - x1);
     int dy = std::abs(y2 - y1);

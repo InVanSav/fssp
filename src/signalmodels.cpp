@@ -192,8 +192,11 @@ TonalEnvelopeModel::TonalEnvelopeModel(std::shared_ptr<SignalData> signalData,
                                        QWidget *parent)
     : BaseModel{signalData, parent} {
   freqEnvelopeSpinBox = addDoubleSpinBox(tr("Envelope frequency:"), 0);
+  amplitudeSpinBox = addDoubleSpinBox(tr("Amplitude:"), 0);
+  initPhaseSpinBox = addDoubleSpinBox(tr("Init phase:"), 0);
   carrierFreqSpinBox = addDoubleSpinBox(tr("Carrier frequency:"), 0);
   amplitudeSpinBox = addDoubleSpinBox(tr("Finish frequency:"), 0);
+  modulationDepthIndexSpinBox = addDoubleSpinBox(tr("Modulation depth:"), 0);
 }
 
 void TonalEnvelopeModel::calc() {
@@ -218,8 +221,8 @@ void TonalEnvelopeModel::calc() {
 LinearFreqModulationModel::LinearFreqModulationModel(
     std::shared_ptr<SignalData> signalData, QWidget *parent)
     : BaseModel{signalData, parent} {
-  amplitudeSpinBox = addDoubleSpinBox(tr("amplitude:"), 0);
-  initPhaseSpinBox = addDoubleSpinBox(tr("init phase:"), 0);
+  amplitudeSpinBox = addDoubleSpinBox(tr("Amplitude:"), 0);
+  initPhaseSpinBox = addDoubleSpinBox(tr("Init phase:"), 0);
   startFreqSpinBox = addDoubleSpinBox(tr("Start frequency:"), 0);
   finishFreqSpinBox = addDoubleSpinBox(tr("Finish frequency:"), 0);
 }
