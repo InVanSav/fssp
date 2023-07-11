@@ -4,50 +4,72 @@ namespace fssp {
 
 GraphDialog::GraphDialog(std::shared_ptr<SignalData> data, QWidget *parent)
     : QGroupBox{parent} {
-  m_signalData = data;
-  m_waveforms = std::vector<GraphWaveform *>(m_signalData->channelsNumber());
+  p_signalData = data;
+  p_waveforms = std::vector<GraphWaveform *>(p_signalData->channelsNumber());
 
-  scrollContent = new QWidget();
+  p_scrollContent = new QWidget();
 
   QVBoxLayout *vBox = new QVBoxLayout();
   vBox->addSpacing(10);
 
-  GraphWaveform *topWaveform = new GraphWaveform(m_signalData, 0);
+  GraphWaveform *topWaveform = new GraphWaveform(p_signalData, 0);
   topWaveform->setTop();
-  m_waveforms[0] = topWaveform;
+  p_waveforms[0] = topWaveform;
   vBox->addWidget(topWaveform);
 
-  for (int i = 1; i < m_signalData->channelsNumber() - 1; ++i) {
-    GraphWaveform *midWaveform = new GraphWaveform(m_signalData, i);
+  for (int i = 1; i < p_signalData->channelsNumber() - 1; ++i) {
+    GraphWaveform *midWaveform = new GraphWaveform(p_signalData, i);
 
-    m_waveforms[i] = midWaveform;
+    p_waveforms[i] = midWaveform;
     vBox->addWidget(midWaveform);
   }
 
-  if (m_signalData->channelsNumber() > 1) {
+  if (p_signalData->channelsNumber() > 1) {
     GraphWaveform *botWaveform =
-        new GraphWaveform(m_signalData, m_signalData->channelsNumber() - 1);
+        new GraphWaveform(p_signalData, p_signalData->channelsNumber() - 1);
     botWaveform->setBottom();
-    m_waveforms[m_signalData->channelsNumber() - 1] = botWaveform;
+    p_waveforms[p_signalData->channelsNumber() - 1] = botWaveform;
     vBox->addWidget(botWaveform);
   }
 
   vBox->addSpacing(10);
 
   vBox->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
-  scrollContent->setLayout(vBox);
+  p_scrollContent->setLayout(vBox);
 
   QScrollArea *scrollArea = new QScrollArea();
   scrollArea->setFrameShape(QFrame::NoFrame);
-  scrollArea->setWidget(scrollContent);
+  scrollArea->setWidget(p_scrollContent);
   scrollArea->setWidgetResizable(true);
 
   QVBoxLayout *mainLayout = new QVBoxLayout();
+  QMenuBar *menuBar = new QMenuBar(this);
+
+  QAction *gridAction = menuBar->addAction(tr("Enable grid"));
+  gridAction->setCheckable(true);
+  gridAction->setChecked(p_signalData->isGridEnabled());
+
+  connect(gridAction, &QAction::triggered, this,
+          &GraphDialog::enableGridAction);
+
+  QAction *scaleAction = menuBar->addAction(tr("Scale graph"));
+  connect(scaleAction, &QAction::triggered, this,
+          &GraphDialog::scaleGraphWaveformAction);
+
+  //  QAction *rangeAction = menuBar->addAction(tr("Enable grid"));
+  //  gridAction->setCheckable(true);
+  //  gridAction->setChecked(p_signalData->isGridEnabled());
+
+  //  connect(gridAction, &QAction::triggered, this,
+  //          &GraphDialog::enableGridAction);
+
+  mainLayout->setMenuBar(menuBar);
+
   mainLayout->addWidget(scrollArea);
 
   setLayout(mainLayout);
 
-  connect(m_signalData.get(), &SignalData::changedWaveformVisibility, this,
+  connect(p_signalData.get(), &SignalData::changedWaveformVisibility, this,
           &GraphDialog::onChangedWaveformVisibility);
 
   setTitle(tr("Graphs"));
@@ -62,18 +84,18 @@ void GraphDialog::drawWaveforms() {
   bool firstFlag = true;
   int last = 0;
   int count = 0;
-  for (int i = 0; i < m_waveforms.size(); ++i) {
-    if (!m_signalData->visibleWaveforms()[i]) continue;
+  for (int i = 0; i < p_waveforms.size(); ++i) {
+    if (!p_signalData->visibleWaveforms()[i]) continue;
 
     if (firstFlag) {
-      m_waveforms[i]->setTop();
+      p_waveforms[i]->setTop();
       firstFlag = false;
     } else {
-      m_waveforms[i]->setMiddle();
+      p_waveforms[i]->setMiddle();
     }
 
-    m_waveforms[i]->drawWaveform();
-    m_waveforms[i]->show();
+    p_waveforms[i]->drawWaveform();
+    p_waveforms[i]->show();
 
     last = i;
     ++count;
@@ -81,48 +103,79 @@ void GraphDialog::drawWaveforms() {
 
   if (count <= 1) return;
 
-  m_waveforms[last]->setBottom();
-  m_waveforms[last]->drawWaveform();
+  p_waveforms[last]->setBottom();
+  p_waveforms[last]->drawWaveform();
 }
 
 void GraphDialog::hideWaveforms() {
   QList<GraphWaveform *> scrollChildren =
-      scrollContent->findChildren<GraphWaveform *>();
+      p_scrollContent->findChildren<GraphWaveform *>();
 
   if (scrollChildren.isEmpty()) return;
 
   for (GraphWaveform *child : scrollChildren) child->hide();
 }
 
-// void GraphDialog::onSelectionFinished(int leftX, int rightX, int realWidth) {
-//   m_signalData->setIsSelected(true);
+void GraphDialog::enableGridAction(bool enable) {
+  p_signalData->setGridEnabled(enable);
+  emit p_signalData->changedEnableGrid();
+}
 
-//  double dataPerPixel =
-//      (m_signalData->rightSelection() - m_signalData->leftSelection()) /
-//      realWidth;
+void GraphDialog::scaleGraphWaveformAction() {
+  QPushButton *acceptScale = new QPushButton(tr("Accept"));
+  QPushButton *denyScale = new QPushButton(tr("Deny"));
 
-//  int leftSelection = m_signalData->leftSelection() + dataPerPixel * leftX;
-//  int rightSelection = m_signalData->leftSelection() + dataPerPixel * rightX;
+  scaleFromValue = new QLineEdit(QString::number(0));
+  scaleToValue = new QLineEdit(QString::number(p_signalData->allTime() - 1));
 
-//  if (leftSelection > rightSelection) {
-//    std::swap(leftSelection, rightSelection);
-//  }
+  connect(acceptScale, &QPushButton::clicked, this,
+          &GraphDialog::pushAcceptButton);
+  connect(denyScale, &QPushButton::clicked, this, &GraphDialog::pushDenyButton);
 
-//  if (rightSelection - leftSelection < 8 &&
-//      m_signalData->samplesNumber() > 16) {
-//    if (m_signalData->samplesNumber() - rightSelection > 8) {
-//      leftSelection = rightSelection;
-//      rightSelection += 8;
-//    } else {
-//      rightSelection = leftSelection;
-//      leftSelection -= 8;
-//    }
-//  }
+  QLabel *warning = new QLabel(tr("Values must be in milliseconds"));
 
-//  m_signalData->setLeftSelection(leftSelection);
-//  m_signalData->setRightSelection(rightSelection);
+  QFormLayout *formLayout = new QFormLayout(this);
 
-//  emit m_signalData->selectionEvent();
-//}
+  formLayout->addRow(warning);
+  formLayout->addRow(tr("&From:"), scaleFromValue);
+  formLayout->addRow(tr("&To:"), scaleToValue);
+
+  QHBoxLayout *buttons = new QHBoxLayout();
+  buttons->addWidget(acceptScale);
+  buttons->addWidget(denyScale);
+  formLayout->addRow(buttons);
+
+  scaleForm = new QWidget();
+  scaleForm->setLayout(formLayout);
+  scaleForm->setWindowTitle(tr("Scale Graph"));
+
+  scaleForm->show();
+}
+
+void GraphDialog::pushDenyButton() {
+  if (!scaleForm) return;
+  scaleForm->close();
+}
+
+void GraphDialog::pushAcceptButton() {
+  bool result;
+
+  size_t leftTime = scaleFromValue->text().toLongLong(&result);
+  if (!result) return;
+
+  size_t rightTime = scaleToValue->text().toLongLong(&result);
+  if (!result) return;
+
+  if (leftTime < 0 || rightTime < 0) return;
+
+  if (leftTime > p_signalData->allTime() || rightTime > p_signalData->allTime())
+    return;
+
+  if (leftTime >= rightTime) return;
+
+  pushDenyButton();
+
+  emit p_signalData->changedGraphTimeRange(leftTime, rightTime);
+}
 
 }  // namespace fssp

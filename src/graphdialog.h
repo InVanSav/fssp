@@ -1,6 +1,12 @@
 #pragma once
 
+#include <QFormLayout>
 #include <QGroupBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QMenu>
+#include <QMenuBar>
+#include <QPushButton>
 #include <QScrollArea>
 #include <QVBoxLayout>
 #include <QWidget>
@@ -23,10 +29,22 @@ class GraphDialog : public QGroupBox {
   void onChangedWaveformVisibility();
 
  private:
-  std::shared_ptr<SignalData> m_signalData;
-  std::vector<GraphWaveform *> m_waveforms;
+  void enableGridAction(bool enable);
+  void scaleGraphWaveformAction();
 
-  QWidget *scrollContent;
+  void pushAcceptButton();
+  void pushDenyButton();
+
+ private:
+  std::shared_ptr<SignalData> p_signalData;
+  std::vector<GraphWaveform *> p_waveforms;
+
+  QLineEdit *scaleFromValue;
+  QLineEdit *scaleToValue;
+
+  QWidget *scaleForm;
+
+  QWidget *p_scrollContent;
 };
 
 }  // namespace fssp
