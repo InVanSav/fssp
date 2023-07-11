@@ -7,6 +7,15 @@ NavigationWaveform::NavigationWaveform(std::shared_ptr<SignalData> signalData,
     : BaseWaveform{signalData, number, 200, 80, parent} {
   m_isVisible = false;
 
+  m_leftX = 0;
+  m_rightX = p_minWidth;
+
+  connect(p_signalData.get(), &SignalData::selectedGraphRange, this,
+          &NavigationWaveform::onSelectedGraphRange);
+
+  connect(p_signalData.get(), &SignalData::changedGraphTimeRange, this,
+          &NavigationWaveform::onChangedGraphTimeRange);
+
   setTextMargin(5, 5, 3, 3);
   setOffset(0, 0, 0, p_maxTextHeight);
   updateRelative();
@@ -45,6 +54,37 @@ void NavigationWaveform::changeVisibilityAction(bool visible) {
   p_signalData->setWaveformVisibility(number(), visible);
 
   emit p_signalData->changedWaveformVisibility();
+}
+
+void NavigationWaveform::onSelectedGraphRange(int leftX, int rightX,
+                                              int realWidth) {
+  //  m_isSelected = true;
+
+  //  double scale = static_cast<double>(width()) /
+  //  static_cast<double>(realWidth);
+
+  //  m_rightX = std::abs((rightX * scale) - (p_offsetLeft + p_paddingLeft));
+  //  m_leftX += std::abs((leftX * scale) - (p_offsetLeft + p_paddingLeft));
+
+  //  m_selectionRect =
+  //      QRect(QPoint(m_leftX, 0), QPoint(m_rightX, height() -
+  //      p_maxTextHeight));
+
+  //  update();
+}
+
+void NavigationWaveform::onChangedGraphTimeRange(size_t leftTime,
+                                                 size_t rightTime) {}
+
+void NavigationWaveform::paintEvent(QPaintEvent *event) {
+  QLabel::paintEvent(event);
+  if (!m_isSelected) return;
+
+  QPainter painter(this);
+  painter.setRenderHint(QPainter::Antialiasing);
+  painter.setPen(Qt::red);
+  painter.setBrush(QColor(255, 0, 0, 100));
+  painter.drawRect(m_selectionRect);
 }
 
 }  // namespace fssp

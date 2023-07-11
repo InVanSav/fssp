@@ -16,15 +16,27 @@ class NavigationWaveform : public BaseWaveform {
 
   void drawWaveform() override;
 
+ public slots:
+  void onSelectedGraphRange(int leftX, int rightX, int realWidth);
+  void onChangedGraphTimeRange(size_t leftTime, size_t rightTime);
+
  protected:
   void mousePressEvent(QMouseEvent *event) override;
   void showContextMenu(const QPoint &pos);
+
+  void paintEvent(QPaintEvent *event) override;
 
  private:
   void changeVisibilityAction(bool visible);
 
  private:
   bool m_isVisible;
+  bool m_isSelected;
+
+  int m_leftX;
+  int m_rightX;
+
+  QRect m_selectionRect;
 };
 
 }  // namespace fssp
