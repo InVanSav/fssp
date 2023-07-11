@@ -106,6 +106,8 @@ double SignalData::timeForOne() const { return m_timeForOne; }
 
 size_t SignalData::allTime() const { return m_allTime; }
 
+bool SignalData::isGridEnabled() const { return m_isGridEnabled; }
+
 const std::vector<QString> &SignalData::channelsName() const {
   return m_channelsName;
 }
@@ -124,6 +126,10 @@ const std::vector<bool> &SignalData::visibleWaveforms() const {
 
 void SignalData::setWaveformVisibility(int number, bool isVisible) {
   m_visibleWaveforms[number] = isVisible;
+}
+
+void SignalData::setGridEnabled(bool isGridEnabled) {
+  m_isGridEnabled = isGridEnabled;
 }
 
 }  // namespace fssp
