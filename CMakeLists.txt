@@ -45,6 +45,8 @@ set(PROJECT_SOURCES
         src/basewaveform.h
         src/modelingwindow.cpp
         src/modelingwindow.h
+        src/modelingwaveform.cpp
+        src/modelingwaveform.h
         ${TS_FILES}
 )
 

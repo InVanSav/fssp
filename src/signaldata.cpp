@@ -11,15 +11,11 @@ SignalData::SignalData() {
   m_startTime = QDateTime{QDate{2000, 1, 1}, QTime{0, 0}};
   m_endTime = m_startTime.addMSecs(m_allTime);
 
-  m_channelsNumber = 1;
-
-  m_channelsName = std::vector<QString>(m_channelsNumber);
-  m_data = std::vector<std::vector<double>>(
-      m_channelsNumber, std::vector<double>(m_samplesNumber));
+  m_channelsNumber = 0;
 
   m_isSelected = false;
   m_leftSelection = 0;
-  m_rightSelection = m_data[0].size() - 1;
+  m_rightSelection = m_samplesNumber - 1;
 }
 
 SignalData::SignalData(const QDateTime &startTime, const QDateTime &endTime,

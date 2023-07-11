@@ -17,6 +17,9 @@ class ModelingWindow : public QWidget {
 
  protected slots:
   void onComboBoxChange(int index);
+  void onCalcButtonPress();
+  void onAddButtonPress();
+  void onCancelButtonPress();
 
  private:
   std::shared_ptr<SignalData> p_signalData;
@@ -26,7 +29,7 @@ class ModelingWindow : public QWidget {
   QComboBox *m_comboBox;
   QScrollArea *m_formScrollArea;
 
-  GraphDialog *m_graphDialog;
+  QScrollArea *m_previewScrollArea;
 };
 
 }  // namespace fssp

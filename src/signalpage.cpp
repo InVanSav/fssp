@@ -15,7 +15,7 @@ SignalPage::SignalPage(SignalData data, QWidget *parent) : QWidget{parent} {
   QHBoxLayout *hBox = new QHBoxLayout();
   hBox->addWidget(m_navDialog);
   hBox->setAlignment(m_navDialog, Qt::AlignLeft);
-  hBox->addSpacing(20);
+  hBox->addSpacing(10);
   hBox->addWidget(m_graphDialog);
 
   setLayout(hBox);

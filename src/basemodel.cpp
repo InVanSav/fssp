@@ -37,10 +37,10 @@ void BaseModel::createForm() {
 }
 
 SignalData BaseModel::getData() {
-  int allTime = p_freqSpinBox->value() * p_sampleNumberSpinBox->value();
+  int allTime = p_freqSpinBox->value() * p_sampleNumberSpinBox->value() * 1000;
 
   return SignalData(p_dateTimeEdit->dateTime(),
-                    p_dateTimeEdit->dateTime().addSecs(allTime),
+                    p_dateTimeEdit->dateTime().addMSecs(allTime),
                     p_freqSpinBox->value(), 1 / p_freqSpinBox->value(), allTime,
                     {p_channelNameLineEdit->text()}, {std::move(p_data)});
 }
