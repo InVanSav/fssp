@@ -106,6 +106,14 @@ double SignalData::timeForOne() const { return m_timeForOne; }
 
 size_t SignalData::allTime() const { return m_allTime; }
 
+int SignalData::leftArray() { return m_leftArray; }
+
+int SignalData::rightArray() { return m_rightArray; }
+
+int SignalData::leftTime() { return m_leftTime; }
+
+int SignalData::rightTime() { return m_rightTime; }
+
 bool SignalData::isGridEnabled() const { return m_isGridEnabled; }
 
 const std::vector<QString> &SignalData::channelsName() const {
@@ -130,6 +138,32 @@ void SignalData::setWaveformVisibility(int number, bool isVisible) {
 
 void SignalData::setGridEnabled(bool isGridEnabled) {
   m_isGridEnabled = isGridEnabled;
+}
+
+void SignalData::setLeftArray(int leftArray) { m_leftArray = leftArray; }
+
+void SignalData::setRightArray(int rightArray) { m_rightArray = rightArray; }
+
+void SignalData::setLeftTime(int leftTime) { m_leftTime = leftTime; }
+
+void SignalData::setRightTime(int rightTime) { m_rightTime = rightTime; }
+
+void SignalData::calculateArrayRange() {
+  double dataPerTime =
+      static_cast<double>(m_samplesNumber) / static_cast<double>(m_allTime);
+
+  m_rightArray = dataPerTime * m_rightTime;
+  m_leftArray = dataPerTime * m_leftTime;
+
+  if ((m_rightArray - m_leftArray < 8) && (m_samplesNumber > 16)) {
+    if (m_samplesNumber - m_rightArray > 8) {
+      m_leftArray = m_rightArray;
+      m_rightArray += 8;
+    } else {
+      m_rightArray = m_leftArray;
+      m_leftArray -= 8;
+    }
+  }
 }
 
 }  // namespace fssp

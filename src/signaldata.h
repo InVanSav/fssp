@@ -29,8 +29,23 @@ class SignalData : public QObject {
   double timeForOne() const;
   size_t allTime() const;
 
+  int leftArray();
+  int rightArray();
+
+  int leftTime();
+  int rightTime();
+
   void setGridEnabled(bool isGridEnabled);
+
+  void setLeftArray(int leftArray);
+  void setRightArray(int rightArray);
+
+  void setLeftTime(int leftTime);
+  void setRightTime(int rightTime);
+
   bool isGridEnabled() const;
+
+  void calculateArrayRange();
 
   const std::vector<QString> &channelsName() const;
   const std::vector<std::vector<double>> &data() const;
@@ -42,8 +57,7 @@ class SignalData : public QObject {
   void setWaveformVisibility(int number, bool isVisible);
 
  signals:
-  void changedGraphTimeRange(size_t leftTime, size_t rightTime);
-  void selectedGraphRange(int leftX, int rightX, int realWidth);
+  void changedGraphTimeRange();
   void changedWaveformVisibility();
   void changedEnableGrid();
 
@@ -61,6 +75,12 @@ class SignalData : public QObject {
 
   int m_channelsNumber;
   int m_samplesNumber;
+
+  int m_leftArray;
+  int m_rightArray;
+
+  size_t m_leftTime;
+  size_t m_rightTime;
 
   bool m_isGridEnabled;
 
