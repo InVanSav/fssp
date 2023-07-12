@@ -54,8 +54,6 @@ void NavigationWaveform::changeVisibilityAction(bool visible) {
 }
 
 void NavigationWaveform::onChangedGraphTimeRange() {
-  m_isSelected = true;
-
   long double timePerPixel =
       p_timeRange / (p_width - (p_offsetLeft + p_paddingLeft + p_offsetRight +
                                 p_paddingRight));
@@ -71,7 +69,7 @@ void NavigationWaveform::onChangedGraphTimeRange() {
 
 void NavigationWaveform::paintEvent(QPaintEvent *event) {
   QLabel::paintEvent(event);
-  if (!m_isSelected) return;
+  if (!p_signalData->isSelected()) return;
 
   QPainter painter(this);
   painter.setRenderHint(QPainter::Antialiasing);

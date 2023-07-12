@@ -137,30 +137,31 @@ void GraphDialog::scaleGraphWaveformAction() {
   connect(resetScale, &QPushButton::clicked, this,
           &GraphDialog::pushResetButton);
 
-  scaleFromValue = new QLineEdit(QString::number(p_signalData->leftTime()));
-  scaleToValue = new QLineEdit(QString::number(p_signalData->rightTime() - 1));
+  scaleFromValue = new QDateTimeEdit(p_signalData->startTime());
+  scaleToValue = new QDateTimeEdit(p_signalData->endTime());
 
   QLabel *warning = new QLabel(tr("Values must be in milliseconds"));
   error = new QLabel();
 
   formLayout = new QFormLayout(this);
+  formLayout->setHorizontalSpacing(5);
 
   formLayout->addRow(warning);
   formLayout->addRow(tr("&From:"), scaleFromValue);
   formLayout->addRow(tr("&To:"), scaleToValue);
   formLayout->addRow(error);
 
-  QHBoxLayout *activationButtons = new QHBoxLayout();
-  activationButtons->addWidget(acceptScale);
-  activationButtons->addWidget(denyScale);
-
-  formLayout->addRow(activationButtons);
-
   QHBoxLayout *scaleButtons = new QHBoxLayout();
   scaleButtons->addWidget(doubleScale);
   scaleButtons->addWidget(resetScale);
 
   formLayout->addRow(scaleButtons);
+
+  QHBoxLayout *activationButtons = new QHBoxLayout();
+  activationButtons->addWidget(acceptScale);
+  activationButtons->addWidget(denyScale);
+
+  formLayout->addRow(activationButtons);
 
   scaleForm = new QWidget();
   scaleForm->setLayout(formLayout);
@@ -175,13 +176,13 @@ void GraphDialog::pushDenyButton() {
 }
 
 void GraphDialog::pushAcceptButton() {
-  bool result;
+  QDateTime fromDateTime = scaleFromValue->dateTime();
+  leftTime = fromDateTime.toMSecsSinceEpoch();
 
-  leftTime = scaleFromValue->text().toLongLong(&result);
-  if (!result) return;
+  QDateTime toDateTime = scaleToValue->dateTime();
+  rightTime = toDateTime.toMSecsSinceEpoch();
 
-  rightTime = scaleToValue->text().toLongLong(&result);
-  if (!result) return;
+  p_signalData->setSelected(true);
 
   buttonHandler();
 }
@@ -192,12 +193,16 @@ void GraphDialog::pushDoubleScaleButton() {
   leftTime = p_signalData->leftTime() + (timeRange / 4);
   rightTime = p_signalData->rightTime() - (timeRange / 4);
 
+  p_signalData->setSelected(true);
+
   buttonHandler();
 }
 
 void GraphDialog::pushResetButton() {
   leftTime = 0;
   rightTime = p_signalData->allTime() - 1;
+
+  p_signalData->setSelected(false);
 
   buttonHandler();
 }
@@ -212,6 +217,8 @@ void GraphDialog::buttonHandler() {
 
   pushDenyButton();
 
+  if (p_signalData->rightTime() - p_signalData->leftTime() < 20) return;
+
   emit p_signalData->changedGraphTimeRange();
 }
 
@@ -221,13 +228,13 @@ bool GraphDialog::validateInputData() {
     return false;
   }
 
-  if (leftTime > p_signalData->allTime() ||
-      rightTime > p_signalData->allTime()) {
+  else if (leftTime > p_signalData->allTime() ||
+           rightTime > p_signalData->allTime()) {
     error->setText(tr("Values must be less than range"));
     return false;
   }
 
-  if (leftTime >= rightTime) {
+  else if (leftTime >= rightTime) {
     error->setText(tr("'From' must be less than 'to'"));
     return false;
   }

@@ -1,9 +1,9 @@
 #pragma once
 
+#include <QDateTimeEdit>
 #include <QFormLayout>
 #include <QGroupBox>
 #include <QLabel>
-#include <QLineEdit>
 #include <QMenu>
 #include <QMenuBar>
 #include <QPushButton>
@@ -49,8 +49,8 @@ class GraphDialog : public QGroupBox {
   size_t leftTime;
   size_t rightTime;
 
-  QLineEdit *scaleFromValue;
-  QLineEdit *scaleToValue;
+  QDateTimeEdit *scaleFromValue;
+  QDateTimeEdit *scaleToValue;
 
   QWidget *scaleForm;
   QWidget *p_scrollContent;

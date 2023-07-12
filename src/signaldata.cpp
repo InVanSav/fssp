@@ -118,6 +118,8 @@ bool SignalData::isGridEnabled() const { return m_isGridEnabled; }
 
 bool SignalData::isGlobalScale() const { return m_isGlobalScale; }
 
+bool SignalData::isSelected() const { return m_isSelected; }
+
 const std::vector<QString> &SignalData::channelsName() const {
   return m_channelsName;
 }
@@ -145,6 +147,8 @@ void SignalData::setGridEnabled(bool isGridEnabled) {
 void SignalData::setGlobalScale(bool isGlobalScale) {
   m_isGlobalScale = isGlobalScale;
 }
+
+void SignalData::setSelected(bool isSelected) { m_isSelected = isSelected; }
 
 void SignalData::setLeftArray(int leftArray) { m_leftArray = leftArray; }
 

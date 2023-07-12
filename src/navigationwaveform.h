@@ -30,7 +30,6 @@ class NavigationWaveform : public BaseWaveform {
 
  private:
   bool m_isVisible;
-  bool m_isSelected;
 
   int m_leftX;
   int m_rightX;

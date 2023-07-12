@@ -37,6 +37,7 @@ class SignalData : public QObject {
 
   bool isGridEnabled() const;
   bool isGlobalScale() const;
+  bool isSelected() const;
 
   void setLeftArray(int leftArray);
   void setRightArray(int rightArray);
@@ -46,6 +47,7 @@ class SignalData : public QObject {
 
   void setGridEnabled(bool isGridEnabled);
   void setGlobalScale(bool isGlobalScale);
+  void setSelected(bool isSelected);
 
   void calculateArrayRange();
 
@@ -89,6 +91,7 @@ class SignalData : public QObject {
 
   bool m_isGridEnabled;
   bool m_isGlobalScale;
+  bool m_isSelected;
 
   std::vector<bool> m_visibleWaveforms;
 };
