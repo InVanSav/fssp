@@ -20,11 +20,11 @@ BaseWaveform::BaseWaveform(std::shared_ptr<SignalData> signalData, int number,
 
   p_image = QImage();
 
-  p_leftArray = 0;
-  p_rightArray = p_signalData->samplesNumber() - 1;
+  p_signalData->setLeftArray(0);
+  p_signalData->setRightArray(p_signalData->samplesNumber() - 1);
 
-  p_leftTime = 0;
-  p_rightTime = p_signalData->allTime() - 1;
+  p_signalData->setLeftTime(0);
+  p_signalData->setRightTime(p_signalData->allTime() - 1);
 
   p_signalData->setGridEnabled(true);
 }
@@ -70,16 +70,16 @@ void BaseWaveform::setTextMargin(int left, int right, int top, int bottom) {
 }
 
 void BaseWaveform::updateRelative() {
-  p_arrayRange = p_rightArray - p_leftArray + 1;
+  p_arrayRange = p_signalData->rightArray() - p_signalData->leftArray() + 1;
 
-  p_timeRange = p_rightTime - p_leftTime;
+  p_timeRange = p_signalData->rightTime() - p_signalData->leftTime();
 
-  p_minValue =
-      *std::min_element(p_signalData->data()[p_number].begin() + p_leftArray,
-                        p_signalData->data()[p_number].begin() + p_rightArray);
-  p_maxValue =
-      *std::max_element(p_signalData->data()[p_number].begin() + p_leftArray,
-                        p_signalData->data()[p_number].begin() + p_rightArray);
+  p_minValue = *std::min_element(
+      p_signalData->data()[p_number].begin() + p_signalData->leftArray(),
+      p_signalData->data()[p_number].begin() + p_signalData->rightArray());
+  p_maxValue = *std::max_element(
+      p_signalData->data()[p_number].begin() + p_signalData->leftArray(),
+      p_signalData->data()[p_number].begin() + p_signalData->rightArray());
 
   p_dataRange = std::abs(p_maxValue - p_minValue);
 
@@ -432,17 +432,21 @@ void BaseWaveform::drawBresenham() {
              p_paddingLeft;
     int x2 = std::round((i + 1) * localWidth / p_arrayRange) + p_offsetLeft +
              p_paddingLeft;
-    int y1 = localHeight -
-             std::floor((p_signalData->data()[p_number][i + p_leftArray] -
-                         p_minValue) *
-                        scale) +
-             p_offsetTop + p_paddingTop;
+    int y1 =
+        localHeight -
+        std::floor(
+            (p_signalData->data()[p_number][i + p_signalData->leftArray()] -
+             p_minValue) *
+            scale) +
+        p_offsetTop + p_paddingTop;
 
-    int y2 = localHeight -
-             std::floor((p_signalData->data()[p_number][i + p_leftArray + 1] -
-                         p_minValue) *
-                        scale) +
-             p_offsetTop + p_paddingTop;
+    int y2 =
+        localHeight -
+        std::floor(
+            (p_signalData->data()[p_number][i + p_signalData->leftArray() + 1] -
+             p_minValue) *
+            scale) +
+        p_offsetTop + p_paddingTop;
 
     int dx = std::abs(x2 - x1);
     int dy = std::abs(y2 - y1);

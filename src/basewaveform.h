@@ -76,12 +76,6 @@ class BaseWaveform : public QLabel {
   std::shared_ptr<SignalData> p_signalData;
   int p_number;
 
-  int p_leftArray;
-  int p_rightArray;
-
-  size_t p_leftTime;
-  size_t p_rightTime;
-
   double p_pixelPerTime;
   double p_pixelPerData;
 
