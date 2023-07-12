@@ -106,15 +106,17 @@ double SignalData::timeForOne() const { return m_timeForOne; }
 
 size_t SignalData::allTime() const { return m_allTime; }
 
-int SignalData::leftArray() { return m_leftArray; }
+int SignalData::leftArray() const { return m_leftArray; }
 
-int SignalData::rightArray() { return m_rightArray; }
+int SignalData::rightArray() const { return m_rightArray; }
 
-int SignalData::leftTime() { return m_leftTime; }
+size_t SignalData::leftTime() const { return m_leftTime; }
 
-int SignalData::rightTime() { return m_rightTime; }
+size_t SignalData::rightTime() const { return m_rightTime; }
 
 bool SignalData::isGridEnabled() const { return m_isGridEnabled; }
+
+bool SignalData::isGlobalScale() const { return m_isGlobalScale; }
 
 const std::vector<QString> &SignalData::channelsName() const {
   return m_channelsName;
@@ -138,6 +140,10 @@ void SignalData::setWaveformVisibility(int number, bool isVisible) {
 
 void SignalData::setGridEnabled(bool isGridEnabled) {
   m_isGridEnabled = isGridEnabled;
+}
+
+void SignalData::setGlobalScale(bool isGlobalScale) {
+  m_isGlobalScale = isGlobalScale;
 }
 
 void SignalData::setLeftArray(int leftArray) { m_leftArray = leftArray; }
