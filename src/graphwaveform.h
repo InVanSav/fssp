@@ -24,8 +24,7 @@ class GraphWaveform : public BaseWaveform {
 
  public slots:
   void onChangedEnableGrid();
-  void onSelectedGraphRange(int leftX, int rightX, int realWidth);
-  void onChangedGraphTimeRange(size_t leftTime, size_t rightTime);
+  void onChangedGraphTimeRange();
 
  protected:
   void mousePressEvent(QMouseEvent *event) override;
@@ -37,15 +36,10 @@ class GraphWaveform : public BaseWaveform {
   void paintEvent(QPaintEvent *event) override;
 
  private:
-  void calculateArrayRange();
-
- private:
   bool m_isTop;
   bool m_isBottom;
 
   bool m_isSelected;
-
-  double m_dataPerTime;
 
   QPoint m_startPoint;
   QRect m_selectionRect;

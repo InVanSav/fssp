@@ -8,9 +8,6 @@ GraphWaveform::GraphWaveform(std::shared_ptr<SignalData> signalData, int number,
   m_isTop = false;
   m_isBottom = false;
 
-  connect(p_signalData.get(), &SignalData::selectedGraphRange, this,
-          &GraphWaveform::onSelectedGraphRange);
-
   connect(p_signalData.get(), &SignalData::changedEnableGrid, this,
           &GraphWaveform::onChangedEnableGrid);
 
@@ -113,13 +110,24 @@ void GraphWaveform::mouseReleaseEvent(QMouseEvent *event) {
       !m_selectionRect.isNull()) {
     m_isSelected = false;
 
-    emit p_signalData->selectedGraphRange(
-        std::abs(m_selectionRect.topLeft().x() -
-                 (p_offsetLeft + p_paddingLeft)),
-        std::abs(m_selectionRect.bottomRight().x() -
-                 (p_offsetLeft + p_paddingLeft)),
-        p_width -
-            (p_offsetLeft + p_paddingLeft + p_offsetRight + p_paddingRight));
+    double timePerPixel =
+        p_timeRange / (p_width - (p_offsetLeft + p_paddingLeft + p_offsetRight +
+                                  p_paddingRight));
+
+    p_signalData->setRightTime(p_signalData->leftTime() +
+                               std::abs(m_selectionRect.bottomRight().x() -
+                                        (p_offsetLeft + p_paddingLeft)) *
+                                   timePerPixel);
+    p_signalData->setLeftTime(p_signalData->leftTime() +
+                              std::abs(m_selectionRect.topLeft().x() -
+                                       (p_offsetLeft + p_paddingLeft)) *
+                                  timePerPixel);
+
+    p_signalData->calculateArrayRange();
+
+    updateRelative();
+
+    emit p_signalData->changedGraphTimeRange();
   }
 }
 
@@ -136,49 +144,9 @@ void GraphWaveform::paintEvent(QPaintEvent *event) {
   painter.drawRect(m_selectionRect);
 }
 
-void GraphWaveform::onSelectedGraphRange(int leftX, int rightX, int realWidth) {
-  double timePerPixel = p_timeRange / realWidth;
-
-  p_rightTime = p_leftTime + rightX * timePerPixel;
-  p_leftTime += leftX * timePerPixel;
-
-  calculateArrayRange();
-
+void GraphWaveform::onChangedGraphTimeRange() {
   updateRelative();
   drawWaveform();
-}
-
-void GraphWaveform::onChangedGraphTimeRange(size_t leftTime, size_t rightTime) {
-  p_leftTime = leftTime;
-  p_rightTime = rightTime;
-
-  calculateArrayRange();
-
-  updateRelative();
-  drawWaveform();
-}
-
-void GraphWaveform::calculateArrayRange() {
-  m_dataPerTime = static_cast<double>(p_signalData->samplesNumber()) /
-                  static_cast<double>(p_signalData->allTime());
-
-  p_rightArray = m_dataPerTime * p_rightTime;
-  p_leftArray = m_dataPerTime * p_leftTime;
-
-  if (p_leftArray > p_rightArray) {
-    std::swap(p_leftArray, p_rightArray);
-  }
-
-  if ((p_rightArray - p_leftArray < 8) &&
-      (p_signalData->samplesNumber() > 16)) {
-    if (p_signalData->samplesNumber() - p_rightArray > 8) {
-      p_leftArray = p_rightArray;
-      p_rightArray += 8;
-    } else {
-      p_rightArray = p_leftArray;
-      p_leftArray -= 8;
-    }
-  }
 }
 
 }  // namespace fssp
