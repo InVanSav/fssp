@@ -113,6 +113,10 @@ void BaseWaveform::updateRelative() {
   p_pixelPerTime = ((p_width - (p_offsetRight + p_paddingRight)) -
                     (p_offsetLeft + p_paddingLeft)) /
                    static_cast<double>(p_timeRange);
+
+  p_timePerPixel = 1 / p_pixelPerTime;
+
+  p_dataPerPixel = 1 / p_pixelPerData;
 }
 
 bool BaseWaveform::isImageNull() const { return p_image.isNull(); }
