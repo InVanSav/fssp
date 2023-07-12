@@ -25,6 +25,7 @@ class GraphWaveform : public BaseWaveform {
  public slots:
   void onChangedEnableGrid();
   void onChangedGraphTimeRange();
+  void onChangedGlobalScale();
 
  protected:
   void mousePressEvent(QMouseEvent *event) override;

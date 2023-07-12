@@ -14,6 +14,9 @@ GraphWaveform::GraphWaveform(std::shared_ptr<SignalData> signalData, int number,
   connect(p_signalData.get(), &SignalData::changedGraphTimeRange, this,
           &GraphWaveform::onChangedGraphTimeRange);
 
+  connect(p_signalData.get(), &SignalData::changedGlobalScale, this,
+          &GraphWaveform::onChangedGlobalScale);
+
   setWidth(800);
   setheight(300);
   setTextMargin(5, 5, 3, 3);
@@ -145,6 +148,11 @@ void GraphWaveform::paintEvent(QPaintEvent *event) {
 }
 
 void GraphWaveform::onChangedGraphTimeRange() {
+  updateRelative();
+  drawWaveform();
+}
+
+void GraphWaveform::onChangedGlobalScale() {
   updateRelative();
   drawWaveform();
 }
