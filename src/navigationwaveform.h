@@ -17,8 +17,7 @@ class NavigationWaveform : public BaseWaveform {
   void drawWaveform() override;
 
  public slots:
-  void onSelectedGraphRange(int leftX, int rightX, int realWidth);
-  void onChangedGraphTimeRange(size_t leftTime, size_t rightTime);
+  void onChangedGraphTimeRange();
 
  protected:
   void mousePressEvent(QMouseEvent *event) override;

@@ -10,9 +10,6 @@ NavigationWaveform::NavigationWaveform(std::shared_ptr<SignalData> signalData,
   m_leftX = 0;
   m_rightX = p_minWidth;
 
-  connect(p_signalData.get(), &SignalData::selectedGraphRange, this,
-          &NavigationWaveform::onSelectedGraphRange);
-
   connect(p_signalData.get(), &SignalData::changedGraphTimeRange, this,
           &NavigationWaveform::onChangedGraphTimeRange);
 
@@ -56,25 +53,21 @@ void NavigationWaveform::changeVisibilityAction(bool visible) {
   emit p_signalData->changedWaveformVisibility();
 }
 
-void NavigationWaveform::onSelectedGraphRange(int leftX, int rightX,
-                                              int realWidth) {
-  //  m_isSelected = true;
+void NavigationWaveform::onChangedGraphTimeRange() {
+  m_isSelected = true;
 
-  //  double scale = static_cast<double>(width()) /
-  //  static_cast<double>(realWidth);
+  long double timePerPixel =
+      p_timeRange / (p_width - (p_offsetLeft + p_paddingLeft + p_offsetRight +
+                                p_paddingRight));
 
-  //  m_rightX = std::abs((rightX * scale) - (p_offsetLeft + p_paddingLeft));
-  //  m_leftX += std::abs((leftX * scale) - (p_offsetLeft + p_paddingLeft));
+  m_leftX = p_signalData->leftTime() / timePerPixel;
+  m_rightX = p_signalData->rightTime() / timePerPixel;
 
-  //  m_selectionRect =
-  //      QRect(QPoint(m_leftX, 0), QPoint(m_rightX, height() -
-  //      p_maxTextHeight));
+  m_selectionRect =
+      QRect(QPoint(m_leftX, 0), QPoint(m_rightX, height() - p_maxTextHeight));
 
-  //  update();
+  update();
 }
-
-void NavigationWaveform::onChangedGraphTimeRange(size_t leftTime,
-                                                 size_t rightTime) {}
 
 void NavigationWaveform::paintEvent(QPaintEvent *event) {
   QLabel::paintEvent(event);
