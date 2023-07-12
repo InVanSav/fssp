@@ -8,6 +8,16 @@ GraphWaveform::GraphWaveform(std::shared_ptr<SignalData> signalData, int number,
   m_isTop = false;
   m_isBottom = false;
 
+  m_isCtrlPressed = false;
+
+  setWidth(800);
+  setheight(300);
+  setTextMargin(5, 5, 3, 3);
+  setOffset(p_maxTextHeight + p_paddingLeft * 2 + p_maxAxisTextWidth + 5, 15,
+            10, 10);
+  setPadding(3, 3, 3, 3);
+  updateRelative();
+
   connect(p_signalData.get(), &SignalData::changedEnableGrid, this,
           &GraphWaveform::onChangedEnableGrid);
 
@@ -17,13 +27,7 @@ GraphWaveform::GraphWaveform(std::shared_ptr<SignalData> signalData, int number,
   connect(p_signalData.get(), &SignalData::changedGlobalScale, this,
           &GraphWaveform::onChangedGlobalScale);
 
-  setWidth(800);
-  setheight(300);
-  setTextMargin(5, 5, 3, 3);
-  setOffset(p_maxTextHeight + p_paddingLeft * 2 + p_maxAxisTextWidth + 5, 15,
-            10, 10);
-  setPadding(3, 3, 3, 3);
-  updateRelative();
+  setFocusPolicy(Qt::StrongFocus);
 }
 
 void GraphWaveform::drawWaveform() {
@@ -70,21 +74,9 @@ void GraphWaveform::setBottom() {
 
 void GraphWaveform::mousePressEvent(QMouseEvent *event) {
   if (event->button() != Qt::LeftButton) return;
-
-  m_isSelected = true;
-  m_startPoint = event->pos();
-
-  m_startPoint.setY(p_offsetTop + p_paddingTop);
-
-  if (m_startPoint.x() < (p_offsetLeft + p_paddingLeft)) {
-    m_startPoint.setX(p_offsetLeft + p_paddingLeft);
-  }
-
-  if (m_startPoint.x() > (p_width - (p_offsetRight + p_paddingRight))) {
-    m_startPoint.setX(p_width - (p_offsetRight + p_paddingRight));
-  }
-
-  m_selectionRect = QRect();
+  initSelection(event);
+  if (!m_isCtrlPressed) return;
+  showToolTip(event);
 }
 
 void GraphWaveform::mouseMoveEvent(QMouseEvent *event) {
@@ -105,6 +97,7 @@ void GraphWaveform::mouseMoveEvent(QMouseEvent *event) {
   m_selectionRect = m_startPoint.x() > currentPos.x()
                         ? QRect(currentPos, m_startPoint)
                         : QRect(m_startPoint, currentPos);
+
   update();
 }
 
@@ -113,28 +106,24 @@ void GraphWaveform::mouseReleaseEvent(QMouseEvent *event) {
       !m_selectionRect.isNull()) {
     m_isSelected = false;
 
-    double timePerPixel =
-        p_timeRange / (p_width - (p_offsetLeft + p_paddingLeft + p_offsetRight +
-                                  p_paddingRight));
-
     p_signalData->setRightTime(p_signalData->leftTime() +
                                std::abs(m_selectionRect.bottomRight().x() -
                                         (p_offsetLeft + p_paddingLeft)) *
-                                   timePerPixel);
+                                   p_timePerPixel);
+
     p_signalData->setLeftTime(p_signalData->leftTime() +
                               std::abs(m_selectionRect.topLeft().x() -
                                        (p_offsetLeft + p_paddingLeft)) *
-                                  timePerPixel);
+                                  p_timePerPixel);
 
     p_signalData->calculateArrayRange();
+    p_signalData->setSelected(true);
 
     updateRelative();
 
     emit p_signalData->changedGraphTimeRange();
   }
 }
-
-void GraphWaveform::onChangedEnableGrid() { drawWaveform(); }
 
 void GraphWaveform::paintEvent(QPaintEvent *event) {
   QLabel::paintEvent(event);
@@ -146,6 +135,63 @@ void GraphWaveform::paintEvent(QPaintEvent *event) {
   painter.setBrush(QColor(255, 0, 0, 100));
   painter.drawRect(m_selectionRect);
 }
+
+void GraphWaveform::keyPressEvent(QKeyEvent *event) {
+  if (event->key() == Qt::Key_Control) m_isCtrlPressed = true;
+}
+
+void GraphWaveform::keyReleaseEvent(QKeyEvent *event) {
+  if (event->key() == Qt::Key_Control) m_isCtrlPressed = false;
+}
+
+void GraphWaveform::showToolTip(QMouseEvent *event) {
+  if (!validateToolTipPoint(event)) return;
+
+  double dataPerTime =
+      static_cast<double>(p_dataRange) / static_cast<double>(p_timeRange);
+
+  size_t time =
+      (event->pos().x() - (p_offsetLeft + p_paddingLeft)) * p_timePerPixel;
+  double data = static_cast<double>(time) * dataPerTime + p_curMinValue;
+
+  QString tooltipText =
+      QString(tr("Value: %1 \n Time: %2")).arg(data).arg(time);
+
+  QToolTip::showText(mapToGlobal(event->pos()), tooltipText, this);
+}
+
+bool GraphWaveform::validateToolTipPoint(QMouseEvent *event) {
+  if (event->pos().x() > (p_width - (p_offsetRight + p_paddingRight)))
+    return false;
+
+  if (event->pos().x() < (p_offsetLeft + p_paddingLeft)) return false;
+
+  if (event->pos().y() > (p_height - (p_offsetBottom + p_paddingBottom)))
+    return false;
+
+  if (event->pos().y() < (p_offsetTop + p_paddingTop)) return false;
+
+  return true;
+}
+
+void GraphWaveform::initSelection(QMouseEvent *event) {
+  m_isSelected = true;
+  m_startPoint = event->pos();
+
+  m_startPoint.setY(p_offsetTop + p_paddingTop);
+
+  if (m_startPoint.x() < (p_offsetLeft + p_paddingLeft)) {
+    m_startPoint.setX(p_offsetLeft + p_paddingLeft);
+  }
+
+  if (m_startPoint.x() > (p_width - (p_offsetRight + p_paddingRight))) {
+    m_startPoint.setX(p_width - (p_offsetRight + p_paddingRight));
+  }
+
+  m_selectionRect = QRect();
+}
+
+void GraphWaveform::onChangedEnableGrid() { drawWaveform(); }
 
 void GraphWaveform::onChangedGraphTimeRange() {
   updateRelative();

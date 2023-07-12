@@ -4,6 +4,7 @@
 #include <QMenu>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QToolTip>
 #include <QWidget>
 
 #include "basewaveform.h"
@@ -32,15 +33,25 @@ class GraphWaveform : public BaseWaveform {
   void mouseMoveEvent(QMouseEvent *event) override;
   void mouseReleaseEvent(QMouseEvent *event) override;
 
+  void keyPressEvent(QKeyEvent *event) override;
+  void keyReleaseEvent(QKeyEvent *event) override;
+
   void showContextMenu(const QPoint &pos);
 
   void paintEvent(QPaintEvent *event) override;
+
+ private:
+  void showToolTip(QMouseEvent *event);
+  bool validateToolTipPoint(QMouseEvent *event);
+
+  void initSelection(QMouseEvent *event);
 
  private:
   bool m_isTop;
   bool m_isBottom;
 
   bool m_isSelected;
+  bool m_isCtrlPressed;
 
   QPoint m_startPoint;
   QRect m_selectionRect;
