@@ -56,12 +56,12 @@ GraphDialog::GraphDialog(std::shared_ptr<SignalData> data, QWidget *parent)
   connect(scaleAction, &QAction::triggered, this,
           &GraphDialog::scaleGraphWaveformAction);
 
-  //  QAction *rangeAction = menuBar->addAction(tr("Enable grid"));
-  //  gridAction->setCheckable(true);
-  //  gridAction->setChecked(p_signalData->isGridEnabled());
+  QAction *localizationAction = menuBar->addAction(tr("Local/Global"));
+  localizationAction->setCheckable(true);
+  localizationAction->setChecked(p_signalData->isGlobalScale());
 
-  //  connect(gridAction, &QAction::triggered, this,
-  //          &GraphDialog::enableGridAction);
+  connect(localizationAction, &QAction::triggered, this,
+          &GraphDialog::changeArrayGlobalizationAction);
 
   mainLayout->setMenuBar(menuBar);
 
@@ -233,6 +233,11 @@ bool GraphDialog::validateInputData() {
   }
 
   return true;
+}
+
+void GraphDialog::changeArrayGlobalizationAction() {
+  p_signalData->setGlobalScale(!p_signalData->isGlobalScale());
+  emit p_signalData->changedGlobalScale();
 }
 
 }  // namespace fssp

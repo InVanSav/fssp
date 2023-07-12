@@ -31,6 +31,7 @@ class GraphDialog : public QGroupBox {
  private:
   void enableGridAction(bool enable);
   void scaleGraphWaveformAction();
+  void changeArrayGlobalizationAction();
 
   void pushAcceptButton();
   void pushDenyButton();
