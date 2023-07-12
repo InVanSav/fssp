@@ -35,16 +35,27 @@ class GraphDialog : public QGroupBox {
   void pushAcceptButton();
   void pushDenyButton();
 
+  void pushDoubleScaleButton();
+  void pushResetButton();
+
+  bool validateInputData();
+  void buttonHandler();
+
  private:
   std::shared_ptr<SignalData> p_signalData;
   std::vector<GraphWaveform *> p_waveforms;
+
+  size_t leftTime;
+  size_t rightTime;
 
   QLineEdit *scaleFromValue;
   QLineEdit *scaleToValue;
 
   QWidget *scaleForm;
-
   QWidget *p_scrollContent;
+
+  QFormLayout *formLayout;
+  QLabel *error;
 };
 
 }  // namespace fssp

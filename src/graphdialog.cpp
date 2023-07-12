@@ -123,27 +123,44 @@ void GraphDialog::enableGridAction(bool enable) {
 
 void GraphDialog::scaleGraphWaveformAction() {
   QPushButton *acceptScale = new QPushButton(tr("Accept"));
-  QPushButton *denyScale = new QPushButton(tr("Deny"));
-
-  scaleFromValue = new QLineEdit(QString::number(0));
-  scaleToValue = new QLineEdit(QString::number(p_signalData->allTime() - 1));
-
   connect(acceptScale, &QPushButton::clicked, this,
           &GraphDialog::pushAcceptButton);
+
+  QPushButton *denyScale = new QPushButton(tr("Deny"));
   connect(denyScale, &QPushButton::clicked, this, &GraphDialog::pushDenyButton);
 
-  QLabel *warning = new QLabel(tr("Values must be in milliseconds"));
+  QPushButton *doubleScale = new QPushButton(tr("Scale x2"));
+  connect(doubleScale, &QPushButton::clicked, this,
+          &GraphDialog::pushDoubleScaleButton);
 
-  QFormLayout *formLayout = new QFormLayout(this);
+  QPushButton *resetScale = new QPushButton(tr("Reset"));
+  connect(resetScale, &QPushButton::clicked, this,
+          &GraphDialog::pushResetButton);
+
+  scaleFromValue = new QLineEdit(QString::number(p_signalData->leftTime()));
+  scaleToValue = new QLineEdit(QString::number(p_signalData->rightTime() - 1));
+
+  QLabel *warning = new QLabel(tr("Values must be in milliseconds"));
+  error = new QLabel();
+
+  formLayout = new QFormLayout(this);
 
   formLayout->addRow(warning);
   formLayout->addRow(tr("&From:"), scaleFromValue);
   formLayout->addRow(tr("&To:"), scaleToValue);
+  formLayout->addRow(error);
 
-  QHBoxLayout *buttons = new QHBoxLayout();
-  buttons->addWidget(acceptScale);
-  buttons->addWidget(denyScale);
-  formLayout->addRow(buttons);
+  QHBoxLayout *activationButtons = new QHBoxLayout();
+  activationButtons->addWidget(acceptScale);
+  activationButtons->addWidget(denyScale);
+
+  formLayout->addRow(activationButtons);
+
+  QHBoxLayout *scaleButtons = new QHBoxLayout();
+  scaleButtons->addWidget(doubleScale);
+  scaleButtons->addWidget(resetScale);
+
+  formLayout->addRow(scaleButtons);
 
   scaleForm = new QWidget();
   scaleForm->setLayout(formLayout);
@@ -160,22 +177,62 @@ void GraphDialog::pushDenyButton() {
 void GraphDialog::pushAcceptButton() {
   bool result;
 
-  size_t leftTime = scaleFromValue->text().toLongLong(&result);
+  leftTime = scaleFromValue->text().toLongLong(&result);
   if (!result) return;
 
-  size_t rightTime = scaleToValue->text().toLongLong(&result);
+  rightTime = scaleToValue->text().toLongLong(&result);
   if (!result) return;
 
-  if (leftTime < 0 || rightTime < 0) return;
+  buttonHandler();
+}
 
-  if (leftTime > p_signalData->allTime() || rightTime > p_signalData->allTime())
-    return;
+void GraphDialog::pushDoubleScaleButton() {
+  size_t timeRange = p_signalData->rightTime() - p_signalData->leftTime();
 
-  if (leftTime >= rightTime) return;
+  leftTime = p_signalData->leftTime() + (timeRange / 4);
+  rightTime = p_signalData->rightTime() - (timeRange / 4);
+
+  buttonHandler();
+}
+
+void GraphDialog::pushResetButton() {
+  leftTime = 0;
+  rightTime = p_signalData->allTime() - 1;
+
+  buttonHandler();
+}
+
+void GraphDialog::buttonHandler() {
+  if (!validateInputData()) return;
+
+  p_signalData->setLeftTime(leftTime);
+  p_signalData->setRightTime(rightTime);
+
+  p_signalData->calculateArrayRange();
 
   pushDenyButton();
 
-  emit p_signalData->changedGraphTimeRange(leftTime, rightTime);
+  emit p_signalData->changedGraphTimeRange();
+}
+
+bool GraphDialog::validateInputData() {
+  if (leftTime < 0 || rightTime < 0) {
+    error->setText(tr("Values must be more than 0"));
+    return false;
+  }
+
+  if (leftTime > p_signalData->allTime() ||
+      rightTime > p_signalData->allTime()) {
+    error->setText(tr("Values must be less than range"));
+    return false;
+  }
+
+  if (leftTime >= rightTime) {
+    error->setText(tr("'From' must be less than 'to'"));
+    return false;
+  }
+
+  return true;
 }
 
 }  // namespace fssp
