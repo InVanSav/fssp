@@ -39,8 +39,8 @@ ModelingWindow::ModelingWindow(std::shared_ptr<SignalData> signalData,
 
   m_formScrollArea = new QScrollArea();
   m_formScrollArea->setFrameShape(QFrame::NoFrame);
+  m_formScrollArea->setWidgetResizable(true);
   m_formScrollArea->setWidget(m_model);
-  m_formScrollArea->setAlignment(Qt::AlignHCenter);
 
   QPushButton *calculateButton = new QPushButton(tr("Calculate"));
   connect(calculateButton, &QPushButton::clicked, this,
@@ -48,27 +48,24 @@ ModelingWindow::ModelingWindow(std::shared_ptr<SignalData> signalData,
 
   QVBoxLayout *formLayout = new QVBoxLayout();
   formLayout->addWidget(m_comboBox);
+  formLayout->addSpacing(10);
   formLayout->addWidget(m_formScrollArea);
   formLayout->addSpacing(10);
   formLayout->addWidget(calculateButton);
   formLayout->setAlignment(calculateButton, Qt::AlignCenter);
 
   formGroupBox->setLayout(formLayout);
-  formGroupBox->setFixedWidth(420);
+  formGroupBox->setMaximumHeight(350);
 
   m_previewScrollArea = new QScrollArea();
   m_previewScrollArea->setFrameShape(QFrame::NoFrame);
+  m_previewScrollArea->setWidgetResizable(true);
+  onCalcButtonPress();
 
   QGroupBox *previewGroupBox = new QGroupBox(tr("Preview"));
   QVBoxLayout *previewLayout = new QVBoxLayout();
   previewLayout->addWidget(m_previewScrollArea);
-  previewLayout->setAlignment(m_previewScrollArea, Qt::AlignCenter);
   previewGroupBox->setLayout(previewLayout);
-
-  QHBoxLayout *contentLayout = new QHBoxLayout();
-  contentLayout->addWidget(formGroupBox);
-  contentLayout->addSpacing(10);
-  contentLayout->addWidget(previewGroupBox);
 
   QPushButton *cancelButton = new QPushButton(tr("Cancel"));
   connect(cancelButton, &QPushButton::clicked, this,
@@ -84,15 +81,22 @@ ModelingWindow::ModelingWindow(std::shared_ptr<SignalData> signalData,
   buttonLayout->addWidget(cancelButton);
   buttonLayout->setAlignment(cancelButton, Qt::AlignVCenter | Qt::AlignRight);
 
+  QWidget *buttonWidget = new QWidget();
+  buttonWidget->setLayout(buttonLayout);
+  buttonWidget->setMinimumHeight(buttonWidget->sizeHint().height());
+  buttonWidget->setMaximumHeight(buttonWidget->sizeHint().height());
+
   QVBoxLayout *mainLayout = new QVBoxLayout();
-  mainLayout->addLayout(contentLayout);
+  mainLayout->addWidget(previewGroupBox);
   mainLayout->addSpacing(10);
-  mainLayout->addLayout(buttonLayout);
+  mainLayout->addWidget(formGroupBox);
+  mainLayout->addSpacing(10);
+  mainLayout->addWidget(buttonWidget);
 
   setLayout(mainLayout);
 
   setMinimumWidth(1000);
-  setMinimumHeight(400);
+  setMinimumHeight(800);
 }
 
 void ModelingWindow::onComboBoxChange(int index) {
@@ -162,7 +166,14 @@ void ModelingWindow::onCalcButtonPress() {
   ModelingWaveform *waveform = new ModelingWaveform(signalData);
   waveform->drawWaveform();
 
-  m_previewScrollArea->setWidget(waveform);
+  QVBoxLayout *waveformLayout = new QVBoxLayout();
+  waveformLayout->addWidget(waveform);
+  waveformLayout->setAlignment(waveform, Qt::AlignCenter);
+
+  QWidget *scrollWigdet = new QWidget();
+  scrollWigdet->setLayout(waveformLayout);
+
+  m_previewScrollArea->setWidget(scrollWigdet);
 }
 
 void ModelingWindow::onAddButtonPress() {}
