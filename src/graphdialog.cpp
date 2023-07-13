@@ -20,18 +20,18 @@ GraphDialog::GraphDialog(std::shared_ptr<SignalData> data, QWidget *parent)
   QVBoxLayout *mainLayout = new QVBoxLayout();
   QMenuBar *menuBar = new QMenuBar(this);
 
-  QAction *gridAction = menuBar->addAction(tr("Enable grid"));
+  QAction *gridAction = menuBar->addAction(tr("Grid"));
   gridAction->setCheckable(true);
   gridAction->setChecked(m_signalData->isGridEnabled());
 
   connect(gridAction, &QAction::triggered, this,
           &GraphDialog::enableGridAction);
 
-  QAction *scaleAction = menuBar->addAction(tr("Scale graph"));
+  QAction *scaleAction = menuBar->addAction(tr("Scale"));
   connect(scaleAction, &QAction::triggered, this,
           &GraphDialog::scaleGraphWaveformAction);
 
-  QAction *localizationAction = menuBar->addAction(tr("Local/Global"));
+  QAction *localizationAction = menuBar->addAction(tr("Range"));
   localizationAction->setCheckable(true);
   localizationAction->setChecked(m_signalData->isGlobalScale());
 
@@ -126,11 +126,11 @@ void GraphDialog::enableGridAction(bool enable) {
 }
 
 void GraphDialog::scaleGraphWaveformAction() {
-  QPushButton *acceptScale = new QPushButton(tr("Accept"));
+  QPushButton *acceptScale = new QPushButton(tr("Ok"));
   connect(acceptScale, &QPushButton::clicked, this,
           &GraphDialog::pushAcceptButton);
 
-  QPushButton *denyScale = new QPushButton(tr("Deny"));
+  QPushButton *denyScale = new QPushButton(tr("Cancel"));
   connect(denyScale, &QPushButton::clicked, this, &GraphDialog::pushDenyButton);
 
   QPushButton *doubleScale = new QPushButton(tr("Scale x2"));
@@ -169,7 +169,7 @@ void GraphDialog::scaleGraphWaveformAction() {
 
   m_scaleForm = new QWidget();
   m_scaleForm->setLayout(m_formLayout);
-  m_scaleForm->setWindowTitle(tr("Scale Graph"));
+  m_scaleForm->setWindowTitle(tr("Scale"));
 
   m_scaleForm->show();
 }

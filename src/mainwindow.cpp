@@ -112,6 +112,8 @@ void MainWindow::modNewSignal() {
 
 void MainWindow::modInCurSignal() {
   if (!m_tabWidget->count()) {
+    QMessageBox::information(
+        this, tr("Error"), tr("There is no open signal yet"), QMessageBox::Ok);
     return;
   }
 
@@ -228,8 +230,8 @@ void MainWindow::chooseStatisticSignal() {
 
   if (dialog->result() == QDialog::Accepted) {
     StatisticWindow *statistic =
-        new StatisticWindow(signalPage->getSignalData(), comboBox->currentIndex(),
-                      spinBox->value());
+        new StatisticWindow(signalPage->getSignalData(),
+                            comboBox->currentIndex(), spinBox->value());
 
     statistic->show();
 

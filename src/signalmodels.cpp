@@ -35,7 +35,7 @@ void DelayedSingleImpulseModel::calc() {
 DelayedSingleJumpModel::DelayedSingleJumpModel(
     std::shared_ptr<SignalData> signalData, QWidget *parent)
     : BaseModel{signalData, parent} {
-  delaySpinBox = addSpinBox(tr("Delay"), signalData->samplesNumber() / 3);
+  delaySpinBox = addSpinBox(tr("Delay:"), signalData->samplesNumber() / 3);
 }
 
 void DelayedSingleJumpModel::calc() {

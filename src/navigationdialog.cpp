@@ -25,7 +25,7 @@ NavigationDialog::NavigationDialog(std::shared_ptr<SignalData> data,
 
   setFixedWidth(sizeHint().rwidth() + 40);
 
-  setTitle(tr("Signals"));
+  setTitle(tr("Channels"));
 }
 
 void NavigationDialog::addWaveforms() {
