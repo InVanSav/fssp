@@ -17,6 +17,7 @@ BaseModel::BaseModel(std::shared_ptr<SignalData> signalData, QWidget *parent) {
 
 void BaseModel::createFields() {
   p_freqSpinBox = new QDoubleSpinBox();
+  p_freqSpinBox->setDecimals(6);
   p_freqSpinBox->setRange(0, INT_MAX);
 
   p_sampleNumberSpinBox = new QSpinBox();
@@ -50,7 +51,7 @@ QDoubleSpinBox *BaseModel::addDoubleSpinBox(const QString name,
                                             const double min,
                                             const double max) {
   QDoubleSpinBox *spinBox = new QDoubleSpinBox();
-
+  spinBox->setDecimals(8);
   spinBox->setRange(min, max);
   spinBox->setValue(value);
 
