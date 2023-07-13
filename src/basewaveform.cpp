@@ -20,8 +20,19 @@ BaseWaveform::BaseWaveform(std::shared_ptr<SignalData> signalData, int number,
 
   p_image = QImage();
 
-  p_leftArray = 0;
-  p_rightArray = p_signalData->samplesNumber() - 1;
+  p_minValue = *std::min_element(p_signalData->data()[p_number].begin(),
+                                 p_signalData->data()[p_number].end());
+  p_maxValue = *std::max_element(p_signalData->data()[p_number].begin(),
+                                 p_signalData->data()[p_number].end());
+
+  p_signalData->setLeftArray(0);
+  p_signalData->setRightArray(p_signalData->samplesNumber() - 1);
+
+  p_signalData->setLeftTime(0);
+  p_signalData->setRightTime(p_signalData->allTime() - 1);
+
+  p_signalData->setGridEnabled(true);
+  p_signalData->setGlobalScale(false);
 }
 
 int BaseWaveform::number() const { return p_number; }
@@ -65,18 +76,27 @@ void BaseWaveform::setTextMargin(int left, int right, int top, int bottom) {
 }
 
 void BaseWaveform::updateRelative() {
-  p_arrayRange = p_rightArray - p_leftArray + 1;
+  p_arrayRange = p_signalData->rightArray() - p_signalData->leftArray() + 1;
 
-  p_timeRange = p_arrayRange * p_signalData->timeForOne() * 1000;
+  p_timeRange = p_signalData->rightTime() - p_signalData->leftTime();
 
-  p_minValue =
-      *std::min_element(p_signalData->data()[p_number].begin() + p_leftArray,
-                        p_signalData->data()[p_number].begin() + p_rightArray);
-  p_maxValue =
-      *std::max_element(p_signalData->data()[p_number].begin() + p_leftArray,
-                        p_signalData->data()[p_number].begin() + p_rightArray);
+  p_curMinValue =
+      (p_signalData->isGlobalScale())
+          ? p_minValue
+          : *std::min_element(p_signalData->data()[p_number].begin() +
+                                  p_signalData->leftArray(),
+                              p_signalData->data()[p_number].begin() +
+                                  p_signalData->rightArray());
 
-  p_dataRange = std::abs(p_maxValue - p_minValue);
+  p_curMaxValue =
+      (p_signalData->isGlobalScale())
+          ? p_maxValue
+          : *std::max_element(p_signalData->data()[p_number].begin() +
+                                  p_signalData->leftArray(),
+                              p_signalData->data()[p_number].begin() +
+                                  p_signalData->rightArray());
+
+  p_dataRange = std::abs(p_curMaxValue - p_curMinValue);
 
   p_xLabelsNumber = ((p_height - (p_offsetBottom + p_paddingBottom)) -
                      (p_offsetTop + p_paddingTop)) /
@@ -93,6 +113,10 @@ void BaseWaveform::updateRelative() {
   p_pixelPerTime = ((p_width - (p_offsetRight + p_paddingRight)) -
                     (p_offsetLeft + p_paddingLeft)) /
                    static_cast<double>(p_timeRange);
+
+  p_timePerPixel = 1 / p_pixelPerTime;
+
+  p_dataPerPixel = 1 / p_pixelPerData;
 }
 
 bool BaseWaveform::isImageNull() const { return p_image.isNull(); }
@@ -104,6 +128,8 @@ void BaseWaveform::initImage() {
 void BaseWaveform::fill(QColor color) { p_image.fill(color.toRgb()); }
 
 void BaseWaveform::drawGrid() {
+  if (!p_signalData->isGridEnabled()) return;
+
   QPainter painter(&p_image);
   painter.setPen(QPen(p_gridColor, p_gridLineWidth));
   painter.setFont(p_font);
@@ -117,11 +143,11 @@ void BaseWaveform::drawGrid() {
   calculateDataDelimiter();
   calculateTimeDelimiter();
 
-  double curValueY = p_maxValue;
-  if (p_maxValue > 0) {
-    curValueY -= std::fmod(p_maxValue, p_dataDelimiter);
+  double curValueY = p_curMaxValue;
+  if (p_curMaxValue > 0) {
+    curValueY -= std::fmod(p_curMaxValue, p_dataDelimiter);
   } else {
-    curValueY += std::fmod(p_maxValue, p_dataDelimiter);
+    curValueY += std::fmod(p_curMaxValue, p_dataDelimiter);
   }
 
   axisStart = {p_offsetLeft + p_paddingLeft, p_offsetTop + p_paddingTop};
@@ -130,7 +156,7 @@ void BaseWaveform::drawGrid() {
 
   double stepY = p_pixelPerData * p_dataDelimiter;
   int startY =
-      axisStart.y() + std::abs(p_pixelPerData * (p_maxValue - curValueY));
+      axisStart.y() + std::abs(p_pixelPerData * (p_curMaxValue - curValueY));
 
   p1 = axisStart.x();
   p2 = axisStart.x() + (p_width - ((p_paddingLeft + p_offsetLeft) +
@@ -141,7 +167,7 @@ void BaseWaveform::drawGrid() {
     painter.drawLine(QPoint{p1, y}, QPoint{p2, y});
   }
 
-  if (std::abs(p_minValue - curValueY) >= p_dataDelimiter) {
+  if (std::abs(p_curMinValue - curValueY) >= p_dataDelimiter) {
     int y = startY + stepY * p_curDataDelimitersNumber;
 
     if (y <= axisEnd.y()) {
@@ -155,12 +181,12 @@ void BaseWaveform::drawGrid() {
   axisEnd = {p_width - (p_offsetRight + p_paddingRight),
              p_offsetTop + p_paddingTop};
 
-  size_t curValueX = std::floor(p_signalData->allTime());
+  size_t curValueX = std::floor(p_timeRange);
   curValueX -= curValueX % p_timeDelimiter;
 
   size_t stepX = std::round(p_pixelPerTime * p_timeDelimiter);
-  int startX = axisEnd.x() -
-               std::abs(p_pixelPerTime * (p_signalData->allTime() - curValueX));
+  int startX =
+      axisEnd.x() - std::abs(p_pixelPerTime * (p_timeRange - curValueX));
 
   p1 = axisStart.y();
   p2 = axisStart.y() + (p_height - ((p_paddingTop + p_offsetTop) +
@@ -173,9 +199,7 @@ void BaseWaveform::drawGrid() {
 }
 
 void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
-  if (isImageNull()) {
-    throw BaseWaveform::ImageIsNull();
-  }
+  if (isImageNull()) throw BaseWaveform::ImageIsNull();
 
   QPainter painter(&p_image);
   painter.setPen(QPen(p_mainColor, p_axisLineWidth));
@@ -206,6 +230,7 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
 
       p1 = axisStart.y() - 5;
       p2 = axisStart.y();
+
       break;
     }
 
@@ -217,6 +242,7 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
 
       p1 = axisStart.y() + 5;
       p2 = axisStart.y();
+
       break;
     }
   }
@@ -229,11 +255,11 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
 
     calculateDataDelimiter();
 
-    double curValue = p_maxValue;
-    if (p_maxValue > 0) {
-      curValue -= std::fmod(p_maxValue, p_dataDelimiter);
+    double curValue = p_curMaxValue;
+    if (p_curMaxValue > 0) {
+      curValue -= std::fmod(p_curMaxValue, p_dataDelimiter);
     } else {
-      curValue += std::fmod(p_maxValue, p_dataDelimiter);
+      curValue += std::fmod(p_curMaxValue, p_dataDelimiter);
     }
 
     int count = 0;
@@ -242,7 +268,7 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
 
     double step = p_pixelPerData * p_dataDelimiter;
     int startY =
-        axisStart.y() + std::abs(p_pixelPerData * (p_maxValue - curValue));
+        axisStart.y() + std::abs(p_pixelPerData * (p_curMaxValue - curValue));
     for (int i = 0; i < p_curDataDelimitersNumber; ++i) {
       int y = startY + step * i;
       painter.drawLine(QPoint{p1, y}, QPoint{p2, y});
@@ -260,7 +286,7 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
       }
     }
 
-    if (std::abs(p_minValue - curValue) >= p_dataDelimiter) {
+    if (std::abs(p_curMinValue - curValue) >= p_dataDelimiter) {
       int y = startY + step * p_curDataDelimitersNumber;
 
       if (y > axisEnd.y()) return;
@@ -290,40 +316,38 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
 
     calculateTimeDelimiter();
 
-    QString unitOfTime;
-    size_t divisionBase;
     if (p_timeDelimiter < p_timeMultiples[8]) {
-      unitOfTime = "msec";
-      divisionBase = 1;
+      p_signalData->setUnitOfTime(tr("msec"));
+      p_signalData->setDivisionBase(1);
     } else if (p_timeDelimiter < p_timeMultiples[14]) {
-      unitOfTime = "sec";
-      divisionBase = p_timeMultiples[8];
+      p_signalData->setUnitOfTime(tr("sec"));
+      p_signalData->setDivisionBase(p_timeMultiples[8]);
     } else if (p_timeDelimiter < p_timeMultiples[20]) {
-      unitOfTime = "min";
-      divisionBase = p_timeMultiples[14];
+      p_signalData->setUnitOfTime(tr("min"));
+      p_signalData->setDivisionBase(p_timeMultiples[14]);
     } else if (p_timeDelimiter < p_timeMultiples[25]) {
-      unitOfTime = "h";
-      divisionBase = p_timeMultiples[20];
+      p_signalData->setUnitOfTime(tr("h"));
+      p_signalData->setDivisionBase(p_timeMultiples[20]);
     } else if (p_timeDelimiter < p_timeMultiples[27]) {
-      unitOfTime = "d";
-      divisionBase = p_timeMultiples[25];
+      p_signalData->setUnitOfTime(tr("d"));
+      p_signalData->setDivisionBase(p_timeMultiples[25]);
     } else if (p_timeDelimiter < p_timeMultiples[29]) {
-      unitOfTime = "w";
-      divisionBase = p_timeMultiples[27];
+      p_signalData->setUnitOfTime(tr("w"));
+      p_signalData->setDivisionBase(p_timeMultiples[27]);
     } else if (p_timeDelimiter < p_timeMultiples[33]) {
-      unitOfTime = "m";
-      divisionBase = p_timeMultiples[29];
+      p_signalData->setUnitOfTime(tr("m"));
+      p_signalData->setDivisionBase(p_timeMultiples[29]);
     } else if (p_timeDelimiter <= p_timeMultiples[37]) {
-      unitOfTime = "y";
-      divisionBase = p_timeMultiples[33];
+      p_signalData->setUnitOfTime(tr("y"));
+      p_signalData->setDivisionBase(p_timeMultiples[33]);
     }
 
-    size_t curValue = std::floor(p_signalData->allTime());
+    size_t curValue = std::floor(p_timeRange);
     curValue -= curValue % p_timeDelimiter;
 
     size_t step = std::round(p_pixelPerTime * p_timeDelimiter);
-    int startX = axisEnd.x() - std::abs(p_pixelPerTime *
-                                        (p_signalData->allTime() - curValue));
+    int startX =
+        axisEnd.x() - std::abs(p_pixelPerTime * (p_timeRange - curValue));
     for (int i = 0; i < p_curTimeDelimitersNumber; ++i) {
       int x = startX - step * i;
       painter.drawLine(QPoint{x, p1}, QPoint{x, p2});
@@ -341,15 +365,17 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
                     QPoint{x + p_maxAxisTextWidth / 2, textY2}};
       }
 
-      painter.drawText(textRect, Qt::AlignHCenter | Qt::AlignVCenter,
-                       QString::number(curValue / divisionBase) + unitOfTime);
+      painter.drawText(
+          textRect, Qt::AlignHCenter | Qt::AlignVCenter,
+          QString::number(curValue / p_signalData->divisionBase()) +
+              p_signalData->unitOfTime());
 
       if (i != p_curTimeDelimitersNumber - 1) {
         curValue -= p_timeDelimiter;
       }
     }
 
-    if (std::abs(p_minValue - curValue) >= p_timeDelimiter) {
+    if (std::abs(p_curMinValue - curValue) >= p_timeDelimiter) {
       int x = startX - step * p_curTimeDelimitersNumber;
 
       if (x < axisStart.x()) return;
@@ -371,9 +397,7 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
 }
 
 void BaseWaveform::drawName(BaseWaveform::NameType nameType) {
-  if (isImageNull()) {
-    throw BaseWaveform::ImageIsNull();
-  }
+  if (isImageNull()) throw BaseWaveform::ImageIsNull();
 
   QPainter painter(&p_image);
   painter.setPen(p_mainColor);
@@ -407,9 +431,7 @@ void BaseWaveform::drawName(BaseWaveform::NameType nameType) {
 }
 
 void BaseWaveform::drawBresenham() {
-  if (isImageNull()) {
-    throw BaseWaveform::ImageIsNull();
-  }
+  if (isImageNull()) throw BaseWaveform::ImageIsNull();
 
   int localWidth =
       p_width - (p_offsetLeft + p_offsetRight + p_paddingLeft + p_paddingRight);
@@ -429,16 +451,21 @@ void BaseWaveform::drawBresenham() {
              p_paddingLeft;
     int x2 = std::round((i + 1) * localWidth / p_arrayRange) + p_offsetLeft +
              p_paddingLeft;
-    int y1 = localHeight -
-             std::floor((p_signalData->data()[p_number][i + p_leftArray] -
-                         p_minValue) *
-                        scale) +
-             p_offsetTop + p_paddingTop;
-    int y2 = localHeight -
-             std::floor((p_signalData->data()[p_number][i + p_leftArray + 1] -
-                         p_minValue) *
-                        scale) +
-             p_offsetTop + p_paddingTop;
+    int y1 =
+        localHeight -
+        std::floor(
+            (p_signalData->data()[p_number][i + p_signalData->leftArray()] -
+             p_curMinValue) *
+            scale) +
+        p_offsetTop + p_paddingTop;
+
+    int y2 =
+        localHeight -
+        std::floor(
+            (p_signalData->data()[p_number][i + p_signalData->leftArray() + 1] -
+             p_curMinValue) *
+            scale) +
+        p_offsetTop + p_paddingTop;
 
     int dx = std::abs(x2 - x1);
     int dy = std::abs(y2 - y1);

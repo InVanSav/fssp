@@ -11,11 +11,11 @@ SignalData::SignalData() {
   m_startTime = QDateTime{QDate{2000, 1, 1}, QTime{0, 0}};
   m_endTime = m_startTime.addMSecs(m_allTime);
 
-  m_channelsNumber = 0;
+  m_channelsNumber = 1;
 
-  m_isSelected = false;
-  m_leftSelection = 0;
-  m_rightSelection = m_samplesNumber - 1;
+  m_channelsName = std::vector<QString>(m_channelsNumber);
+  m_data = std::vector<std::vector<double>>(
+      m_channelsNumber, std::vector<double>(m_samplesNumber));
 }
 
 SignalData::SignalData(const QDateTime &startTime, const QDateTime &endTime,
@@ -35,10 +35,6 @@ SignalData::SignalData(const QDateTime &startTime, const QDateTime &endTime,
 
   m_channelsNumber = m_channelsName.size();
   m_samplesNumber = m_data[0].size();
-
-  m_isSelected = false;
-  m_leftSelection = 0;
-  m_rightSelection = m_data[0].size() - 1;
 }
 
 SignalData::SignalData(const SignalData &that) {
@@ -54,10 +50,6 @@ SignalData::SignalData(const SignalData &that) {
 
   m_channelsNumber = that.m_channelsNumber;
   m_samplesNumber = that.m_samplesNumber;
-
-  m_isSelected = that.m_isSelected;
-  m_leftSelection = that.m_leftSelection;
-  m_rightSelection = that.m_rightSelection;
 
   m_visibleWaveforms = std::vector<bool>(m_channelsNumber, false);
 }
@@ -75,10 +67,6 @@ SignalData::SignalData(SignalData &&that) {
 
   m_channelsNumber = that.m_channelsNumber;
   m_samplesNumber = that.m_samplesNumber;
-
-  m_isSelected = that.m_isSelected;
-  m_leftSelection = that.m_leftSelection;
-  m_rightSelection = that.m_rightSelection;
 
   m_visibleWaveforms = std::move(that.m_visibleWaveforms);
 }
@@ -105,10 +93,6 @@ void swap(SignalData &first, SignalData &second) {
   swap(first.m_channelsNumber, second.m_channelsNumber);
   swap(first.m_samplesNumber, second.m_samplesNumber);
 
-  swap(first.m_isSelected, second.m_isSelected);
-  swap(first.m_leftSelection, second.m_leftSelection);
-  swap(first.m_rightSelection, second.m_rightSelection);
-
   swap(first.m_visibleWaveforms, second.m_visibleWaveforms);
 }
 
@@ -122,6 +106,24 @@ double SignalData::timeForOne() const { return m_timeForOne; }
 
 size_t SignalData::allTime() const { return m_allTime; }
 
+QString SignalData::unitOfTime() const { return m_unitOfTime; }
+
+size_t SignalData::divisionBase() const { return m_divisionBase; }
+
+int SignalData::leftArray() const { return m_leftArray; }
+
+int SignalData::rightArray() const { return m_rightArray; }
+
+size_t SignalData::leftTime() const { return m_leftTime; }
+
+size_t SignalData::rightTime() const { return m_rightTime; }
+
+bool SignalData::isGridEnabled() const { return m_isGridEnabled; }
+
+bool SignalData::isGlobalScale() const { return m_isGlobalScale; }
+
+bool SignalData::isSelected() const { return m_isSelected; }
+
 const std::vector<QString> &SignalData::channelsName() const {
   return m_channelsName;
 }
@@ -134,33 +136,56 @@ int SignalData::channelsNumber() const { return m_channelsNumber; }
 
 int SignalData::samplesNumber() const { return m_samplesNumber; }
 
-bool SignalData::isSelected() const { return m_isSelected; }
-
-int SignalData::leftSelection() const { return m_leftSelection; }
-
-int SignalData::rightSelection() const { return m_rightSelection; }
-
-bool SignalData::setIsSelected(bool isSelected) {
-  m_isSelected = isSelected;
-  return this->isSelected();
-}
-
-int SignalData::setLeftSelection(int leftSelection) {
-  m_leftSelection = leftSelection;
-  return this->leftSelection();
-}
-
-int SignalData::setRightSelection(int rightSelection) {
-  m_rightSelection = rightSelection;
-  return this->rightSelection();
-}
-
 const std::vector<bool> &SignalData::visibleWaveforms() const {
   return m_visibleWaveforms;
 }
 
 void SignalData::setWaveformVisibility(int number, bool isVisible) {
   m_visibleWaveforms[number] = isVisible;
+}
+
+void SignalData::setGridEnabled(bool isGridEnabled) {
+  m_isGridEnabled = isGridEnabled;
+}
+
+void SignalData::setGlobalScale(bool isGlobalScale) {
+  m_isGlobalScale = isGlobalScale;
+}
+
+void SignalData::setSelected(bool isSelected) { m_isSelected = isSelected; }
+
+void SignalData::setLeftArray(int leftArray) { m_leftArray = leftArray; }
+
+void SignalData::setRightArray(int rightArray) { m_rightArray = rightArray; }
+
+void SignalData::setLeftTime(int leftTime) { m_leftTime = leftTime; }
+
+void SignalData::setRightTime(int rightTime) { m_rightTime = rightTime; }
+
+void SignalData::setUnitOfTime(QString unitOfTime) {
+  m_unitOfTime = unitOfTime;
+}
+
+void SignalData::setDivisionBase(size_t divisionBase) {
+  m_divisionBase = divisionBase;
+}
+
+void SignalData::calculateArrayRange() {
+  double dataPerTime =
+      static_cast<double>(m_samplesNumber) / static_cast<double>(m_allTime);
+
+  m_rightArray = dataPerTime * m_rightTime;
+  m_leftArray = dataPerTime * m_leftTime;
+
+  if ((m_rightArray - m_leftArray < 8) && (m_samplesNumber > 16)) {
+    if (m_samplesNumber - m_rightArray > 8) {
+      m_leftArray = m_rightArray;
+      m_rightArray += 8;
+    } else {
+      m_rightArray = m_leftArray;
+      m_leftArray -= 8;
+    }
+  }
 }
 
 }  // namespace fssp

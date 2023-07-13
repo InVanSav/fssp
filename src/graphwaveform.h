@@ -1,48 +1,15 @@
 #pragma once
 
 #include <QLabel>
+#include <QMenu>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QToolTip>
 #include <QWidget>
 
 #include "basewaveform.h"
 
 namespace fssp {
-
-// class GraphWaveform : public QLabel {
-//   Q_OBJECT
-//  public:
-//   explicit GraphWaveform(int number, QWidget *parent = nullptr);
-
-//  void drawWaveform(const std::vector<double> &data, double allTime, int
-//  width,
-//                    int height, bool isSelected = false, int leftSelection =
-//                    0, int rightSelection = 0);
-
-//  int number() const;
-
-// signals:
-//  void selectionFinished(int leftX, int rightX, int realWidth);
-
-// protected:
-//  void mousePressEvent(QMouseEvent *event) override;
-//  void mouseMoveEvent(QMouseEvent *event) override;
-//  void mouseReleaseEvent(QMouseEvent *event) override;
-
-//  void paintEvent(QPaintEvent *event) override;
-
-// private:
-//  int m_number;
-
-//  const int m_OFFSET_START_X = 60;
-//  const int m_OFFSET_START_Y = 15;
-//  const int m_OFFSET_END_X = 30;
-//  const int m_OFFSET_END_Y = 15;
-
-//  bool m_isSelecting;
-//  QPoint m_startPoint;
-//  QRect m_selectionRect;
-//};
 
 class GraphWaveform : public BaseWaveform {
   Q_OBJECT
@@ -56,9 +23,38 @@ class GraphWaveform : public BaseWaveform {
   void setMiddle();
   void setBottom();
 
+ public slots:
+  void onChangedEnableGrid();
+  void onChangedGraphTimeRange();
+  void onChangedGlobalScale();
+
+ protected:
+  void mousePressEvent(QMouseEvent *event) override;
+  void mouseMoveEvent(QMouseEvent *event) override;
+  void mouseReleaseEvent(QMouseEvent *event) override;
+
+  void keyPressEvent(QKeyEvent *event) override;
+  void keyReleaseEvent(QKeyEvent *event) override;
+
+  void showContextMenu(const QPoint &pos);
+
+  void paintEvent(QPaintEvent *event) override;
+
+ private:
+  void showToolTip(QMouseEvent *event);
+  bool validateToolTipPoint(QMouseEvent *event);
+
+  void initSelection(QMouseEvent *event);
+
  private:
   bool m_isTop;
   bool m_isBottom;
+
+  bool m_isSelected;
+  bool m_isCtrlPressed;
+
+  QPoint m_startPoint;
+  QRect m_selectionRect;
 };
 
 }  // namespace fssp
