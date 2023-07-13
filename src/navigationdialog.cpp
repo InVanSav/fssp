@@ -37,6 +37,8 @@ void NavigationDialog::addWaveforms() {
   for (int i = 0; i < m_signalData->channelsNumber(); ++i) {
     NavigationWaveform *waveform = new NavigationWaveform(m_signalData, i);
 
+    waveform->setIsVisible(m_signalData->visibleWaveforms()[i]);
+
     m_waveforms[i] = waveform;
     vBox->addWidget(waveform);
   }

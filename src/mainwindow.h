@@ -8,7 +8,7 @@
 #include <QString>
 
 #include "signalbuilder.h"
-#include "statistic.h"
+#include "statisticwindow.h"
 
 namespace fssp {
 

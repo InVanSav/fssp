@@ -26,6 +26,10 @@ void NavigationWaveform::drawWaveform() {
   showWaveform();
 }
 
+void NavigationWaveform::setIsVisible(bool isVisible) {
+  m_isVisible = isVisible;
+}
+
 void NavigationWaveform::mousePressEvent(QMouseEvent *event) {
   if (event->button() == Qt::RightButton) {
     showContextMenu(event->pos());

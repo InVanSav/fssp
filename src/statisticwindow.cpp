@@ -1,8 +1,8 @@
-#include "statistic.h"
+#include "statisticwindow.h"
 
 namespace fssp {
 
-Statistic::Statistic(std::shared_ptr<SignalData> data, int curSignal,
+StatisticWindow::StatisticWindow(std::shared_ptr<SignalData> data, int curSignal,
                      int intervalsNumber, QWidget *parent)
     : QDialog{parent} {
   p_intervalsNumber = intervalsNumber;
@@ -15,7 +15,7 @@ Statistic::Statistic(std::shared_ptr<SignalData> data, int curSignal,
   showDialog();
 }
 
-void Statistic::showDialog() {
+void StatisticWindow::showDialog() {
   setWindowTitle(tr("Statistic of ") +
                  p_signalData->channelsName()[p_curSignal]);
 
@@ -86,7 +86,7 @@ void Statistic::showDialog() {
   setFixedSize(sizeHint());
 }
 
-void Statistic::calculateStatistic() {
+void StatisticWindow::calculateStatistic() {
   if (!p_intervalsNumber) return;
 
   std::vector<double> data = p_signalData->data()[p_curSignal];

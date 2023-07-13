@@ -191,8 +191,8 @@ void MainWindow::chooseStatisticSignal() {
   if (dialog->result() == QDialog::Rejected) dialog->reject();
 
   if (dialog->result() == QDialog::Accepted) {
-    Statistic *statistic =
-        new Statistic(signalPage->getSignalData(), comboBox->currentIndex(),
+    StatisticWindow *statistic =
+        new StatisticWindow(signalPage->getSignalData(), comboBox->currentIndex(),
                       spinBox->value());
 
     statistic->show();

@@ -178,47 +178,47 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/graphdialog.cpp" line="136"/>
+        <location filename="../src/graphdialog.cpp" line="129"/>
         <source>Accept</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/graphdialog.cpp" line="140"/>
+        <location filename="../src/graphdialog.cpp" line="133"/>
         <source>Deny</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/graphdialog.cpp" line="143"/>
+        <location filename="../src/graphdialog.cpp" line="136"/>
         <source>Scale x2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/graphdialog.cpp" line="147"/>
+        <location filename="../src/graphdialog.cpp" line="140"/>
         <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/graphdialog.cpp" line="161"/>
+        <location filename="../src/graphdialog.cpp" line="154"/>
         <source>&amp;From:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/graphdialog.cpp" line="162"/>
+        <location filename="../src/graphdialog.cpp" line="155"/>
         <source>&amp;To:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/graphdialog.cpp" line="179"/>
+        <location filename="../src/graphdialog.cpp" line="172"/>
         <source>Scale Graph</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/graphdialog.cpp" line="237"/>
+        <location filename="../src/graphdialog.cpp" line="230"/>
         <source>Values must be less than range</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/graphdialog.cpp" line="242"/>
+        <location filename="../src/graphdialog.cpp" line="235"/>
         <source>&apos;From&apos; must be less than &apos;to&apos;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -303,34 +303,59 @@
         <translation>Моделировать в текущем сигнале...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="123"/>
+        <location filename="../src/mainwindow.cpp" line="121"/>
+        <source>Statistic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="127"/>
         <source>&amp;File</source>
         <translation>&amp;Файл</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="127"/>
+        <location filename="../src/mainwindow.cpp" line="131"/>
         <source>&amp;Modeling</source>
         <translation>&amp;Моделирование</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="131"/>
+        <location filename="../src/mainwindow.cpp" line="135"/>
         <source>&amp;Analysis</source>
         <translation>&amp;Анализ</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="133"/>
+        <location filename="../src/mainwindow.cpp" line="138"/>
         <source>&amp;Filter</source>
         <translation>&amp;Фильтрация</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="135"/>
+        <location filename="../src/mainwindow.cpp" line="140"/>
         <source>&amp;Settings</source>
         <translation>&amp;Настройки</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="137"/>
+        <location filename="../src/mainwindow.cpp" line="142"/>
         <source>Help</source>
         <translation>Справка</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="148"/>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="148"/>
+        <source>No signal open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="157"/>
+        <source>Choose Signal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="177"/>
+        <source>Number of intervals</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -483,6 +508,69 @@
     <message>
         <location filename="../src/signalmodels.cpp" line="126"/>
         <source>Period:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>fssp::StatisticWindow</name>
+    <message>
+        <location filename="../src/statisticwindow.cpp" line="19"/>
+        <source>Statistic of </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/statisticwindow.cpp" line="23"/>
+        <source>Minimum value: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/statisticwindow.cpp" line="26"/>
+        <source>Maximum value: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/statisticwindow.cpp" line="29"/>
+        <source>Average value: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/statisticwindow.cpp" line="37"/>
+        <source>Variation factor: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/statisticwindow.cpp" line="40"/>
+        <source>Asymmetry factor: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/statisticwindow.cpp" line="43"/>
+        <source>Kurtosis factor: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/statisticwindow.cpp" line="51"/>
+        <source>Dispersion: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/statisticwindow.cpp" line="53"/>
+        <source>Standart derivation: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/statisticwindow.cpp" line="57"/>
+        <source>Median: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/statisticwindow.cpp" line="65"/>
+        <source>Order quantile 0.05: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/statisticwindow.cpp" line="68"/>
+        <source>Order quantile 0.95: </source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -46,22 +46,22 @@ class GraphDialog : public QGroupBox {
   bool validateInputData();
   void buttonHandler();
 
-  std::shared_ptr<SignalData> p_signalData;
-  std::vector<GraphWaveform *> p_waveforms;
+  std::shared_ptr<SignalData> m_signalData;
+  std::vector<GraphWaveform *> m_waveforms;
 
-  size_t p_leftTime;
-  size_t p_rightTime;
+  size_t m_leftTime;
+  size_t m_rightTime;
 
-  QDateTimeEdit *p_scaleFromValue;
-  QDateTimeEdit *p_scaleToValue;
+  QDateTimeEdit *m_scaleFromValue;
+  QDateTimeEdit *m_scaleToValue;
 
-  QWidget *p_scaleForm;
-  QWidget *p_scrollContent;
+  QWidget *m_scaleForm;
+  QWidget *m_scrollContent;
 
   QScrollArea *m_scrollArea;
 
-  QFormLayout *formLayout;
-  QLabel *error;
+  QFormLayout *m_formLayout;
+  QLabel *m_error;
 };
 
 }  // namespace fssp

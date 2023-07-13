@@ -49,8 +49,8 @@ set(PROJECT_SOURCES
         src/modelingwindow.h
         src/modelingwaveform.cpp
         src/modelingwaveform.h
-        src/statistic.cpp
-        src/statistic.h
+        src/statisticwindow.cpp
+        src/statisticwindow.h
         ${QM_FILES}
 )
 

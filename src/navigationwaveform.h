@@ -16,6 +16,8 @@ class NavigationWaveform : public BaseWaveform {
 
   void drawWaveform() override;
 
+  void setIsVisible(bool isVisible);
+
  public slots:
   void onChangedGraphTimeRange();
 

@@ -16,10 +16,10 @@
 
 namespace fssp {
 
-class Statistic : public QDialog {
+class StatisticWindow : public QDialog {
   Q_OBJECT
  public:
-  explicit Statistic(std::shared_ptr<SignalData> data, int curSignal,
+  explicit StatisticWindow(std::shared_ptr<SignalData> data, int curSignal,
                      int intervalsNumber, QWidget *parent = nullptr);
 
  private:
