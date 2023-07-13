@@ -17,11 +17,16 @@ class NavigationDialog : public QGroupBox {
 
   void drawWaveforms();
 
+ protected slots:
+  void onDataAdded();
+
  private:
+  void addWaveforms();
+
   std::shared_ptr<SignalData> m_signalData;
   std::vector<NavigationWaveform *> m_waveforms;
 
-  QWidget *scrollContent;
+  QScrollArea *m_scrollArea;
 };
 
 }  // namespace fssp

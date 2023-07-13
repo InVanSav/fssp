@@ -3,14 +3,18 @@
 #include <limits>
 
 namespace fssp {
+
 BaseModel::BaseModel(std::shared_ptr<SignalData> signalData, QWidget *parent) {
   createFields();
 
+  number = signalData->channelsNumber();
+  count = 0;
+
+  updateChannelName();
+
   p_freqSpinBox->setValue(signalData->rate());
   p_sampleNumberSpinBox->setValue(signalData->samplesNumber());
-  p_channelNameLineEdit->setText("Model_" +
-                                 QString::number(signalData->channelsNumber()));
-  p_dateTimeEdit->setDateTime(QDateTime::currentDateTime());
+  p_dateTimeEdit->setDateTime(signalData->startTime());
 
   createForm();
 }
@@ -43,7 +47,7 @@ SignalData BaseModel::getData() {
   return SignalData(p_dateTimeEdit->dateTime(),
                     p_dateTimeEdit->dateTime().addMSecs(allTime),
                     p_freqSpinBox->value(), 1 / p_freqSpinBox->value(), allTime,
-                    {p_channelNameLineEdit->text()}, {std::move(p_data)});
+                    {p_channelNameLineEdit->text()}, {p_data});
 }
 
 QDoubleSpinBox *BaseModel::addDoubleSpinBox(const QString name,
@@ -70,6 +74,18 @@ QSpinBox *BaseModel::addSpinBox(const QString name, const int value,
   p_formLayout->addRow(name, spinBox);
 
   return spinBox;
+}
+
+void BaseModel::updateChannelName() {
+  ++count;
+  p_channelNameLineEdit->setText("Model_" + QString::number(number) + "_" +
+                                 QString::number(count));
+}
+
+void BaseModel::lockHeader() {
+  p_freqSpinBox->setEnabled(false);
+  p_sampleNumberSpinBox->setEnabled(false);
+  p_dateTimeEdit->setEnabled(false);
 }
 
 }  // namespace fssp

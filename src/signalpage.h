@@ -12,10 +12,12 @@ namespace fssp {
 class SignalPage : public QWidget {
   Q_OBJECT
  public:
-  explicit SignalPage(SignalData data, QWidget *parent = nullptr);
+  explicit SignalPage(const SignalData data, QWidget *parent = nullptr);
+
+  std::shared_ptr<SignalData> getSignalData();
 
  private:
-  std::shared_ptr<SignalData> m_data;
+  std::shared_ptr<SignalData> m_signalData;
 
   NavigationDialog *m_navDialog;
   GraphDialog *m_graphDialog;

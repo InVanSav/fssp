@@ -20,6 +20,10 @@ class BaseModel : public QWidget {
 
   virtual void calc() = 0;
 
+  void updateChannelName();
+
+  void lockHeader();
+
  protected:
   QFormLayout *p_formLayout;
 
@@ -36,6 +40,9 @@ class BaseModel : public QWidget {
                        const int min = INT_MIN, const int max = INT_MAX);
 
   std::vector<double> p_data;
+
+  int number;
+  int count;
 
  private:
   void createFields();

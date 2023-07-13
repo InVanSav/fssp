@@ -5,6 +5,57 @@ namespace fssp {
 GraphDialog::GraphDialog(std::shared_ptr<SignalData> data, QWidget *parent)
     : QGroupBox{parent} {
   p_signalData = data;
+
+  connect(p_signalData.get(), &SignalData::dataAdded, this,
+          &GraphDialog::onDataAdded);
+
+  m_scrollArea = new QScrollArea();
+  m_scrollArea->setFrameShape(QFrame::NoFrame);
+  m_scrollArea->setWidgetResizable(true);
+
+  addWaveforms();
+
+  drawWaveforms();
+
+  QVBoxLayout *mainLayout = new QVBoxLayout();
+  QMenuBar *menuBar = new QMenuBar(this);
+
+  QAction *gridAction = menuBar->addAction(tr("Enable grid"));
+  gridAction->setCheckable(true);
+  gridAction->setChecked(p_signalData->isGridEnabled());
+
+  connect(gridAction, &QAction::triggered, this,
+          &GraphDialog::enableGridAction);
+
+  QAction *scaleAction = menuBar->addAction(tr("Scale graph"));
+  connect(scaleAction, &QAction::triggered, this,
+          &GraphDialog::scaleGraphWaveformAction);
+
+  QAction *localizationAction = menuBar->addAction(tr("Local/Global"));
+  localizationAction->setCheckable(true);
+  localizationAction->setChecked(p_signalData->isGlobalScale());
+
+  connect(localizationAction, &QAction::triggered, this,
+          &GraphDialog::changeArrayGlobalizationAction);
+
+  mainLayout->setMenuBar(menuBar);
+
+  mainLayout->addWidget(m_scrollArea);
+
+  setLayout(mainLayout);
+
+  connect(p_signalData.get(), &SignalData::changedWaveformVisibility, this,
+          &GraphDialog::onChangedWaveformVisibility);
+
+  setTitle(tr("Graphs"));
+}
+
+void GraphDialog::onChangedWaveformVisibility() {
+  hideWaveforms();
+  drawWaveforms();
+}
+
+void GraphDialog::addWaveforms() {
   p_waveforms = std::vector<GraphWaveform *>(p_signalData->channelsNumber());
 
   p_scrollContent = new QWidget();
@@ -37,47 +88,7 @@ GraphDialog::GraphDialog(std::shared_ptr<SignalData> data, QWidget *parent)
   vBox->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
   p_scrollContent->setLayout(vBox);
 
-  QScrollArea *scrollArea = new QScrollArea();
-  scrollArea->setFrameShape(QFrame::NoFrame);
-  scrollArea->setWidget(p_scrollContent);
-  scrollArea->setWidgetResizable(true);
-
-  QVBoxLayout *mainLayout = new QVBoxLayout();
-  QMenuBar *menuBar = new QMenuBar(this);
-
-  QAction *gridAction = menuBar->addAction(tr("Enable grid"));
-  gridAction->setCheckable(true);
-  gridAction->setChecked(p_signalData->isGridEnabled());
-
-  connect(gridAction, &QAction::triggered, this,
-          &GraphDialog::enableGridAction);
-
-  QAction *scaleAction = menuBar->addAction(tr("Scale graph"));
-  connect(scaleAction, &QAction::triggered, this,
-          &GraphDialog::scaleGraphWaveformAction);
-
-  QAction *localizationAction = menuBar->addAction(tr("Local/Global"));
-  localizationAction->setCheckable(true);
-  localizationAction->setChecked(p_signalData->isGlobalScale());
-
-  connect(localizationAction, &QAction::triggered, this,
-          &GraphDialog::changeArrayGlobalizationAction);
-
-  mainLayout->setMenuBar(menuBar);
-
-  mainLayout->addWidget(scrollArea);
-
-  setLayout(mainLayout);
-
-  connect(p_signalData.get(), &SignalData::changedWaveformVisibility, this,
-          &GraphDialog::onChangedWaveformVisibility);
-
-  setTitle(tr("Graphs"));
-}
-
-void GraphDialog::onChangedWaveformVisibility() {
-  hideWaveforms();
-  drawWaveforms();
+  m_scrollArea->setWidget(p_scrollContent);
 }
 
 void GraphDialog::drawWaveforms() {
@@ -238,6 +249,12 @@ bool GraphDialog::validateInputData() {
 void GraphDialog::changeArrayGlobalizationAction() {
   p_signalData->setGlobalScale(!p_signalData->isGlobalScale());
   emit p_signalData->changedGlobalScale();
+}
+
+void GraphDialog::onDataAdded() {
+  addWaveforms();
+  hideWaveforms();
+  drawWaveforms();
 }
 
 }  // namespace fssp

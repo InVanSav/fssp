@@ -6,13 +6,34 @@ NavigationDialog::NavigationDialog(std::shared_ptr<SignalData> data,
                                    QWidget *parent)
     : QGroupBox{parent} {
   m_signalData = data;
-  m_waveforms =
-      std::vector<NavigationWaveform *>(m_signalData->channelsNumber());
 
-  scrollContent = new QWidget();
+  connect(m_signalData.get(), &SignalData::dataAdded, this,
+          &NavigationDialog::onDataAdded);
 
+  m_scrollArea = new QScrollArea();
+  m_scrollArea->setFrameShape(QFrame::NoFrame);
+  m_scrollArea->setWidgetResizable(true);
+
+  addWaveforms();
+
+  drawWaveforms();
+
+  QVBoxLayout *mainLayout = new QVBoxLayout();
+  mainLayout->addWidget(m_scrollArea);
+
+  setLayout(mainLayout);
+
+  setFixedWidth(sizeHint().rwidth() + 40);
+
+  setTitle(tr("Signals"));
+}
+
+void NavigationDialog::addWaveforms() {
   QVBoxLayout *vBox = new QVBoxLayout();
   vBox->addSpacing(10);
+
+  m_waveforms =
+      std::vector<NavigationWaveform *>(m_signalData->channelsNumber());
   for (int i = 0; i < m_signalData->channelsNumber(); ++i) {
     NavigationWaveform *waveform = new NavigationWaveform(m_signalData, i);
 
@@ -22,29 +43,22 @@ NavigationDialog::NavigationDialog(std::shared_ptr<SignalData> data,
   vBox->addSpacing(10);
 
   vBox->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
+
+  QWidget *scrollContent = new QWidget();
   scrollContent->setLayout(vBox);
 
-  drawWaveforms();
-
-  QScrollArea *scrollArea = new QScrollArea();
-  scrollArea->setFrameShape(QFrame::NoFrame);
-  scrollArea->setWidget(scrollContent);
-  scrollArea->setWidgetResizable(true);
-
-  QVBoxLayout *mainLayout = new QVBoxLayout();
-  mainLayout->addWidget(scrollArea);
-
-  setLayout(mainLayout);
-
-  setFixedWidth(sizeHint().rwidth() + 40);
-
-  setTitle(tr("Signals"));
+  m_scrollArea->setWidget(scrollContent);
 }
 
 void NavigationDialog::drawWaveforms() {
   for (int i = 0; i < m_waveforms.size(); ++i) {
     m_waveforms[i]->drawWaveform();
   }
+}
+
+void NavigationDialog::onDataAdded() {
+  addWaveforms();
+  drawWaveforms();
 }
 
 }  // namespace fssp
