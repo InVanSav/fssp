@@ -45,8 +45,8 @@ class SignalData : public QObject {
   void setLeftArray(int leftArray);
   void setRightArray(int rightArray);
 
-  void setLeftTime(int leftTime);
-  void setRightTime(int rightTime);
+  void setLeftTime(size_t leftTime);
+  void setRightTime(size_t rightTime);
 
   void setGridEnabled(bool isGridEnabled);
   void setGlobalScale(bool isGlobalScale);

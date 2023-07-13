@@ -16,6 +16,12 @@ SignalData::SignalData() {
   m_channelsName = std::vector<QString>(m_channelsNumber);
   m_data = std::vector<std::vector<double>>(
       m_channelsNumber, std::vector<double>(m_samplesNumber));
+
+  m_leftArray = 0;
+  m_rightArray = m_samplesNumber - 1;
+
+  m_leftTime = 0;
+  m_rightTime = m_allTime - 1;
 }
 
 SignalData::SignalData(const QDateTime &startTime, const QDateTime &endTime,
@@ -35,6 +41,12 @@ SignalData::SignalData(const QDateTime &startTime, const QDateTime &endTime,
 
   m_channelsNumber = m_channelsName.size();
   m_samplesNumber = m_data[0].size();
+
+  m_leftArray = 0;
+  m_rightArray = m_samplesNumber - 1;
+
+  m_leftTime = 0;
+  m_rightTime = m_allTime - 1;
 }
 
 SignalData::SignalData(const SignalData &that) {
@@ -52,6 +64,12 @@ SignalData::SignalData(const SignalData &that) {
   m_samplesNumber = that.m_samplesNumber;
 
   m_visibleWaveforms = std::vector<bool>(m_channelsNumber, false);
+
+  m_leftArray = that.m_leftArray;
+  m_rightArray = that.m_rightArray;
+
+  m_leftTime = that.m_leftTime;
+  m_rightTime = that.m_rightTime;
 }
 
 SignalData::SignalData(SignalData &&that) {
@@ -69,6 +87,12 @@ SignalData::SignalData(SignalData &&that) {
   m_samplesNumber = that.m_samplesNumber;
 
   m_visibleWaveforms = std::move(that.m_visibleWaveforms);
+
+  m_leftArray = that.m_leftArray;
+  m_rightArray = that.m_rightArray;
+
+  m_leftTime = that.m_leftTime;
+  m_rightTime = that.m_rightTime;
 }
 
 SignalData &SignalData::operator=(SignalData that) {
@@ -94,6 +118,12 @@ void swap(SignalData &first, SignalData &second) {
   swap(first.m_samplesNumber, second.m_samplesNumber);
 
   swap(first.m_visibleWaveforms, second.m_visibleWaveforms);
+
+  swap(first.m_leftArray, second.m_leftArray);
+  swap(first.m_rightArray, second.m_rightArray);
+
+  swap(first.m_leftTime, second.m_leftTime);
+  swap(first.m_rightTime, second.m_rightTime);
 }
 
 QDateTime SignalData::startTime() const { return m_startTime; }
@@ -158,9 +188,9 @@ void SignalData::setLeftArray(int leftArray) { m_leftArray = leftArray; }
 
 void SignalData::setRightArray(int rightArray) { m_rightArray = rightArray; }
 
-void SignalData::setLeftTime(int leftTime) { m_leftTime = leftTime; }
+void SignalData::setLeftTime(size_t leftTime) { m_leftTime = leftTime; }
 
-void SignalData::setRightTime(int rightTime) { m_rightTime = rightTime; }
+void SignalData::setRightTime(size_t rightTime) { m_rightTime = rightTime; }
 
 void SignalData::setUnitOfTime(QString unitOfTime) {
   m_unitOfTime = unitOfTime;

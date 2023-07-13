@@ -48,6 +48,49 @@
     </message>
 </context>
 <context>
+    <name>fssp::BaseWaveform</name>
+    <message>
+        <location filename="../src/basewaveform.cpp" line="320"/>
+        <source>msec</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/basewaveform.cpp" line="323"/>
+        <source>sec</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/basewaveform.cpp" line="326"/>
+        <source>min</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/basewaveform.cpp" line="329"/>
+        <source>h</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/basewaveform.cpp" line="332"/>
+        <source>d</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/basewaveform.cpp" line="335"/>
+        <source>w</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/basewaveform.cpp" line="338"/>
+        <source>m</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/basewaveform.cpp" line="341"/>
+        <source>y</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>fssp::DelayedSingleImpulseModel</name>
     <message>
         <location filename="../src/signalmodels.cpp" line="16"/>
@@ -115,8 +158,77 @@
 <context>
     <name>fssp::GraphDialog</name>
     <message>
-        <location filename="../src/graphdialog.cpp" line="53"/>
+        <location filename="../src/graphdialog.cpp" line="48"/>
+        <source>Enable grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/graphdialog.cpp" line="55"/>
+        <source>Scale graph</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/graphdialog.cpp" line="59"/>
+        <source>Local/Global</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/graphdialog.cpp" line="75"/>
         <source>Graphs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/graphdialog.cpp" line="125"/>
+        <source>Accept</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/graphdialog.cpp" line="129"/>
+        <source>Deny</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/graphdialog.cpp" line="132"/>
+        <source>Scale x2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/graphdialog.cpp" line="136"/>
+        <source>Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/graphdialog.cpp" line="150"/>
+        <source>&amp;From:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/graphdialog.cpp" line="151"/>
+        <source>&amp;To:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/graphdialog.cpp" line="168"/>
+        <source>Scale Graph</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/graphdialog.cpp" line="226"/>
+        <source>Values must be less than range</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/graphdialog.cpp" line="231"/>
+        <source>&apos;From&apos; must be less than &apos;to&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>fssp::GraphWaveform</name>
+    <message>
+        <location filename="../src/graphwaveform.cpp" line="167"/>
+        <source>Value: %1 
+ Time: %2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -74,12 +74,21 @@ void GraphWaveform::setBottom() {
 
 void GraphWaveform::mousePressEvent(QMouseEvent *event) {
   if (event->button() != Qt::LeftButton) return;
+
+  if (m_isCtrlPressed) {
+    showToolTip(event);
+    return;
+  }
+
   initSelection(event);
-  if (!m_isCtrlPressed) return;
-  showToolTip(event);
 }
 
 void GraphWaveform::mouseMoveEvent(QMouseEvent *event) {
+  if (m_isCtrlPressed) {
+    showToolTip(event);
+    return;
+  }
+
   if (!m_isSelected) return;
 
   QPoint currentPos = event->pos();
