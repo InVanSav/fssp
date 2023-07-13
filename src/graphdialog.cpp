@@ -137,50 +137,50 @@ void GraphDialog::scaleGraphWaveformAction() {
   connect(resetScale, &QPushButton::clicked, this,
           &GraphDialog::pushResetButton);
 
-  scaleFromValue = new QDateTimeEdit(p_signalData->startTime());
-  scaleFromValue->setCalendarPopup(true);
-  scaleToValue = new QDateTimeEdit(p_signalData->endTime());
-  scaleToValue->setCalendarPopup(true);
+  p_scaleFromValue = new QDateTimeEdit(p_signalData->startTime());
+  p_scaleFromValue->setCalendarPopup(true);
+  p_scaleToValue = new QDateTimeEdit(p_signalData->endTime());
+  p_scaleToValue->setCalendarPopup(true);
 
-  error = new QLabel();
+  p_error = new QLabel();
 
-  formLayout = new QFormLayout(this);
-  formLayout->setHorizontalSpacing(5);
+  p_formLayout = new QFormLayout(this);
+  p_formLayout->setHorizontalSpacing(5);
 
-  formLayout->addRow(tr("&From:"), scaleFromValue);
-  formLayout->addRow(tr("&To:"), scaleToValue);
-  formLayout->addRow(error);
+  p_formLayout->addRow(tr("&From:"), p_scaleFromValue);
+  p_formLayout->addRow(tr("&To:"), p_scaleToValue);
+  p_formLayout->addRow(p_error);
 
   QHBoxLayout *scaleButtons = new QHBoxLayout();
   scaleButtons->addWidget(doubleScale);
   scaleButtons->addWidget(resetScale);
 
-  formLayout->addRow(scaleButtons);
+  p_formLayout->addRow(scaleButtons);
 
   QHBoxLayout *activationButtons = new QHBoxLayout();
   activationButtons->addWidget(acceptScale);
   activationButtons->addWidget(denyScale);
 
-  formLayout->addRow(activationButtons);
+  p_formLayout->addRow(activationButtons);
 
-  scaleForm = new QWidget();
-  scaleForm->setLayout(formLayout);
-  scaleForm->setWindowTitle(tr("Scale Graph"));
+  p_scaleForm = new QWidget();
+  p_scaleForm->setLayout(p_formLayout);
+  p_scaleForm->setWindowTitle(tr("Scale Graph"));
 
-  scaleForm->show();
+  p_scaleForm->show();
 }
 
 void GraphDialog::pushDenyButton() {
-  if (!scaleForm) return;
-  scaleForm->close();
+  if (!p_scaleForm) return;
+  p_scaleForm->close();
 }
 
 void GraphDialog::pushAcceptButton() {
-  QDateTime fromDateTime = scaleFromValue->dateTime();
-  leftTime = p_signalData->startTime().msecsTo(fromDateTime);
+  QDateTime fromDateTime = p_scaleFromValue->dateTime();
+  p_leftTime = p_signalData->startTime().msecsTo(fromDateTime);
 
-  QDateTime toDateTime = scaleToValue->dateTime();
-  rightTime = p_signalData->startTime().msecsTo(toDateTime);
+  QDateTime toDateTime = p_scaleToValue->dateTime();
+  p_rightTime = p_signalData->startTime().msecsTo(toDateTime);
 
   p_signalData->setSelected(true);
 
@@ -190,8 +190,8 @@ void GraphDialog::pushAcceptButton() {
 void GraphDialog::pushDoubleScaleButton() {
   size_t timeRange = p_signalData->rightTime() - p_signalData->leftTime();
 
-  leftTime = p_signalData->leftTime() + (timeRange / 4);
-  rightTime = p_signalData->rightTime() - (timeRange / 4);
+  p_leftTime = p_signalData->leftTime() + (timeRange / 4);
+  p_rightTime = p_signalData->rightTime() - (timeRange / 4);
 
   p_signalData->setSelected(true);
 
@@ -199,8 +199,8 @@ void GraphDialog::pushDoubleScaleButton() {
 }
 
 void GraphDialog::pushResetButton() {
-  leftTime = 0;
-  rightTime = p_signalData->allTime() - 1;
+  p_leftTime = 0;
+  p_rightTime = p_signalData->allTime() - 1;
 
   p_signalData->setSelected(false);
 
@@ -210,8 +210,8 @@ void GraphDialog::pushResetButton() {
 void GraphDialog::buttonHandler() {
   if (!validateInputData()) return;
 
-  p_signalData->setLeftTime(leftTime);
-  p_signalData->setRightTime(rightTime);
+  p_signalData->setLeftTime(p_leftTime);
+  p_signalData->setRightTime(p_rightTime);
 
   p_signalData->calculateArrayRange();
 
@@ -221,14 +221,14 @@ void GraphDialog::buttonHandler() {
 }
 
 bool GraphDialog::validateInputData() {
-  if (leftTime > p_signalData->allTime() ||
-      rightTime > p_signalData->allTime()) {
-    error->setText(tr("Values must be less than range"));
+  if (p_leftTime > p_signalData->allTime() ||
+      p_rightTime > p_signalData->allTime()) {
+    p_error->setText(tr("Values must be less than range"));
     return false;
   }
 
-  else if (leftTime >= rightTime) {
-    error->setText(tr("'From' must be less than 'to'"));
+  else if (p_leftTime >= p_rightTime) {
+    p_error->setText(tr("'From' must be less than 'to'"));
     return false;
   }
 

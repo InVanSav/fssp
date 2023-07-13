@@ -21,4 +21,6 @@ SignalPage::SignalPage(SignalData data, QWidget *parent) : QWidget{parent} {
   setLayout(hBox);
 }
 
+std::shared_ptr<SignalData> SignalPage::getSignalData() { return m_data; }
+
 }  // namespace fssp

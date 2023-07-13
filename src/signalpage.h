@@ -14,6 +14,8 @@ class SignalPage : public QWidget {
  public:
   explicit SignalPage(SignalData data, QWidget *parent = nullptr);
 
+  std::shared_ptr<SignalData> getSignalData();
+
  private:
   std::shared_ptr<SignalData> m_data;
 
