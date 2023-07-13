@@ -22,7 +22,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
 MainWindow::~MainWindow() {}
 
-void MainWindow::aboutFssp() {}
+void MainWindow::aboutFssp() {
+  QMessageBox::about(this, tr("Fast Simple Signal Processing 0.2.0"),
+                     tr("Made by students of DVFU:\n"
+                        "    Kuligin Kirill\n"
+                        "    Savickij Ivan\n"
+                        "    Arefevef Egor"));
+}
 
 void MainWindow::open() {
   QString fileName = QFileDialog::getOpenFileName(
@@ -144,9 +150,8 @@ void MainWindow::createMenus() {
 
 void MainWindow::chooseStatisticSignal() {
   if (!m_tabWidget->count()) {
-    QMessageBox::information(nullptr, tr("Error"),
-                             tr("There is no open signal yet"),
-                             QMessageBox::Ok);
+    QMessageBox::information(
+        this, tr("Error"), tr("There is no open signal yet"), QMessageBox::Ok);
     return;
   }
 
