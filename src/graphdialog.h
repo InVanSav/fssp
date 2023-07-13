@@ -49,13 +49,13 @@ class GraphDialog : public QGroupBox {
   std::shared_ptr<SignalData> p_signalData;
   std::vector<GraphWaveform *> p_waveforms;
 
-  size_t leftTime;
-  size_t rightTime;
+  size_t p_leftTime;
+  size_t p_rightTime;
 
-  QDateTimeEdit *scaleFromValue;
-  QDateTimeEdit *scaleToValue;
+  QDateTimeEdit *p_scaleFromValue;
+  QDateTimeEdit *p_scaleToValue;
 
-  QWidget *scaleForm;
+  QWidget *p_scaleForm;
   QWidget *p_scrollContent;
 
   QScrollArea *m_scrollArea;

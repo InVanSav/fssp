@@ -117,6 +117,10 @@ void MainWindow::createActions() {
   m_modInCurSignalAct = new QAction(tr("Model in current signal..."), this);
   connect(m_modInCurSignalAct, &QAction::triggered, this,
           &MainWindow::modInCurSignal);
+
+  m_statisticAct = new QAction(tr("Statistic"), this);
+  connect(m_statisticAct, &QAction::triggered, this,
+          &MainWindow::chooseStatisticSignal);
 }
 
 void MainWindow::createMenus() {
@@ -129,6 +133,7 @@ void MainWindow::createMenus() {
   m_modelingMenu->addAction(m_modInCurSignalAct);
 
   m_analizeMenu = menuBar()->addMenu(tr("&Analysis"));
+  m_analizeMenu->addAction(m_statisticAct);
 
   m_filterMenu = menuBar()->addMenu(tr("&Filter"));
 
@@ -136,6 +141,64 @@ void MainWindow::createMenus() {
 
   m_helpMenu = menuBar()->addMenu(tr("Help"));
   m_helpMenu->addAction(m_aboutFsspAct);
+}
+
+void MainWindow::chooseStatisticSignal() {
+  if (!m_tabWidget->count()) {
+    QMessageBox::information(nullptr, tr("Error"), tr("No signal open"),
+                             QMessageBox::Ok);
+    return;
+  }
+
+  SignalPage *signalPage =
+      dynamic_cast<SignalPage *>(m_tabWidget->currentWidget());
+
+  QDialog *dialog = new QDialog();
+  dialog->setWindowTitle(tr("Choose Signal"));
+
+  QComboBox *comboBox = new QComboBox();
+  for (int i = 0; i < signalPage->getSignalData()->channelsNumber(); ++i) {
+    comboBox->addItem(signalPage->getSignalData()->channelsName()[i]);
+  }
+
+  QSpinBox *spinBox = new QSpinBox();
+  spinBox->setMaximum(INT_MAX);
+  spinBox->setValue(100);
+
+  QDialogButtonBox *buttonBox =
+      new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+
+  connect(buttonBox, &QDialogButtonBox::accepted, dialog, &QDialog::accept);
+  connect(buttonBox, &QDialogButtonBox::rejected, dialog, &QDialog::reject);
+
+  QHBoxLayout *buttonLayout = new QHBoxLayout();
+  buttonLayout->addWidget(buttonBox);
+
+  QLabel *note = new QLabel(tr("Number of intervals"));
+
+  QVBoxLayout *dialogLayout = new QVBoxLayout();
+  dialogLayout->addWidget(comboBox);
+
+  dialogLayout->addWidget(note);
+  dialogLayout->addWidget(spinBox);
+  dialogLayout->addLayout(buttonLayout, Qt::AlignCenter);
+
+  dialog->setLayout(dialogLayout);
+  dialog->setFixedSize(dialog->sizeHint());
+
+  dialog->exec();
+
+  if (dialog->result() == QDialog::Rejected) dialog->reject();
+
+  if (dialog->result() == QDialog::Accepted) {
+    Statistic *statistic =
+        new Statistic(signalPage->getSignalData(), comboBox->currentIndex(),
+                      spinBox->value());
+
+    statistic->show();
+
+    dialog->reject();
+  }
 }
 
 }  // namespace fssp

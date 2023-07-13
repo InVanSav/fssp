@@ -1,13 +1,14 @@
 #pragma once
 
-#include <QComboBox>
+#include <QDialogButtonBox>
 #include <QFileDialog>
-#include <QLabel>
 #include <QMainWindow>
 #include <QMenuBar>
 #include <QMessageBox>
+#include <QString>
 
 #include "signalbuilder.h"
+#include "statistic.h"
 
 namespace fssp {
 
@@ -24,6 +25,7 @@ class MainWindow : public QMainWindow {
   void aboutSignal();
   void modNewSignal();
   void modInCurSignal();
+  void chooseStatisticSignal();
   void handleCloseTabEvent(int index);
 
  private:
@@ -45,6 +47,7 @@ class MainWindow : public QMainWindow {
   QAction *m_aboutSignalAct;
   QAction *m_modNewSignalAct;
   QAction *m_modInCurSignalAct;
+  QAction *m_statisticAct;
 };
 
 }  // namespace fssp
