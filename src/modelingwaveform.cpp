@@ -5,7 +5,7 @@ namespace fssp {
 ModelingWaveform::ModelingWaveform(std::shared_ptr<SignalData> signalData,
                                    QWidget *parent)
     : BaseWaveform{signalData, 0, 300, 100, parent} {
-  setWidth(500);
+  setWidth(900);
   setheight(300);
   setTextMargin(5, 5, 3, 3);
   setOffset(p_maxAxisTextWidth, 15, p_maxTextHeight + 5, 10);

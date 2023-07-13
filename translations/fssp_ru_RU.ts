@@ -4,22 +4,22 @@
 <context>
     <name>fssp::BalanceEnvelopeModel</name>
     <message>
-        <location filename="../src/signalmodels.cpp" line="167"/>
+        <location filename="../src/signalmodels.cpp" line="176"/>
         <source>Envelope frequency:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/signalmodels.cpp" line="168"/>
+        <location filename="../src/signalmodels.cpp" line="179"/>
         <source>Carrier frequency:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/signalmodels.cpp" line="169"/>
+        <location filename="../src/signalmodels.cpp" line="181"/>
         <source>Amplitude:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/signalmodels.cpp" line="170"/>
+        <location filename="../src/signalmodels.cpp" line="182"/>
         <source>Init phase:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -27,22 +27,22 @@
 <context>
     <name>fssp::BaseModel</name>
     <message>
-        <location filename="../src/basemodel.cpp" line="33"/>
+        <location filename="../src/basemodel.cpp" line="34"/>
         <source>Sampling frequency:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/basemodel.cpp" line="34"/>
+        <location filename="../src/basemodel.cpp" line="35"/>
         <source>Sample&apos;s number:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/basemodel.cpp" line="35"/>
+        <location filename="../src/basemodel.cpp" line="36"/>
         <source>Channel name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/basemodel.cpp" line="36"/>
+        <location filename="../src/basemodel.cpp" line="37"/>
         <source>Date and time:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -109,7 +109,7 @@
 <context>
     <name>fssp::DiscretDecreasingExpModel</name>
     <message>
-        <location filename="../src/signalmodels.cpp" line="60"/>
+        <location filename="../src/signalmodels.cpp" line="61"/>
         <source>Exponent base:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -117,17 +117,17 @@
 <context>
     <name>fssp::DiscretSinModel</name>
     <message>
-        <location filename="../src/signalmodels.cpp" line="78"/>
+        <location filename="../src/signalmodels.cpp" line="80"/>
         <source>Init phase:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/signalmodels.cpp" line="79"/>
+        <location filename="../src/signalmodels.cpp" line="82"/>
         <source>Circular frequency:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/signalmodels.cpp" line="80"/>
+        <location filename="../src/signalmodels.cpp" line="84"/>
         <source>Amplitude:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -135,22 +135,22 @@
 <context>
     <name>fssp::ExpEnvelopeModel</name>
     <message>
-        <location filename="../src/signalmodels.cpp" line="140"/>
+        <location filename="../src/signalmodels.cpp" line="145"/>
         <source>Envelope width:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/signalmodels.cpp" line="141"/>
+        <location filename="../src/signalmodels.cpp" line="148"/>
         <source>Carrier frequency:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/signalmodels.cpp" line="142"/>
+        <location filename="../src/signalmodels.cpp" line="150"/>
         <source>Amplitude:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/signalmodels.cpp" line="143"/>
+        <location filename="../src/signalmodels.cpp" line="151"/>
         <source>Init phase:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -226,7 +226,7 @@
 <context>
     <name>fssp::GraphWaveform</name>
     <message>
-        <location filename="../src/graphwaveform.cpp" line="167"/>
+        <location filename="../src/graphwaveform.cpp" line="168"/>
         <source>Value: %1 
  Time: %2</source>
         <translation type="unfinished"></translation>
@@ -235,22 +235,22 @@
 <context>
     <name>fssp::LinearFreqModulationModel</name>
     <message>
-        <location filename="../src/signalmodels.cpp" line="224"/>
+        <location filename="../src/signalmodels.cpp" line="239"/>
         <source>Amplitude:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/signalmodels.cpp" line="225"/>
+        <location filename="../src/signalmodels.cpp" line="240"/>
         <source>Init phase:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/signalmodels.cpp" line="226"/>
+        <location filename="../src/signalmodels.cpp" line="242"/>
         <source>Start frequency:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/signalmodels.cpp" line="227"/>
+        <location filename="../src/signalmodels.cpp" line="245"/>
         <source>Finish frequency:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -411,17 +411,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/modelingwindow.cpp" line="62"/>
+        <location filename="../src/modelingwindow.cpp" line="65"/>
         <source>Preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/modelingwindow.cpp" line="73"/>
+        <location filename="../src/modelingwindow.cpp" line="70"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/modelingwindow.cpp" line="77"/>
+        <location filename="../src/modelingwindow.cpp" line="74"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
@@ -429,17 +429,17 @@
 <context>
     <name>fssp::MovingAverageAutoregressModel</name>
     <message>
-        <location filename="../src/signalmodels.cpp" line="310"/>
+        <location filename="../src/signalmodels.cpp" line="329"/>
         <source>MA Coefficients:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/signalmodels.cpp" line="311"/>
+        <location filename="../src/signalmodels.cpp" line="330"/>
         <source>AR Coefficients:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/signalmodels.cpp" line="312"/>
+        <location filename="../src/signalmodels.cpp" line="331"/>
         <source>Dispersion:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -455,12 +455,12 @@
 <context>
     <name>fssp::NormalWhiteNoiseModel</name>
     <message>
-        <location filename="../src/signalmodels.cpp" line="280"/>
+        <location filename="../src/signalmodels.cpp" line="299"/>
         <source>Average value:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/signalmodels.cpp" line="281"/>
+        <location filename="../src/signalmodels.cpp" line="300"/>
         <source>Dispersion:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -468,7 +468,7 @@
 <context>
     <name>fssp::RectGridModel</name>
     <message>
-        <location filename="../src/signalmodels.cpp" line="101"/>
+        <location filename="../src/signalmodels.cpp" line="105"/>
         <source>Period:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -476,7 +476,7 @@
 <context>
     <name>fssp::SawModel</name>
     <message>
-        <location filename="../src/signalmodels.cpp" line="122"/>
+        <location filename="../src/signalmodels.cpp" line="126"/>
         <source>Period:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -484,32 +484,27 @@
 <context>
     <name>fssp::TonalEnvelopeModel</name>
     <message>
-        <location filename="../src/signalmodels.cpp" line="194"/>
+        <location filename="../src/signalmodels.cpp" line="207"/>
         <source>Envelope frequency:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/signalmodels.cpp" line="195"/>
+        <location filename="../src/signalmodels.cpp" line="209"/>
         <source>Amplitude:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/signalmodels.cpp" line="196"/>
+        <location filename="../src/signalmodels.cpp" line="210"/>
         <source>Init phase:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/signalmodels.cpp" line="197"/>
+        <location filename="../src/signalmodels.cpp" line="212"/>
         <source>Carrier frequency:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/signalmodels.cpp" line="198"/>
-        <source>Finish frequency:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/signalmodels.cpp" line="199"/>
+        <location filename="../src/signalmodels.cpp" line="214"/>
         <source>Modulation depth:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -517,12 +512,12 @@
 <context>
     <name>fssp::WhiteNoiseModel</name>
     <message>
-        <location filename="../src/signalmodels.cpp" line="255"/>
+        <location filename="../src/signalmodels.cpp" line="274"/>
         <source>Minimum:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/signalmodels.cpp" line="256"/>
+        <location filename="../src/signalmodels.cpp" line="275"/>
         <source>Maximum:</source>
         <translation type="unfinished"></translation>
     </message>
