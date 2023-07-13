@@ -9,9 +9,10 @@
 namespace fssp {
 
 ModelingWindow::ModelingWindow(std::shared_ptr<SignalData> signalData,
-                               QWidget *parent)
-    : QWidget{parent} {
+                               bool lockHeader, QWidget *parent)
+    : QDialog{parent} {
   p_signalData = signalData;
+  m_isHeaderLocked = lockHeader;
 
   setWindowTitle(tr("Modeling"));
 
@@ -36,6 +37,9 @@ ModelingWindow::ModelingWindow(std::shared_ptr<SignalData> signalData,
           &ModelingWindow::onComboBoxChange);
 
   m_model = new DelayedSingleImpulseModel(p_signalData);
+  if (m_isHeaderLocked) {
+    m_model->lockHeader();
+  }
 
   m_formScrollArea = new QScrollArea();
   m_formScrollArea->setFrameShape(QFrame::NoFrame);
@@ -60,7 +64,22 @@ ModelingWindow::ModelingWindow(std::shared_ptr<SignalData> signalData,
   m_previewScrollArea = new QScrollArea();
   m_previewScrollArea->setFrameShape(QFrame::NoFrame);
   m_previewScrollArea->setWidgetResizable(true);
-  onCalcButtonPress();
+
+  m_model->calc();
+  std::shared_ptr<SignalData> modelSignalData =
+      std::make_shared<SignalData>(std::move(m_model->getData()));
+
+  ModelingWaveform *waveform = new ModelingWaveform(modelSignalData);
+  waveform->drawWaveform();
+
+  QVBoxLayout *waveformLayout = new QVBoxLayout();
+  waveformLayout->addWidget(waveform);
+  waveformLayout->setAlignment(waveform, Qt::AlignCenter);
+
+  QWidget *scrollWigdet = new QWidget();
+  scrollWigdet->setLayout(waveformLayout);
+
+  m_previewScrollArea->setWidget(scrollWigdet);
 
   QGroupBox *previewGroupBox = new QGroupBox(tr("Preview"));
   QVBoxLayout *previewLayout = new QVBoxLayout();
@@ -98,6 +117,8 @@ ModelingWindow::ModelingWindow(std::shared_ptr<SignalData> signalData,
   setMinimumWidth(1000);
   setMinimumHeight(800);
 }
+
+SignalData ModelingWindow::getData() const { return m_model->getData(); }
 
 void ModelingWindow::onComboBoxChange(int index) {
   switch (index) {
@@ -155,15 +176,20 @@ void ModelingWindow::onComboBoxChange(int index) {
     }
   }
 
+  if (m_isHeaderLocked) {
+    m_model->lockHeader();
+  }
+
   m_formScrollArea->setWidget(m_model);
 }
 
 void ModelingWindow::onCalcButtonPress() {
+  m_model->updateChannelName();
   m_model->calc();
-  std::shared_ptr<SignalData> signalData =
+  std::shared_ptr<SignalData> modelSignalData =
       std::make_shared<SignalData>(std::move(m_model->getData()));
 
-  ModelingWaveform *waveform = new ModelingWaveform(signalData);
+  ModelingWaveform *waveform = new ModelingWaveform(modelSignalData);
   waveform->drawWaveform();
 
   QVBoxLayout *waveformLayout = new QVBoxLayout();
@@ -176,8 +202,8 @@ void ModelingWindow::onCalcButtonPress() {
   m_previewScrollArea->setWidget(scrollWigdet);
 }
 
-void ModelingWindow::onAddButtonPress() {}
+void ModelingWindow::onAddButtonPress() { accept(); }
 
-void ModelingWindow::onCancelButtonPress() { close(); }
+void ModelingWindow::onCancelButtonPress() { reject(); }
 
 }  // namespace fssp

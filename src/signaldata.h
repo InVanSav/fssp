@@ -60,6 +60,8 @@ class SignalData : public QObject {
   const std::vector<QString> &channelsName() const;
   const std::vector<std::vector<double>> &data() const;
 
+  void addData(const QString name, std::vector<double> data);
+
   int channelsNumber() const;
   int samplesNumber() const;
 
@@ -73,6 +75,8 @@ class SignalData : public QObject {
 
   void changedEnableGrid();
   void changedGlobalScale();
+
+  void dataAdded();
 
  private:
   QDateTime m_startTime;

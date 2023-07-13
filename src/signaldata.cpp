@@ -162,6 +162,15 @@ const std::vector<std::vector<double>> &SignalData::data() const {
   return m_data;
 }
 
+void SignalData::addData(const QString name, std::vector<double> data) {
+  ++m_channelsNumber;
+  m_channelsName.push_back(name);
+  m_data.push_back(data);
+  m_visibleWaveforms.push_back(false);
+
+  emit dataAdded();
+}
+
 int SignalData::channelsNumber() const { return m_channelsNumber; }
 
 int SignalData::samplesNumber() const { return m_samplesNumber; }

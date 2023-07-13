@@ -59,7 +59,7 @@ DiscretDecreasingExpModel::DiscretDecreasingExpModel(
     : BaseModel{signalData, parent} {
   expBaseSpinBox = addDoubleSpinBox(
       tr("Exponent base:"),
-      std::pow(1. / 10., 1. / (double)signalData->samplesNumber() - 1));
+      std::pow(1. / 10., 1. / ((double)signalData->samplesNumber() - 1)));
 }
 
 void DiscretDecreasingExpModel::calc() {

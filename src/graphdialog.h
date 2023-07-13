@@ -25,10 +25,14 @@ class GraphDialog : public QGroupBox {
   void drawWaveforms();
   void hideWaveforms();
 
- public slots:
+ protected slots:
   void onChangedWaveformVisibility();
 
+  void onDataAdded();
+
  private:
+  void addWaveforms();
+
   void enableGridAction(bool enable);
   void scaleGraphWaveformAction();
   void changeArrayGlobalizationAction();
@@ -42,7 +46,6 @@ class GraphDialog : public QGroupBox {
   bool validateInputData();
   void buttonHandler();
 
- private:
   std::shared_ptr<SignalData> p_signalData;
   std::vector<GraphWaveform *> p_waveforms;
 
@@ -54,6 +57,8 @@ class GraphDialog : public QGroupBox {
 
   QWidget *scaleForm;
   QWidget *p_scrollContent;
+
+  QScrollArea *m_scrollArea;
 
   QFormLayout *formLayout;
   QLabel *error;

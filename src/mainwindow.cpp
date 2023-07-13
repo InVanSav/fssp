@@ -56,11 +56,42 @@ void MainWindow::open() {
 void MainWindow::aboutSignal() {}
 
 void MainWindow::modNewSignal() {
-  ModelingWindow *mwindow = new ModelingWindow(std::make_shared<SignalData>());
-  mwindow->show();
+  std::shared_ptr<SignalData> signalData = std::make_shared<SignalData>();
+
+  if (m_tabWidget->count()) {
+    SignalPage *signalPage =
+        dynamic_cast<SignalPage *>(m_tabWidget->currentWidget());
+    signalData = signalPage->getSignalData();
+  }
+
+  ModelingWindow *modWindow = new ModelingWindow(signalData, false, this);
+
+  int ret = modWindow->exec();
+  if (!ret) return;
+
+  SignalPage *signalPage = new SignalPage(modWindow->getData());
+
+  m_tabWidget->addTab(signalPage, tr("New File"));
 }
 
-void MainWindow::modInCurSignal() {}
+void MainWindow::modInCurSignal() {
+  if (!m_tabWidget->count()) {
+    return;
+  }
+
+  SignalPage *signalPage =
+      dynamic_cast<SignalPage *>(m_tabWidget->currentWidget());
+  std::shared_ptr<SignalData> signalData = signalPage->getSignalData();
+
+  ModelingWindow *modWindow = new ModelingWindow(signalData, true, this);
+
+  int ret = modWindow->exec();
+  if (!ret) return;
+
+  SignalData modelingData = modWindow->getData();
+
+  signalData->addData(modelingData.channelsName()[0], modelingData.data()[0]);
+}
 
 void MainWindow::handleCloseTabEvent(int index) {
   QWidget *signalPage = m_tabWidget->widget(index);

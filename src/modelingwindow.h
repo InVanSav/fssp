@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QComboBox>
+#include <QDialog>
 #include <QScrollArea>
 #include <QWidget>
 
@@ -8,11 +9,13 @@
 
 namespace fssp {
 
-class ModelingWindow : public QWidget {
+class ModelingWindow : public QDialog {
   Q_OBJECT
  public:
   explicit ModelingWindow(std::shared_ptr<SignalData> signalData,
-                          QWidget *parent = nullptr);
+                          bool lockHeader = false, QWidget *parent = nullptr);
+
+  SignalData getData() const;
 
  protected slots:
   void onComboBoxChange(int index);
@@ -29,6 +32,8 @@ class ModelingWindow : public QWidget {
   QScrollArea *m_formScrollArea;
 
   QScrollArea *m_previewScrollArea;
+
+  bool m_isHeaderLocked;
 };
 
 }  // namespace fssp
