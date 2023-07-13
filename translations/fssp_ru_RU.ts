@@ -514,62 +514,62 @@
 <context>
     <name>fssp::StatisticWindow</name>
     <message>
-        <location filename="../src/statisticwindow.cpp" line="19"/>
+        <location filename="../src/statisticwindow.cpp" line="20"/>
         <source>Statistic of </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/statisticwindow.cpp" line="23"/>
+        <location filename="../src/statisticwindow.cpp" line="24"/>
         <source>Minimum value: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/statisticwindow.cpp" line="26"/>
+        <location filename="../src/statisticwindow.cpp" line="27"/>
         <source>Maximum value: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/statisticwindow.cpp" line="29"/>
+        <location filename="../src/statisticwindow.cpp" line="30"/>
         <source>Average value: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/statisticwindow.cpp" line="37"/>
+        <location filename="../src/statisticwindow.cpp" line="38"/>
         <source>Variation factor: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/statisticwindow.cpp" line="40"/>
+        <location filename="../src/statisticwindow.cpp" line="41"/>
         <source>Asymmetry factor: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/statisticwindow.cpp" line="43"/>
+        <location filename="../src/statisticwindow.cpp" line="44"/>
         <source>Kurtosis factor: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/statisticwindow.cpp" line="51"/>
+        <location filename="../src/statisticwindow.cpp" line="52"/>
         <source>Dispersion: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/statisticwindow.cpp" line="53"/>
+        <location filename="../src/statisticwindow.cpp" line="54"/>
         <source>Standart derivation: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/statisticwindow.cpp" line="57"/>
+        <location filename="../src/statisticwindow.cpp" line="58"/>
         <source>Median: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/statisticwindow.cpp" line="65"/>
+        <location filename="../src/statisticwindow.cpp" line="66"/>
         <source>Order quantile 0.05: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/statisticwindow.cpp" line="68"/>
+        <location filename="../src/statisticwindow.cpp" line="69"/>
         <source>Order quantile 0.95: </source>
         <translation type="unfinished"></translation>
     </message>

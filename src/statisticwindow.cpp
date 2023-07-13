@@ -2,8 +2,9 @@
 
 namespace fssp {
 
-StatisticWindow::StatisticWindow(std::shared_ptr<SignalData> data, int curSignal,
-                     int intervalsNumber, QWidget *parent)
+StatisticWindow::StatisticWindow(std::shared_ptr<SignalData> data,
+                                 int curSignal, int intervalsNumber,
+                                 QWidget *parent)
     : QDialog{parent} {
   p_intervalsNumber = intervalsNumber;
   p_curSignal = curSignal;
@@ -152,7 +153,7 @@ void StatisticWindow::calculateStatistic() {
   p_minQuantile = data[data.size() * 0.05];
   p_maxQuantile = data[data.size() * 0.95];
 
-  double width = 740;
+  double width = 940;
   double height = 280;
   h = (width - 40) / p_intervalsNumber;
 
