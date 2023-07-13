@@ -106,6 +106,10 @@ double SignalData::timeForOne() const { return m_timeForOne; }
 
 size_t SignalData::allTime() const { return m_allTime; }
 
+QString SignalData::unitOfTime() const { return m_unitOfTime; }
+
+size_t SignalData::divisionBase() const { return m_divisionBase; }
+
 int SignalData::leftArray() const { return m_leftArray; }
 
 int SignalData::rightArray() const { return m_rightArray; }
@@ -157,6 +161,14 @@ void SignalData::setRightArray(int rightArray) { m_rightArray = rightArray; }
 void SignalData::setLeftTime(int leftTime) { m_leftTime = leftTime; }
 
 void SignalData::setRightTime(int rightTime) { m_rightTime = rightTime; }
+
+void SignalData::setUnitOfTime(QString unitOfTime) {
+  m_unitOfTime = unitOfTime;
+}
+
+void SignalData::setDivisionBase(size_t divisionBase) {
+  m_divisionBase = divisionBase;
+}
 
 void SignalData::calculateArrayRange() {
   double dataPerTime =

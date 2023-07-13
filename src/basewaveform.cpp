@@ -316,32 +316,30 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
 
     calculateTimeDelimiter();
 
-    QString unitOfTime;
-    size_t divisionBase;
     if (p_timeDelimiter < p_timeMultiples[8]) {
-      unitOfTime = "msec";
-      divisionBase = 1;
+      p_signalData->setUnitOfTime(tr("msec"));
+      p_signalData->setDivisionBase(1);
     } else if (p_timeDelimiter < p_timeMultiples[14]) {
-      unitOfTime = "sec";
-      divisionBase = p_timeMultiples[8];
+      p_signalData->setUnitOfTime(tr("sec"));
+      p_signalData->setDivisionBase(p_timeMultiples[8]);
     } else if (p_timeDelimiter < p_timeMultiples[20]) {
-      unitOfTime = "min";
-      divisionBase = p_timeMultiples[14];
+      p_signalData->setUnitOfTime(tr("min"));
+      p_signalData->setDivisionBase(p_timeMultiples[14]);
     } else if (p_timeDelimiter < p_timeMultiples[25]) {
-      unitOfTime = "h";
-      divisionBase = p_timeMultiples[20];
+      p_signalData->setUnitOfTime(tr("h"));
+      p_signalData->setDivisionBase(p_timeMultiples[20]);
     } else if (p_timeDelimiter < p_timeMultiples[27]) {
-      unitOfTime = "d";
-      divisionBase = p_timeMultiples[25];
+      p_signalData->setUnitOfTime(tr("d"));
+      p_signalData->setDivisionBase(p_timeMultiples[25]);
     } else if (p_timeDelimiter < p_timeMultiples[29]) {
-      unitOfTime = "w";
-      divisionBase = p_timeMultiples[27];
+      p_signalData->setUnitOfTime(tr("w"));
+      p_signalData->setDivisionBase(p_timeMultiples[27]);
     } else if (p_timeDelimiter < p_timeMultiples[33]) {
-      unitOfTime = "m";
-      divisionBase = p_timeMultiples[29];
+      p_signalData->setUnitOfTime(tr("m"));
+      p_signalData->setDivisionBase(p_timeMultiples[29]);
     } else if (p_timeDelimiter <= p_timeMultiples[37]) {
-      unitOfTime = "y";
-      divisionBase = p_timeMultiples[33];
+      p_signalData->setUnitOfTime(tr("y"));
+      p_signalData->setDivisionBase(p_timeMultiples[33]);
     }
 
     size_t curValue = std::floor(p_timeRange);
@@ -367,8 +365,10 @@ void BaseWaveform::drawAxes(BaseWaveform::AxisType axisType) {
                     QPoint{x + p_maxAxisTextWidth / 2, textY2}};
       }
 
-      painter.drawText(textRect, Qt::AlignHCenter | Qt::AlignVCenter,
-                       QString::number(curValue / divisionBase) + unitOfTime);
+      painter.drawText(
+          textRect, Qt::AlignHCenter | Qt::AlignVCenter,
+          QString::number(curValue / p_signalData->divisionBase()) +
+              p_signalData->unitOfTime());
 
       if (i != p_curTimeDelimitersNumber - 1) {
         curValue -= p_timeDelimiter;

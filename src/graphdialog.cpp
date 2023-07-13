@@ -138,15 +138,15 @@ void GraphDialog::scaleGraphWaveformAction() {
           &GraphDialog::pushResetButton);
 
   scaleFromValue = new QDateTimeEdit(p_signalData->startTime());
+  scaleFromValue->setCalendarPopup(true);
   scaleToValue = new QDateTimeEdit(p_signalData->endTime());
+  scaleToValue->setCalendarPopup(true);
 
-  QLabel *warning = new QLabel(tr("Values must be in milliseconds"));
   error = new QLabel();
 
   formLayout = new QFormLayout(this);
   formLayout->setHorizontalSpacing(5);
 
-  formLayout->addRow(warning);
   formLayout->addRow(tr("&From:"), scaleFromValue);
   formLayout->addRow(tr("&To:"), scaleToValue);
   formLayout->addRow(error);
@@ -177,10 +177,10 @@ void GraphDialog::pushDenyButton() {
 
 void GraphDialog::pushAcceptButton() {
   QDateTime fromDateTime = scaleFromValue->dateTime();
-  leftTime = fromDateTime.toMSecsSinceEpoch();
+  leftTime = p_signalData->startTime().msecsTo(fromDateTime);
 
   QDateTime toDateTime = scaleToValue->dateTime();
-  rightTime = toDateTime.toMSecsSinceEpoch();
+  rightTime = p_signalData->startTime().msecsTo(toDateTime);
 
   p_signalData->setSelected(true);
 
@@ -217,19 +217,12 @@ void GraphDialog::buttonHandler() {
 
   pushDenyButton();
 
-  if (p_signalData->rightTime() - p_signalData->leftTime() < 20) return;
-
   emit p_signalData->changedGraphTimeRange();
 }
 
 bool GraphDialog::validateInputData() {
-  if (leftTime < 0 || rightTime < 0) {
-    error->setText(tr("Values must be more than 0"));
-    return false;
-  }
-
-  else if (leftTime > p_signalData->allTime() ||
-           rightTime > p_signalData->allTime()) {
+  if (leftTime > p_signalData->allTime() ||
+      rightTime > p_signalData->allTime()) {
     error->setText(tr("Values must be less than range"));
     return false;
   }
