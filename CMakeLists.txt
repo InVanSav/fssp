@@ -9,10 +9,12 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 REQUIRED COMPONENTS Widgets LinguistTools)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
 
 set(TS_FILES translations/fssp_ru_RU.ts)
+
+qt_create_translation(QM_FILES ${PROJECT_SOURCE_DIR} ${TS_FILES})
 
 set(PROJECT_SOURCES
         src/main.cpp
@@ -45,7 +47,9 @@ set(PROJECT_SOURCES
         src/basewaveform.h
         src/modelingwindow.cpp
         src/modelingwindow.h
-        ${TS_FILES}
+        src/modelingwaveform.cpp
+        src/modelingwaveform.h
+        ${QM_FILES}
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

@@ -3,16 +3,17 @@
 #include <QWidget>
 #include <QLabel>
 
+#include "basewaveform.h"
+
 namespace fssp {
 
-class ModelingWaveform : public QWidget {
+class ModelingWaveform : public BaseWaveform {
   Q_OBJECT
  public:
-  explicit ModelingWaveform(QWidget *parent = nullptr);
+  explicit ModelingWaveform(std::shared_ptr<SignalData> signalData,
+                         QWidget *parent = nullptr);
 
- private:
-  QLabel *waveform;
-  QLabel *name;
+  void drawWaveform() override;
 };
 
 }  // namespace fssp

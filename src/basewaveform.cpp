@@ -438,7 +438,13 @@ void BaseWaveform::drawBresenham() {
   int localHeight = p_height - (p_offsetTop + p_offsetBottom + p_paddingTop +
                                 p_paddingBottom);
 
-  double scale = localHeight / (p_dataRange + 1);
+  double scale = 0;
+
+  if (p_dataRange == 0) {
+    scale = localHeight / 2;
+  } else {
+    scale = localHeight / p_dataRange;
+  }
 
   for (int i = 0; i < p_arrayRange - 1; ++i) {
     int x1 = std::round(i * localWidth / p_arrayRange) + p_offsetLeft +

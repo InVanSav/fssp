@@ -3,6 +3,7 @@
 #include <QGroupBox>
 #include <QPushButton>
 
+#include "modelingwaveform.h"
 #include "signalmodels.h"
 
 namespace fssp {
@@ -11,6 +12,8 @@ ModelingWindow::ModelingWindow(std::shared_ptr<SignalData> signalData,
                                QWidget *parent)
     : QWidget{parent} {
   p_signalData = signalData;
+
+  setWindowTitle(tr("Modeling"));
 
   QGroupBox *formGroupBox = new QGroupBox(tr("Model"));
 
@@ -35,37 +38,61 @@ ModelingWindow::ModelingWindow(std::shared_ptr<SignalData> signalData,
   m_model = new DelayedSingleImpulseModel(p_signalData);
 
   m_formScrollArea = new QScrollArea();
+  m_formScrollArea->setFrameShape(QFrame::NoFrame);
   m_formScrollArea->setWidget(m_model);
+  m_formScrollArea->setAlignment(Qt::AlignHCenter);
 
-  QVBoxLayout *formlayout = new QVBoxLayout();
-  formlayout->addWidget(m_comboBox);
-  formlayout->addWidget(m_formScrollArea);
+  QPushButton *calculateButton = new QPushButton(tr("Calculate"));
+  connect(calculateButton, &QPushButton::clicked, this,
+          &ModelingWindow::onCalcButtonPress);
 
-  formGroupBox->setLayout(formlayout);
+  QVBoxLayout *formLayout = new QVBoxLayout();
+  formLayout->addWidget(m_comboBox);
+  formLayout->addWidget(m_formScrollArea);
+  formLayout->addSpacing(10);
+  formLayout->addWidget(calculateButton);
+  formLayout->setAlignment(calculateButton, Qt::AlignCenter);
 
-  QPushButton *makeModelButton = new QPushButton(tr("Make model"));
+  formGroupBox->setLayout(formLayout);
+  formGroupBox->setFixedWidth(420);
+
+  m_previewScrollArea = new QScrollArea();
+  m_previewScrollArea->setFrameShape(QFrame::NoFrame);
+
+  QGroupBox *previewGroupBox = new QGroupBox(tr("Preview"));
+  QVBoxLayout *previewLayout = new QVBoxLayout();
+  previewLayout->addWidget(m_previewScrollArea);
+  previewLayout->setAlignment(m_previewScrollArea, Qt::AlignCenter);
+  previewGroupBox->setLayout(previewLayout);
+
+  QHBoxLayout *contentLayout = new QHBoxLayout();
+  contentLayout->addWidget(formGroupBox);
+  contentLayout->addSpacing(10);
+  contentLayout->addWidget(previewGroupBox);
+
   QPushButton *cancelButton = new QPushButton(tr("Cancel"));
-  QPushButton *okButton = new QPushButton(tr("Add"));
+  connect(cancelButton, &QPushButton::clicked, this,
+          &ModelingWindow::onCancelButtonPress);
+
+  QPushButton *addButton = new QPushButton(tr("Add"));
+  connect(addButton, &QPushButton::clicked, this,
+          &ModelingWindow::onAddButtonPress);
 
   QHBoxLayout *buttonLayout = new QHBoxLayout();
-  buttonLayout->addWidget(makeModelButton);
-  buttonLayout->setAlignment(makeModelButton, Qt::AlignVCenter | Qt::AlignLeft);
+  buttonLayout->addWidget(addButton);
+  buttonLayout->setAlignment(addButton, Qt::AlignVCenter | Qt::AlignLeft);
   buttonLayout->addWidget(cancelButton);
   buttonLayout->setAlignment(cancelButton, Qt::AlignVCenter | Qt::AlignRight);
-  buttonLayout->addWidget(okButton);
-  buttonLayout->setAlignment(okButton, Qt::AlignVCenter | Qt::AlignRight);
-
-  QWidget *buttons = new QWidget();
-  buttons->setLayout(buttonLayout);
 
   QVBoxLayout *mainLayout = new QVBoxLayout();
-  mainLayout->addWidget(formGroupBox);
-  mainLayout->addWidget(buttons);
+  mainLayout->addLayout(contentLayout);
+  mainLayout->addSpacing(10);
+  mainLayout->addLayout(buttonLayout);
 
   setLayout(mainLayout);
 
-  setMinimumWidth(900);
-  setMinimumHeight(300);
+  setMinimumWidth(1000);
+  setMinimumHeight(400);
 }
 
 void ModelingWindow::onComboBoxChange(int index) {
@@ -126,5 +153,20 @@ void ModelingWindow::onComboBoxChange(int index) {
 
   m_formScrollArea->setWidget(m_model);
 }
+
+void ModelingWindow::onCalcButtonPress() {
+  m_model->calc();
+  std::shared_ptr<SignalData> signalData =
+      std::make_shared<SignalData>(std::move(m_model->getData()));
+
+  ModelingWaveform *waveform = new ModelingWaveform(signalData);
+  waveform->drawWaveform();
+
+  m_previewScrollArea->setWidget(waveform);
+}
+
+void ModelingWindow::onAddButtonPress() {}
+
+void ModelingWindow::onCancelButtonPress() { close(); }
 
 }  // namespace fssp
