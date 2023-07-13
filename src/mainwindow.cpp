@@ -22,7 +22,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
 MainWindow::~MainWindow() {}
 
-void MainWindow::aboutFssp() {}
+void MainWindow::aboutFssp() {
+  QMessageBox::about(this, tr("Fast Simple Signal Processing 0.2.0"),
+                     tr("Made by students of DVFU:\n"
+                        "    Kuligin Kirill\n"
+                        "    Savickij Ivan\n"
+                        "    Arefevef Egor"));
+}
 
 void MainWindow::open() {
   QString fileName = QFileDialog::getOpenFileName(
@@ -53,7 +59,37 @@ void MainWindow::open() {
   m_tabWidget->addTab(signalPage, fileInfo.fileName());
 }
 
-void MainWindow::aboutSignal() {}
+void MainWindow::aboutSignal() {
+  if (!m_tabWidget->count()) {
+    QMessageBox::information(this, tr("About signal"),
+                             tr("There is no open signal yet"));
+    return;
+  }
+
+  SignalPage *signalPage =
+      dynamic_cast<SignalPage *>(m_tabWidget->currentWidget());
+
+  QMessageBox::about(
+      this, tr("About signal"),
+      tr("Total number of channels: ") +
+          QString::number(signalPage->getSignalData()->channelsNumber()) +
+          tr("\nTotal number of sampels: ") +
+          QString::number(signalPage->getSignalData()->samplesNumber()) +
+          tr("\nSampling frequency: ") +
+          QString::number(signalPage->getSignalData()->rate()) +
+          tr(" HZ (step between samples ") +
+          QString::number(signalPage->getSignalData()->timeForOne()) +
+          tr(" sec)\nDate and time the recording started: ") +
+          QLocale::system().toString(signalPage->getSignalData()->startTime(),
+                                     "dd.MM.yyyy hh:mm:ss.zzz") +
+          tr("\nEnd date and time of recording: ") +
+          QLocale::system().toString(signalPage->getSignalData()->endTime(),
+                                     "dd.MM.yyyy hh:mm:ss.zzz") +
+          tr("\nDuration: ") +
+          QString::number((signalPage->getSignalData()->allTime() /
+                           signalPage->getSignalData()->divisionBase())) +
+          signalPage->getSignalData()->unitOfTime());
+}
 
 void MainWindow::modNewSignal() {
   std::shared_ptr<SignalData> signalData = std::make_shared<SignalData>();
@@ -145,8 +181,8 @@ void MainWindow::createMenus() {
 
 void MainWindow::chooseStatisticSignal() {
   if (!m_tabWidget->count()) {
-    QMessageBox::information(nullptr, tr("Error"), tr("No signal open"),
-                             QMessageBox::Ok);
+    QMessageBox::information(
+        this, tr("Error"), tr("There is no open signal yet"), QMessageBox::Ok);
     return;
   }
 
