@@ -80,7 +80,7 @@ class RectGridModel : public BaseModel {
   void calc() override;
 
  private:
-  QDoubleSpinBox *periodSpinBox;
+  QSpinBox *periodSpinBox;
 };
 
 //
@@ -94,7 +94,7 @@ class SawModel : public BaseModel {
   void calc() override;
 
  private:
-  QDoubleSpinBox *periodSpinBox;
+  QSpinBox *periodSpinBox;
 };
 
 //
@@ -177,8 +177,8 @@ class WhiteNoiseModel : public BaseModel {
   void calc() override;
 
  private:
-  QSpinBox *minSpinBox;
-  QSpinBox *maxSpinBox;
+  QDoubleSpinBox *minSpinBox;
+  QDoubleSpinBox *maxSpinBox;
 
   double randomValue;
 };
@@ -194,8 +194,8 @@ class NormalWhiteNoiseModel : public BaseModel {
   void calc() override;
 
  private:
-  QSpinBox *averageSpinBox;
-  QSpinBox *dispersionSpinBox;
+  QDoubleSpinBox *averageSpinBox;
+  QDoubleSpinBox *dispersionSpinBox;
 
   double randomValue;
 };
@@ -211,9 +211,9 @@ class MovingAverageAutoregressModel : public BaseModel {
   void calc() override;
 
  private:
-  QSpinBox *autoregressionSpinBox;
-  QSpinBox *averageSpinBox;
-  QSpinBox *dispersionSpinBox;
+  QDoubleSpinBox *autoregressionSpinBox;
+  QDoubleSpinBox *averageSpinBox;
+  QDoubleSpinBox *dispersionSpinBox;
 
   double randomValue;
 };
