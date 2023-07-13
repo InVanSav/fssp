@@ -13,7 +13,7 @@ namespace fssp {
 DelayedSingleImpulseModel::DelayedSingleImpulseModel(
     std::shared_ptr<SignalData> signalData, QWidget *parent)
     : BaseModel{signalData, parent} {
-  delaySpinBox = addSpinBox(tr("Delay:"), 333);
+  delaySpinBox = addSpinBox(tr("Delay:"), signalData->samplesNumber() / 3);
 }
 
 void DelayedSingleImpulseModel::calc() {
@@ -35,7 +35,7 @@ void DelayedSingleImpulseModel::calc() {
 DelayedSingleJumpModel::DelayedSingleJumpModel(
     std::shared_ptr<SignalData> signalData, QWidget *parent)
     : BaseModel{signalData, parent} {
-  delaySpinBox = addSpinBox(tr("Delay"), 333);
+  delaySpinBox = addSpinBox(tr("Delay"), signalData->samplesNumber() / 3);
 }
 
 void DelayedSingleJumpModel::calc() {
@@ -57,7 +57,9 @@ void DelayedSingleJumpModel::calc() {
 DiscretDecreasingExpModel::DiscretDecreasingExpModel(
     std::shared_ptr<SignalData> signalData, QWidget *parent)
     : BaseModel{signalData, parent} {
-  expBaseSpinBox = addDoubleSpinBox(tr("Exponent base:"), 0.997698);
+  expBaseSpinBox = addDoubleSpinBox(
+      tr("Exponent base:"),
+      std::pow(1. / 10., 1. / (double)signalData->samplesNumber() - 1));
 }
 
 void DiscretDecreasingExpModel::calc() {
@@ -76,7 +78,9 @@ DiscretSinModel::DiscretSinModel(std::shared_ptr<SignalData> signalData,
                                  QWidget *parent)
     : BaseModel{signalData, parent} {
   initPhaseSpinBox = addDoubleSpinBox(tr("Init phase:"), 0);
-  circFreqSpinBox = addDoubleSpinBox(tr("Circular frequency:"), 0);
+  circFreqSpinBox =
+      addDoubleSpinBox(tr("Circular frequency:"),
+                       20 * M_PI / (double)signalData->samplesNumber());
   amplitudeSpinBox = addDoubleSpinBox(tr("Amplitude:"), 1);
 }
 
@@ -98,7 +102,7 @@ void DiscretSinModel::calc() {
 RectGridModel::RectGridModel(std::shared_ptr<SignalData> signalData,
                              QWidget *parent)
     : BaseModel{signalData, parent} {
-  periodSpinBox = addDoubleSpinBox(tr("Period:"), 66);
+  periodSpinBox = addSpinBox(tr("Period:"), signalData->samplesNumber() / 15);
 }
 
 void RectGridModel::calc() {
@@ -119,7 +123,7 @@ void RectGridModel::calc() {
 
 SawModel::SawModel(std::shared_ptr<SignalData> signalData, QWidget *parent)
     : BaseModel{signalData, parent} {
-  periodSpinBox = addDoubleSpinBox(tr("Period:"), 66);
+  periodSpinBox = addSpinBox(tr("Period:"), signalData->samplesNumber() / 15);
 }
 
 void SawModel::calc() {
@@ -137,9 +141,13 @@ void SawModel::calc() {
 ExpEnvelopeModel::ExpEnvelopeModel(std::shared_ptr<SignalData> signalData,
                                    QWidget *parent)
     : BaseModel{signalData, parent} {
-  envelopeWidthSpinBox = addDoubleSpinBox(tr("Envelope width:"), 0);
-  carrierFreqSpinBox = addDoubleSpinBox(tr("Carrier frequency:"), 0);
-  amplitudeSpinBox = addDoubleSpinBox(tr("Amplitude:"), 0);
+  envelopeWidthSpinBox = addDoubleSpinBox(
+      tr("Envelope width:"),
+      (double)signalData->samplesNumber() / (1.5 * signalData->rate()));
+  carrierFreqSpinBox = addDoubleSpinBox(
+      tr("Carrier frequency:"),
+      15 * (*signalData).rate() / (double)signalData->samplesNumber());
+  amplitudeSpinBox = addDoubleSpinBox(tr("Amplitude:"), 1);
   initPhaseSpinBox = addDoubleSpinBox(tr("Init phase:"), 0);
 }
 
@@ -164,9 +172,13 @@ void ExpEnvelopeModel::calc() {
 BalanceEnvelopeModel::BalanceEnvelopeModel(
     std::shared_ptr<SignalData> signalData, QWidget *parent)
     : BaseModel{signalData, parent} {
-  freqEnvelopeSpinBox = addDoubleSpinBox(tr("Envelope frequency:"), 0);
-  carrierFreqSpinBox = addDoubleSpinBox(tr("Carrier frequency:"), 0);
-  amplitudeSpinBox = addDoubleSpinBox(tr("Amplitude:"), 0);
+  freqEnvelopeSpinBox = addDoubleSpinBox(
+      tr("Envelope frequency:"),
+      3 * signalData->rate() / (double)signalData->samplesNumber());
+  carrierFreqSpinBox = addDoubleSpinBox(
+      tr("Carrier frequency:"),
+      15 * signalData->rate() / (double)signalData->samplesNumber());
+  amplitudeSpinBox = addDoubleSpinBox(tr("Amplitude:"), 1);
   initPhaseSpinBox = addDoubleSpinBox(tr("Init phase:"), 0);
 }
 
@@ -191,12 +203,15 @@ void BalanceEnvelopeModel::calc() {
 TonalEnvelopeModel::TonalEnvelopeModel(std::shared_ptr<SignalData> signalData,
                                        QWidget *parent)
     : BaseModel{signalData, parent} {
-  freqEnvelopeSpinBox = addDoubleSpinBox(tr("Envelope frequency:"), 0);
-  amplitudeSpinBox = addDoubleSpinBox(tr("Amplitude:"), 0);
+  freqEnvelopeSpinBox = addDoubleSpinBox(
+      tr("Envelope frequency:"),
+      6 * signalData->rate() / (double)signalData->samplesNumber());
+  amplitudeSpinBox = addDoubleSpinBox(tr("Amplitude:"), 1);
   initPhaseSpinBox = addDoubleSpinBox(tr("Init phase:"), 0);
-  carrierFreqSpinBox = addDoubleSpinBox(tr("Carrier frequency:"), 0);
-  amplitudeSpinBox = addDoubleSpinBox(tr("Finish frequency:"), 0);
-  modulationDepthIndexSpinBox = addDoubleSpinBox(tr("Modulation depth:"), 0);
+  carrierFreqSpinBox = addDoubleSpinBox(
+      tr("Carrier frequency:"),
+      15 * signalData->rate() / (double)signalData->samplesNumber());
+  modulationDepthIndexSpinBox = addDoubleSpinBox(tr("Modulation depth:"), 0.5);
 }
 
 void TonalEnvelopeModel::calc() {
@@ -221,10 +236,14 @@ void TonalEnvelopeModel::calc() {
 LinearFreqModulationModel::LinearFreqModulationModel(
     std::shared_ptr<SignalData> signalData, QWidget *parent)
     : BaseModel{signalData, parent} {
-  amplitudeSpinBox = addDoubleSpinBox(tr("Amplitude:"), 0);
+  amplitudeSpinBox = addDoubleSpinBox(tr("Amplitude:"), 1);
   initPhaseSpinBox = addDoubleSpinBox(tr("Init phase:"), 0);
-  startFreqSpinBox = addDoubleSpinBox(tr("Start frequency:"), 0);
-  finishFreqSpinBox = addDoubleSpinBox(tr("Finish frequency:"), 0);
+  startFreqSpinBox =
+      addDoubleSpinBox(tr("Start frequency:"),
+                       5 * signalData->rate() / signalData->samplesNumber());
+  finishFreqSpinBox = addDoubleSpinBox(
+      tr("Finish frequency:"),
+      20 * signalData->rate() / (double)signalData->samplesNumber());
 }
 
 void LinearFreqModulationModel::calc() {
@@ -252,8 +271,8 @@ WhiteNoiseModel::WhiteNoiseModel(std::shared_ptr<SignalData> signalData,
     : BaseModel{signalData, parent} {
   srand(time(nullptr));
 
-  minSpinBox = addSpinBox(tr("Minimum:"), -1);
-  maxSpinBox = addSpinBox(tr("Maximum:"), 1);
+  minSpinBox = addDoubleSpinBox(tr("Minimum:"), -5);
+  maxSpinBox = addDoubleSpinBox(tr("Maximum:"), 5);
 
   randomValue = rand() / RAND_MAX;
 }
@@ -277,8 +296,8 @@ NormalWhiteNoiseModel::NormalWhiteNoiseModel(
     : BaseModel{signalData, parent} {
   srand(time(nullptr));
 
-  averageSpinBox = addSpinBox(tr("Average value:"), -1);
-  dispersionSpinBox = addSpinBox(tr("Dispersion:"), 1);
+  averageSpinBox = addDoubleSpinBox(tr("Average value:"), 1);
+  dispersionSpinBox = addDoubleSpinBox(tr("Dispersion:"), 1);
 
   randomValue = rand() / RAND_MAX;
 }
@@ -307,9 +326,9 @@ MovingAverageAutoregressModel::MovingAverageAutoregressModel(
     : BaseModel{signalData, parent} {
   srand(time(nullptr));
 
-  autoregressionSpinBox = addSpinBox(tr("MA Coefficients:"), 1);
-  averageSpinBox = addSpinBox(tr("AR Coefficients:"), 1);
-  dispersionSpinBox = addSpinBox(tr("Dispersion:"), 1);
+  autoregressionSpinBox = addDoubleSpinBox(tr("MA Coefficients:"), 1);
+  averageSpinBox = addDoubleSpinBox(tr("AR Coefficients:"), 1);
+  dispersionSpinBox = addDoubleSpinBox(tr("Dispersion:"), 1);
 
   randomValue = rand() / RAND_MAX;
 }
