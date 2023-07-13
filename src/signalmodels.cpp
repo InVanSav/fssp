@@ -273,8 +273,6 @@ WhiteNoiseModel::WhiteNoiseModel(std::shared_ptr<SignalData> signalData,
 
   minSpinBox = addDoubleSpinBox(tr("Minimum:"), -5);
   maxSpinBox = addDoubleSpinBox(tr("Maximum:"), 5);
-
-  randomValue = rand() / RAND_MAX;
 }
 
 void WhiteNoiseModel::calc() {
@@ -285,7 +283,7 @@ void WhiteNoiseModel::calc() {
   int b = maxSpinBox->value();
 
   for (int i = 0; i < n; ++i) {
-    p_data[i] = a + (b - a) * randomValue;
+    p_data[i] = a + (b - a) * (rand() / (double)RAND_MAX);
   }
 }
 
@@ -298,8 +296,6 @@ NormalWhiteNoiseModel::NormalWhiteNoiseModel(
 
   averageSpinBox = addDoubleSpinBox(tr("Average value:"), 1);
   dispersionSpinBox = addDoubleSpinBox(tr("Dispersion:"), 1);
-
-  randomValue = rand() / RAND_MAX;
 }
 
 void NormalWhiteNoiseModel::calc() {
@@ -312,7 +308,7 @@ void NormalWhiteNoiseModel::calc() {
   for (int i = 0; i < n; ++i) {
     double nu = -6;
     for (int j = 0; j < 12; ++j) {
-      nu += randomValue;
+      nu += (rand() / (double)RAND_MAX);
     }
 
     p_data[i] = a + sqrt(q_2) * nu;
@@ -329,8 +325,6 @@ MovingAverageAutoregressModel::MovingAverageAutoregressModel(
   autoregressionSpinBox = addDoubleSpinBox(tr("MA Coefficients:"), 1);
   averageSpinBox = addDoubleSpinBox(tr("AR Coefficients:"), 1);
   dispersionSpinBox = addDoubleSpinBox(tr("Dispersion:"), 1);
-
-  randomValue = rand() / RAND_MAX;
 }
 
 void MovingAverageAutoregressModel::calc() {
@@ -349,29 +343,29 @@ void MovingAverageAutoregressModel::calc() {
   for (quint64 i = 0; i < n; ++i) {
     double nu = -6;
     for (size_t j = 0; j < 12; ++j) {
-      nu += randomValue;
+      nu += (rand() / (double)RAND_MAX);
     }
 
-    normalWhiteNoise[i] = 0 + sqrt(q_2) * nu;
+    normalWhiteNoise[i] = sqrt(q_2) * nu;
   }
 
   for (int i = 0; i < n; ++i) {
     double sum1 = 0, sum2 = 0;
-    int j = 0;
+    int j = 1;
     while (j <= i) {
-      if (j == q) {
+      if (j - 1 == q) {
         break;
       }
-      sum1 += q_coef[j] * normalWhiteNoise[i - j];
+      sum1 += q_coef[j - 1] * normalWhiteNoise[i - j];
       j++;
     }
 
-    j = 0;
+    j = 1;
     while (j <= i) {
-      if (j == p) {
+      if (j - 1 == p) {
         break;
       }
-      sum2 += p_coef[j] * p_data[i - j];
+      sum2 += p_coef[j - 1] * p_data[i - j];
       j++;
     }
     p_data[i] = normalWhiteNoise[i] + sum1 - sum2;
