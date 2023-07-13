@@ -156,15 +156,18 @@ void GraphWaveform::keyReleaseEvent(QKeyEvent *event) {
 void GraphWaveform::showToolTip(QMouseEvent *event) {
   if (!validateToolTipPoint(event)) return;
 
-  double dataPerTime =
-      static_cast<double>(p_dataRange) / static_cast<double>(p_timeRange);
-
   size_t time =
       (event->pos().x() - (p_offsetLeft + p_paddingLeft)) * p_timePerPixel;
-  double data = static_cast<double>(time) * dataPerTime + p_curMinValue;
+  double data =
+      p_curMaxValue -
+      (event->pos().y() - (p_offsetTop + p_paddingTop)) * p_dataPerPixel;
+
+  QDateTime fullTime = p_signalData->startTime().addMSecs(time);
 
   QString tooltipText =
-      QString(tr("Value: %1 \n Time: %2")).arg(data).arg(time);
+      QString(tr("Value: %1 \n Time: %2"))
+          .arg(data)
+          .arg(QLocale::system().toString(fullTime, "dd.MM.yyyy hh:mm:ss.zzz"));
 
   QToolTip::showText(mapToGlobal(event->pos()), tooltipText, this);
 }
