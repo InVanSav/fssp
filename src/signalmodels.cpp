@@ -174,10 +174,10 @@ BalanceEnvelopeModel::BalanceEnvelopeModel(
     : BaseModel{signalData, parent} {
   freqEnvelopeSpinBox = addDoubleSpinBox(
       tr("Envelope frequency:"),
-      3 * signalData->rate() / (double)signalData->samplesNumber());
+      10 * signalData->rate() / signalData->samplesNumber());
   carrierFreqSpinBox = addDoubleSpinBox(
       tr("Carrier frequency:"),
-      15 * signalData->rate() / (double)signalData->samplesNumber());
+      300 * signalData->rate() / signalData->samplesNumber());
   amplitudeSpinBox = addDoubleSpinBox(tr("Amplitude:"), 1);
   initPhaseSpinBox = addDoubleSpinBox(tr("Init phase:"), 0);
 }
