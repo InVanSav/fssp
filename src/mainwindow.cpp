@@ -89,11 +89,7 @@ void MainWindow::aboutSignal() {
                                      "dd.MM.yyyy hh:mm:ss.zzz") +
           tr("\nEnd date and time of recording: ") +
           QLocale::system().toString(signalPage->getSignalData()->endTime(),
-                                     "dd.MM.yyyy hh:mm:ss.zzz") +
-          tr("\nDuration: ") +
-          QString::number((signalPage->getSignalData()->allTime() /
-                           signalPage->getSignalData()->divisionBase())) +
-          signalPage->getSignalData()->unitOfTime());
+                                     "dd.MM.yyyy hh:mm:ss.zzz"));
 }
 
 void MainWindow::modNewSignal() {
