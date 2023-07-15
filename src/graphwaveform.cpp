@@ -157,7 +157,8 @@ void GraphWaveform::showToolTip(QMouseEvent *event) {
   if (!validateToolTipPoint(event)) return;
 
   size_t time =
-      (event->pos().x() - (p_offsetLeft + p_paddingLeft)) * p_timePerPixel;
+      (event->pos().x() - (p_offsetLeft + p_paddingLeft)) * p_timePerPixel +
+      p_signalData->leftTime();
   double data =
       p_curMaxValue -
       (event->pos().y() - (p_offsetTop + p_paddingTop)) * p_dataPerPixel;

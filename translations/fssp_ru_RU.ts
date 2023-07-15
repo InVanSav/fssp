@@ -238,7 +238,7 @@
 <context>
     <name>fssp::GraphWaveform</name>
     <message>
-        <location filename="../src/graphwaveform.cpp" line="168"/>
+        <location filename="../src/graphwaveform.cpp" line="169"/>
         <source>Value: %1 
  Time: %2</source>
         <translation>Значение: %1

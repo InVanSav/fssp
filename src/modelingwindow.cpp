@@ -202,7 +202,10 @@ void ModelingWindow::onCalcButtonPress() {
   m_previewScrollArea->setWidget(scrollWigdet);
 }
 
-void ModelingWindow::onAddButtonPress() { accept(); }
+void ModelingWindow::onAddButtonPress() {
+  m_model->calc();
+  accept();
+}
 
 void ModelingWindow::onCancelButtonPress() { reject(); }
 
