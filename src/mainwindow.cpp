@@ -24,10 +24,15 @@ MainWindow::~MainWindow() {}
 
 void MainWindow::aboutFssp() {
   QMessageBox::about(this, tr("Fast Simple Signal Processing 0.2.0"),
-                     tr("Made by students of DVFU:\n"
-                        "    Kuligin Kirill\n"
-                        "    Savickij Ivan\n"
-                        "    Arefevef Egor"));
+                     tr("The software package "
+                        "allows you to work and explore "
+                        "discrete signals using built-in "
+                        "analysis and statistics components, "
+                        "as well as to simulate new signals.\n\n"
+                        "Made by students of DVFU:\n"
+                        "    Kuligin Kirill Nikolaevich\n"
+                        "    Savickij Ivan Viktorovich\n"
+                        "    Arefevef Egor Pavlovich"));
 }
 
 void MainWindow::open() {

@@ -314,14 +314,18 @@
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="27"/>
-        <source>Made by students of DVFU:
-    Kuligin Kirill
-    Savickij Ivan
-    Arefevef Egor</source>
-        <translation>Сделано студентами ДВФУ:
-    Кулигин Кирилл
-    Савицкий Иван
-    Арефьев Егор</translation>
+        <source>The software package allows you to work and explore discrete signals using built-in analysis and statistics components, as well as to simulate new signals.
+
+Made by students of DVFU:
+    Kuligin Kirill Nikolaevich
+    Savickij Ivan Viktorovich
+    Arefevef Egor Pavlovich</source>
+        <translation>Программный комплекс позволяет работать и исследовать дискретные сигналы при помощи встроенных компонентов анализа и статистики, а также моделировать новые сигналы.
+
+Сделано студентами ДВФУ:
+    Кулигин Кирилл Николаевич
+    Савицкий Иван Викторович
+    Арефьев Егор Павлович</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="65"/>
