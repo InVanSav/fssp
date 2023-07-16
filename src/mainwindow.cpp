@@ -195,7 +195,7 @@ void MainWindow::chooseStatisticSignal() {
       dynamic_cast<SignalPage *>(m_tabWidget->currentWidget());
 
   QDialog *dialog = new QDialog();
-  dialog->setWindowTitle(tr("Choose Signal"));
+  dialog->setWindowTitle(tr("Statistic"));
 
   QComboBox *comboBox = new QComboBox();
   for (int i = 0; i < signalPage->getSignalData()->channelsNumber(); ++i) {
@@ -215,12 +215,14 @@ void MainWindow::chooseStatisticSignal() {
   QHBoxLayout *buttonLayout = new QHBoxLayout();
   buttonLayout->addWidget(buttonBox);
 
-  QLabel *note = new QLabel(tr("Number of intervals"));
+  QLabel *noteComboBox = new QLabel(tr("Choose the channel"));
+  QLabel *noteSpinBox = new QLabel(tr("Number of intervals"));
 
   QVBoxLayout *dialogLayout = new QVBoxLayout();
-  dialogLayout->addWidget(comboBox);
 
-  dialogLayout->addWidget(note);
+  dialogLayout->addWidget(noteComboBox);
+  dialogLayout->addWidget(comboBox);
+  dialogLayout->addWidget(noteSpinBox);
   dialogLayout->addWidget(spinBox);
   dialogLayout->addLayout(buttonLayout, Qt::AlignCenter);
 
