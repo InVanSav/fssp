@@ -65,9 +65,11 @@ class GraphWaveform : public BaseWaveform {
 
   bool m_isSelected;
   bool m_isCtrlPressed;
+  bool m_isToolTipShow;
 
   QPoint m_startPoint;
   QRect m_selectionRect;
+  QPoint m_toolTipPoint;
 };
 
 }  // namespace fssp

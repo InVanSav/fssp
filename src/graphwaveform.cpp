@@ -170,17 +170,36 @@ void GraphWaveform::mouseReleaseEvent(QMouseEvent *event) {
 
     emit p_signalData->changedGraphTimeRange();
   }
+
+  if (m_isToolTipShow) {
+    m_isToolTipShow = false;
+    drawWaveform();
+  }
 }
 
 void GraphWaveform::paintEvent(QPaintEvent *event) {
   QLabel::paintEvent(event);
-  if (!m_isSelected) return;
 
   QPainter painter(this);
-  painter.setRenderHint(QPainter::Antialiasing);
-  painter.setPen(Qt::red);
-  painter.setBrush(QColor(255, 0, 0, 100));
-  painter.drawRect(m_selectionRect);
+
+  if (m_isSelected) {
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setPen(Qt::red);
+    painter.setBrush(QColor(255, 0, 0, 100));
+    painter.drawRect(m_selectionRect);
+  } else if (m_isToolTipShow) {
+    painter.setPen(Qt::red);
+
+    QLine xLine{
+        QPoint{p_offsetLeft + p_paddingLeft, m_toolTipPoint.y()},
+        QPoint{p_width - (p_offsetRight + p_paddingRight), m_toolTipPoint.y()}};
+    painter.drawLine(xLine);
+
+    QLine yLine{QPoint{m_toolTipPoint.x(), p_offsetTop + p_paddingTop},
+                QPoint{m_toolTipPoint.x(),
+                       p_height - (p_offsetBottom + p_paddingBottom)}};
+    painter.drawLine(yLine);
+  }
 }
 
 void GraphWaveform::keyPressEvent(QKeyEvent *event) {
@@ -188,19 +207,53 @@ void GraphWaveform::keyPressEvent(QKeyEvent *event) {
 }
 
 void GraphWaveform::keyReleaseEvent(QKeyEvent *event) {
-  if (event->key() == Qt::Key_Control) m_isCtrlPressed = false;
+  if (event->key() == Qt::Key_Control) {
+    m_isCtrlPressed = false;
+    if (m_isToolTipShow) {
+      m_isToolTipShow = false;
+      drawWaveform();
+    }
+  }
 }
 
 void GraphWaveform::showToolTip(QMouseEvent *event) {
   if (!validateToolTipPoint(event)) return;
 
-  size_t time =
+  size_t timeStart =
       (event->pos().x() - (p_offsetLeft + p_paddingLeft)) * m_timePerPixel +
       p_signalData->leftTime();
-  double data = p_maxValue - (event->pos().y() - (p_offsetTop + p_paddingTop)) *
-                                 m_dataPerPixel;
 
-  QDateTime fullTime = p_signalData->startTime().addMSecs(time);
+  int arrayStart = (p_signalData->samplesNumber() - 1) * timeStart /
+                   (p_signalData->allTime() - 1);
+
+  size_t timeEnd =
+      (event->pos().x() + 1 - (p_offsetLeft + p_paddingLeft)) * m_timePerPixel +
+      p_signalData->leftTime();
+
+  int arrayEnd = (p_signalData->samplesNumber() - 1) * timeEnd /
+                 (p_signalData->allTime() - 1);
+
+  double max =
+      *std::max_element(p_signalData->data()[p_number].begin() + arrayStart,
+                        p_signalData->data()[p_number].begin() + arrayEnd);
+
+  double min =
+      *std::min_element(p_signalData->data()[p_number].begin() + arrayStart,
+                        p_signalData->data()[p_number].begin() + arrayEnd);
+
+  double avg = (max + min) / 2;
+
+  int avgPixel =
+      (p_maxValue - avg) * m_pixelPerData + p_offsetTop + p_paddingTop;
+
+  double data;
+  if (event->pos().y() < avgPixel) {
+    data = max;
+  } else {
+    data = min;
+  }
+
+  QDateTime fullTime = p_signalData->startTime().addMSecs(timeStart);
 
   QString tooltipText =
       QString(tr("Value: %1 \n Time: %2"))
@@ -208,6 +261,13 @@ void GraphWaveform::showToolTip(QMouseEvent *event) {
           .arg(QLocale::system().toString(fullTime, "dd.MM.yyyy hh:mm:ss.zzz"));
 
   QToolTip::showText(mapToGlobal(event->pos()), tooltipText, this);
+
+  m_toolTipPoint.setX(event->pos().x());
+  m_toolTipPoint.setY((p_maxValue - data) * m_pixelPerData + p_offsetTop +
+                      p_paddingTop);
+  m_isToolTipShow = true;
+
+  update();
 }
 
 bool GraphWaveform::validateToolTipPoint(QMouseEvent *event) {
