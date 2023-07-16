@@ -143,10 +143,10 @@ ExpEnvelopeModel::ExpEnvelopeModel(std::shared_ptr<SignalData> signalData,
     : BaseModel{signalData, parent} {
   envelopeWidthSpinBox = addDoubleSpinBox(
       tr("Envelope width:"),
-      (double)signalData->samplesNumber() / (1.5 * signalData->rate()));
+      signalData->rate() * (double)signalData->samplesNumber() / 2);
   carrierFreqSpinBox = addDoubleSpinBox(
       tr("Carrier frequency:"),
-      15 * (*signalData).rate() / (double)signalData->samplesNumber());
+      15 / ((double)signalData->samplesNumber() * signalData->rate()));
   amplitudeSpinBox = addDoubleSpinBox(tr("Amplitude:"), 1);
   initPhaseSpinBox = addDoubleSpinBox(tr("Init phase:"), 0);
 }
@@ -174,10 +174,10 @@ BalanceEnvelopeModel::BalanceEnvelopeModel(
     : BaseModel{signalData, parent} {
   freqEnvelopeSpinBox = addDoubleSpinBox(
       tr("Envelope frequency:"),
-      10 * signalData->rate() / signalData->samplesNumber());
+      100 / ((double)signalData->samplesNumber() * signalData->rate()));
   carrierFreqSpinBox = addDoubleSpinBox(
       tr("Carrier frequency:"),
-      300 * signalData->rate() / signalData->samplesNumber());
+      5 / ((double)signalData->samplesNumber() * signalData->rate()));
   amplitudeSpinBox = addDoubleSpinBox(tr("Amplitude:"), 1);
   initPhaseSpinBox = addDoubleSpinBox(tr("Init phase:"), 0);
 }
@@ -205,12 +205,12 @@ TonalEnvelopeModel::TonalEnvelopeModel(std::shared_ptr<SignalData> signalData,
     : BaseModel{signalData, parent} {
   freqEnvelopeSpinBox = addDoubleSpinBox(
       tr("Envelope frequency:"),
-      6 * signalData->rate() / (double)signalData->samplesNumber());
+      100 / ((double)signalData->samplesNumber() * signalData->rate()));
   amplitudeSpinBox = addDoubleSpinBox(tr("Amplitude:"), 1);
   initPhaseSpinBox = addDoubleSpinBox(tr("Init phase:"), 0);
   carrierFreqSpinBox = addDoubleSpinBox(
       tr("Carrier frequency:"),
-      15 * signalData->rate() / (double)signalData->samplesNumber());
+      5 / ((double)signalData->samplesNumber() * signalData->rate()));
   modulationDepthIndexSpinBox = addDoubleSpinBox(tr("Modulation depth:"), 0.5);
 }
 
