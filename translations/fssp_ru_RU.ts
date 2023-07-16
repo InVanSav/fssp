@@ -271,39 +271,39 @@
 <context>
     <name>fssp::MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.cpp" line="35"/>
+        <location filename="../src/mainwindow.cpp" line="40"/>
         <source>Open file</source>
         <translation>Открыть файл</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="35"/>
+        <location filename="../src/mainwindow.cpp" line="40"/>
         <source>Text files (*.txt)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="50"/>
+        <location filename="../src/mainwindow.cpp" line="55"/>
         <source>File type is not supported.</source>
         <translation>Тип файла не поддерживается.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="110"/>
+        <location filename="../src/mainwindow.cpp" line="115"/>
         <source>New File</source>
         <translation>Новый Файл</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="141"/>
+        <location filename="../src/mainwindow.cpp" line="146"/>
         <source>About</source>
         <translation>О программе</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="144"/>
+        <location filename="../src/mainwindow.cpp" line="149"/>
         <source>&amp;Open</source>
         <translation>&amp;Открыть</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="64"/>
-        <location filename="../src/mainwindow.cpp" line="73"/>
-        <location filename="../src/mainwindow.cpp" line="147"/>
+        <location filename="../src/mainwindow.cpp" line="69"/>
+        <location filename="../src/mainwindow.cpp" line="78"/>
+        <location filename="../src/mainwindow.cpp" line="152"/>
         <source>About signal</source>
         <translation>О сигнале</translation>
     </message>
@@ -328,115 +328,115 @@ Made by students of DVFU:
     Арефьев Егор Павлович</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="65"/>
-        <location filename="../src/mainwindow.cpp" line="116"/>
-        <location filename="../src/mainwindow.cpp" line="187"/>
+        <location filename="../src/mainwindow.cpp" line="70"/>
+        <location filename="../src/mainwindow.cpp" line="121"/>
+        <location filename="../src/mainwindow.cpp" line="192"/>
         <source>There is no open signal yet</source>
         <translation>Нет открытых сигналов</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="74"/>
+        <location filename="../src/mainwindow.cpp" line="79"/>
         <source>Total number of channels: </source>
         <translation>Общее число каналов: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="76"/>
+        <location filename="../src/mainwindow.cpp" line="81"/>
         <source>
 Total number of sampels: </source>
         <translation>
 Общее число отсчетов: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="78"/>
+        <location filename="../src/mainwindow.cpp" line="83"/>
         <source>
 Sampling frequency: </source>
         <translation>
 Частота дискретизации: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="80"/>
+        <location filename="../src/mainwindow.cpp" line="85"/>
         <source> HZ (step between samples </source>
         <translation> HZ (шаг) </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="82"/>
+        <location filename="../src/mainwindow.cpp" line="87"/>
         <source> sec)
 Date and time the recording started: </source>
         <translation> сек)
 Дата и время начала записи: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="85"/>
+        <location filename="../src/mainwindow.cpp" line="90"/>
         <source>
 End date and time of recording: </source>
         <translation>
 Дата и время конца записи: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="88"/>
+        <location filename="../src/mainwindow.cpp" line="93"/>
         <source>
 Duration: </source>
         <translation>
 Продолжительность: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="151"/>
+        <location filename="../src/mainwindow.cpp" line="156"/>
         <source>Model new signal...</source>
         <translation>Моделировать новый сигнал...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="155"/>
+        <location filename="../src/mainwindow.cpp" line="160"/>
         <source>Model in current signal...</source>
         <translation>Моделировать в текущем сигнале...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="159"/>
+        <location filename="../src/mainwindow.cpp" line="164"/>
         <source>Statistic</source>
         <translation>Статистика</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="165"/>
+        <location filename="../src/mainwindow.cpp" line="170"/>
         <source>&amp;File</source>
         <translation>&amp;Файл</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="169"/>
+        <location filename="../src/mainwindow.cpp" line="174"/>
         <source>&amp;Modeling</source>
         <translation>&amp;Моделирование</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="173"/>
+        <location filename="../src/mainwindow.cpp" line="178"/>
         <source>&amp;Analysis</source>
         <translation>&amp;Анализ</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="176"/>
+        <location filename="../src/mainwindow.cpp" line="181"/>
         <source>&amp;Filter</source>
         <translation>&amp;Фильтрация</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="178"/>
+        <location filename="../src/mainwindow.cpp" line="183"/>
         <source>&amp;Settings</source>
         <translation>&amp;Настройки</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="180"/>
+        <location filename="../src/mainwindow.cpp" line="185"/>
         <source>Help</source>
         <translation>Справка</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="116"/>
-        <location filename="../src/mainwindow.cpp" line="187"/>
+        <location filename="../src/mainwindow.cpp" line="121"/>
+        <location filename="../src/mainwindow.cpp" line="192"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="195"/>
+        <location filename="../src/mainwindow.cpp" line="200"/>
         <source>Choose Signal</source>
         <translation>Выберите Сигнал</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="215"/>
+        <location filename="../src/mainwindow.cpp" line="220"/>
         <source>Number of intervals</source>
         <translation>Число отсчетов</translation>
     </message>
@@ -602,12 +602,12 @@ Duration: </source>
         <translation>Статистика </translation>
     </message>
     <message>
-        <location filename="../src/statisticwindow.cpp" line="24"/>
+        <location filename="../src/statisticwindow.cpp" line="26"/>
         <source>Minimum value: </source>
         <translation>Минимум: </translation>
     </message>
     <message>
-        <location filename="../src/statisticwindow.cpp" line="27"/>
+        <location filename="../src/statisticwindow.cpp" line="28"/>
         <source>Maximum value: </source>
         <translation>Максимум: </translation>
     </message>
@@ -617,42 +617,42 @@ Duration: </source>
         <translation>Среднее: </translation>
     </message>
     <message>
-        <location filename="../src/statisticwindow.cpp" line="38"/>
+        <location filename="../src/statisticwindow.cpp" line="34"/>
         <source>Variation factor: </source>
         <translation>Коэф. вариации: </translation>
     </message>
     <message>
-        <location filename="../src/statisticwindow.cpp" line="41"/>
+        <location filename="../src/statisticwindow.cpp" line="36"/>
         <source>Asymmetry factor: </source>
         <translation>Коэф. асимметрии: </translation>
     </message>
     <message>
-        <location filename="../src/statisticwindow.cpp" line="44"/>
+        <location filename="../src/statisticwindow.cpp" line="39"/>
         <source>Kurtosis factor: </source>
         <translation>Коэф. эксцесса: </translation>
     </message>
     <message>
-        <location filename="../src/statisticwindow.cpp" line="52"/>
+        <location filename="../src/statisticwindow.cpp" line="44"/>
         <source>Dispersion: </source>
         <translation>Дисперсия: </translation>
     </message>
     <message>
-        <location filename="../src/statisticwindow.cpp" line="54"/>
+        <location filename="../src/statisticwindow.cpp" line="45"/>
         <source>Standart derivation: </source>
         <translation>Ск. отклонение: </translation>
     </message>
     <message>
-        <location filename="../src/statisticwindow.cpp" line="58"/>
+        <location filename="../src/statisticwindow.cpp" line="48"/>
         <source>Median: </source>
         <translation>Медиана: </translation>
     </message>
     <message>
-        <location filename="../src/statisticwindow.cpp" line="66"/>
+        <location filename="../src/statisticwindow.cpp" line="53"/>
         <source>Order quantile 0.05: </source>
         <translation>Квантиль порядка 0.05: </translation>
     </message>
     <message>
-        <location filename="../src/statisticwindow.cpp" line="69"/>
+        <location filename="../src/statisticwindow.cpp" line="55"/>
         <source>Order quantile 0.95: </source>
         <translation>Квантиль порядка 0.95: </translation>
     </message>
