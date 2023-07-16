@@ -48,49 +48,6 @@
     </message>
 </context>
 <context>
-    <name>fssp::BaseWaveform</name>
-    <message>
-        <location filename="../src/basewaveform.cpp" line="320"/>
-        <source>msec</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../src/basewaveform.cpp" line="323"/>
-        <source>sec</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../src/basewaveform.cpp" line="326"/>
-        <source>min</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../src/basewaveform.cpp" line="329"/>
-        <source>h</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../src/basewaveform.cpp" line="332"/>
-        <source>d</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../src/basewaveform.cpp" line="335"/>
-        <source>w</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../src/basewaveform.cpp" line="338"/>
-        <source>m</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../src/basewaveform.cpp" line="341"/>
-        <source>y</source>
-        <translation></translation>
-    </message>
-</context>
-<context>
     <name>fssp::DelayedSingleImpulseModel</name>
     <message>
         <location filename="../src/signalmodels.cpp" line="16"/>
@@ -238,11 +195,59 @@
 <context>
     <name>fssp::GraphWaveform</name>
     <message>
-        <location filename="../src/graphwaveform.cpp" line="169"/>
+        <location filename="../src/graphwaveform.cpp" line="206"/>
         <source>Value: %1 
  Time: %2</source>
         <translation>Значение: %1
 Время: %2</translation>
+    </message>
+    <message>
+        <location filename="../src/graphwaveform.cpp" line="390"/>
+        <location filename="../src/graphwaveform.cpp" line="493"/>
+        <source>msec</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/graphwaveform.cpp" line="393"/>
+        <location filename="../src/graphwaveform.cpp" line="496"/>
+        <source>sec</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/graphwaveform.cpp" line="396"/>
+        <location filename="../src/graphwaveform.cpp" line="499"/>
+        <source>min</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/graphwaveform.cpp" line="399"/>
+        <location filename="../src/graphwaveform.cpp" line="502"/>
+        <source>h</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/graphwaveform.cpp" line="402"/>
+        <location filename="../src/graphwaveform.cpp" line="505"/>
+        <source>d</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/graphwaveform.cpp" line="405"/>
+        <location filename="../src/graphwaveform.cpp" line="508"/>
+        <source>w</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/graphwaveform.cpp" line="408"/>
+        <location filename="../src/graphwaveform.cpp" line="511"/>
+        <source>m</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/graphwaveform.cpp" line="411"/>
+        <location filename="../src/graphwaveform.cpp" line="514"/>
+        <source>y</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -286,24 +291,24 @@
         <translation>Тип файла не поддерживается.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="115"/>
+        <location filename="../src/mainwindow.cpp" line="111"/>
         <source>New File</source>
         <translation>Новый Файл</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="146"/>
+        <location filename="../src/mainwindow.cpp" line="144"/>
         <source>About</source>
         <translation>О программе</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="149"/>
+        <location filename="../src/mainwindow.cpp" line="147"/>
         <source>&amp;Open</source>
         <translation>&amp;Открыть</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="69"/>
         <location filename="../src/mainwindow.cpp" line="78"/>
-        <location filename="../src/mainwindow.cpp" line="152"/>
+        <location filename="../src/mainwindow.cpp" line="150"/>
         <source>About signal</source>
         <translation>О сигнале</translation>
     </message>
@@ -329,8 +334,8 @@ Made by students of DVFU:
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="70"/>
-        <location filename="../src/mainwindow.cpp" line="121"/>
-        <location filename="../src/mainwindow.cpp" line="192"/>
+        <location filename="../src/mainwindow.cpp" line="117"/>
+        <location filename="../src/mainwindow.cpp" line="190"/>
         <source>There is no open signal yet</source>
         <translation>Нет открытых сигналов</translation>
     </message>
@@ -373,72 +378,114 @@ End date and time of recording: </source>
 Дата и время конца записи: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="93"/>
         <source>
 Duration: </source>
-        <translation>
+        <translation type="vanished">
 Продолжительность: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="156"/>
+        <location filename="../src/mainwindow.cpp" line="154"/>
         <source>Model new signal...</source>
         <translation>Моделировать новый сигнал...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="160"/>
+        <location filename="../src/mainwindow.cpp" line="158"/>
         <source>Model in current signal...</source>
         <translation>Моделировать в текущем сигнале...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="164"/>
+        <location filename="../src/mainwindow.cpp" line="162"/>
         <source>Statistic</source>
         <translation>Статистика</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="170"/>
+        <location filename="../src/mainwindow.cpp" line="168"/>
         <source>&amp;File</source>
         <translation>&amp;Файл</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="174"/>
+        <location filename="../src/mainwindow.cpp" line="172"/>
         <source>&amp;Modeling</source>
         <translation>&amp;Моделирование</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="178"/>
+        <location filename="../src/mainwindow.cpp" line="176"/>
         <source>&amp;Analysis</source>
         <translation>&amp;Анализ</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="181"/>
+        <location filename="../src/mainwindow.cpp" line="179"/>
         <source>&amp;Filter</source>
         <translation>&amp;Фильтрация</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="183"/>
+        <location filename="../src/mainwindow.cpp" line="181"/>
         <source>&amp;Settings</source>
         <translation>&amp;Настройки</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="185"/>
+        <location filename="../src/mainwindow.cpp" line="183"/>
         <source>Help</source>
         <translation>Справка</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="121"/>
-        <location filename="../src/mainwindow.cpp" line="192"/>
+        <location filename="../src/mainwindow.cpp" line="117"/>
+        <location filename="../src/mainwindow.cpp" line="190"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="200"/>
+        <location filename="../src/mainwindow.cpp" line="198"/>
         <source>Choose Signal</source>
         <translation>Выберите Сигнал</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="220"/>
+        <location filename="../src/mainwindow.cpp" line="218"/>
         <source>Number of intervals</source>
         <translation>Число отсчетов</translation>
+    </message>
+</context>
+<context>
+    <name>fssp::ModelingWaveform</name>
+    <message>
+        <location filename="../src/modelingwaveform.cpp" line="82"/>
+        <source>msec</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/modelingwaveform.cpp" line="85"/>
+        <source>sec</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/modelingwaveform.cpp" line="88"/>
+        <source>min</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/modelingwaveform.cpp" line="91"/>
+        <source>h</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/modelingwaveform.cpp" line="94"/>
+        <source>d</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/modelingwaveform.cpp" line="97"/>
+        <source>w</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/modelingwaveform.cpp" line="100"/>
+        <source>m</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/modelingwaveform.cpp" line="103"/>
+        <source>y</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

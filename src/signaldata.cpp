@@ -22,6 +22,10 @@ SignalData::SignalData() {
 
   m_leftTime = 0;
   m_rightTime = m_allTime - 1;
+
+  m_isGlobalScale = true;
+  m_isGridEnabled = true;
+  m_isSelected = false;
 }
 
 SignalData::SignalData(const QDateTime &startTime, const QDateTime &endTime,
@@ -47,6 +51,10 @@ SignalData::SignalData(const QDateTime &startTime, const QDateTime &endTime,
 
   m_leftTime = 0;
   m_rightTime = m_allTime - 1;
+
+  m_isGlobalScale = true;
+  m_isGridEnabled = true;
+  m_isSelected = false;
 }
 
 SignalData::SignalData(const SignalData &that) {
@@ -70,6 +78,10 @@ SignalData::SignalData(const SignalData &that) {
 
   m_leftTime = that.m_leftTime;
   m_rightTime = that.m_rightTime;
+
+  m_isGlobalScale = that.m_isGlobalScale;
+  m_isGridEnabled = that.m_isGridEnabled;
+  m_isSelected = that.m_isSelected;
 }
 
 SignalData::SignalData(SignalData &&that) {
@@ -93,6 +105,10 @@ SignalData::SignalData(SignalData &&that) {
 
   m_leftTime = that.m_leftTime;
   m_rightTime = that.m_rightTime;
+
+  m_isGlobalScale = that.m_isGlobalScale;
+  m_isGridEnabled = that.m_isGridEnabled;
+  m_isSelected = that.m_isSelected;
 }
 
 SignalData &SignalData::operator=(SignalData that) {
@@ -124,6 +140,10 @@ void swap(SignalData &first, SignalData &second) {
 
   swap(first.m_leftTime, second.m_leftTime);
   swap(first.m_rightTime, second.m_rightTime);
+
+  swap(first.m_isGlobalScale, second.m_isGlobalScale);
+  swap(first.m_isGridEnabled, second.m_isGridEnabled);
+  swap(first.m_isSelected, second.m_isSelected);
 }
 
 QDateTime SignalData::startTime() const { return m_startTime; }
@@ -136,17 +156,17 @@ double SignalData::timeForOne() const { return m_timeForOne; }
 
 size_t SignalData::allTime() const { return m_allTime; }
 
-QString SignalData::unitOfTime() const { return m_unitOfTime; }
-
-size_t SignalData::divisionBase() const { return m_divisionBase; }
-
 int SignalData::leftArray() const { return m_leftArray; }
 
 int SignalData::rightArray() const { return m_rightArray; }
 
+int SignalData::arrayRange() const { return m_rightArray - m_leftArray; }
+
 size_t SignalData::leftTime() const { return m_leftTime; }
 
 size_t SignalData::rightTime() const { return m_rightTime; }
+
+size_t SignalData::timeRange() const { return m_rightTime - m_leftTime; }
 
 bool SignalData::isGridEnabled() const { return m_isGridEnabled; }
 
@@ -167,8 +187,6 @@ void SignalData::addData(const QString name, std::vector<double> data) {
   m_channelsName.push_back(name);
   m_data.push_back(data);
   m_visibleWaveforms.push_back(false);
-
-  emit dataAdded();
 }
 
 int SignalData::channelsNumber() const { return m_channelsNumber; }
@@ -201,12 +219,16 @@ void SignalData::setLeftTime(size_t leftTime) { m_leftTime = leftTime; }
 
 void SignalData::setRightTime(size_t rightTime) { m_rightTime = rightTime; }
 
-void SignalData::setUnitOfTime(QString unitOfTime) {
-  m_unitOfTime = unitOfTime;
-}
+void SignalData::setDefault() {
+  m_leftArray = 0;
+  m_rightArray = m_samplesNumber - 1;
 
-void SignalData::setDivisionBase(size_t divisionBase) {
-  m_divisionBase = divisionBase;
+  m_leftTime = 0;
+  m_rightTime = m_allTime - 1;
+
+  m_isGlobalScale = true;
+  m_isGridEnabled = true;
+  m_isSelected = false;
 }
 
 void SignalData::calculateArrayRange() {

@@ -5,29 +5,23 @@ namespace fssp {
 NavigationWaveform::NavigationWaveform(std::shared_ptr<SignalData> signalData,
                                        int number, QWidget *parent)
     : BaseWaveform{signalData, number, 200, 80, parent} {
-  m_isVisible = false;
-
-  m_leftX = 0;
-  m_rightX = p_minWidth;
+  m_isVisible = p_signalData->visibleWaveforms()[p_number];
 
   connect(p_signalData.get(), &SignalData::changedGraphTimeRange, this,
           &NavigationWaveform::onChangedGraphTimeRange);
 
   setTextMargin(5, 5, 3, 3);
   setOffset(0, 0, 0, p_maxTextHeight);
-  updateRelative();
 }
 
 void NavigationWaveform::drawWaveform() {
   initImage();
-  fill(QColor{255, 255, 255});
-  drawName(BaseWaveform::NameType::HorizontalBottom);
+  fill();
+  drawName();
   drawBresenham();
   showWaveform();
-}
 
-void NavigationWaveform::setIsVisible(bool isVisible) {
-  m_isVisible = isVisible;
+  onChangedGraphTimeRange();
 }
 
 void NavigationWaveform::mousePressEvent(QMouseEvent *event) {
@@ -52,21 +46,22 @@ void NavigationWaveform::showContextMenu(const QPoint &pos) {
 
 void NavigationWaveform::changeVisibilityAction(bool visible) {
   m_isVisible = visible;
-  p_signalData->setWaveformVisibility(number(), visible);
+  p_signalData->setWaveformVisibility(p_number, visible);
 
   emit p_signalData->changedWaveformVisibility();
 }
 
 void NavigationWaveform::onChangedGraphTimeRange() {
-  long double timePerPixel =
-      p_timeRange / (p_width - (p_offsetLeft + p_paddingLeft + p_offsetRight +
-                                p_paddingRight));
+  double timePerPixel =
+      p_signalData->allTime() / (p_width - (p_offsetLeft + p_paddingLeft +
+                                            p_offsetRight + p_paddingRight));
 
-  m_leftX = p_signalData->leftTime() / timePerPixel;
-  m_rightX = p_signalData->rightTime() / timePerPixel;
+  double leftX = p_signalData->leftTime() / timePerPixel;
+  double rightX = p_signalData->rightTime() / timePerPixel;
 
   m_selectionRect =
-      QRect(QPoint(m_leftX, 0), QPoint(m_rightX, height() - p_maxTextHeight));
+      QRect(QPoint(leftX, p_offsetTop + p_paddingTop),
+            QPoint(rightX, height() - (p_offsetBottom + p_paddingBottom)));
 
   update();
 }
@@ -80,6 +75,20 @@ void NavigationWaveform::paintEvent(QPaintEvent *event) {
   painter.setPen(Qt::red);
   painter.setBrush(QColor(255, 0, 0, 100));
   painter.drawRect(m_selectionRect);
+}
+
+void NavigationWaveform::drawName() {
+  if (isImageNull()) throw BaseWaveform::ImageIsNull();
+
+  QPainter painter(&p_image);
+  painter.setPen(p_mainColor);
+  painter.setFont(p_font);
+
+  QRect textRect{p_paddingLeft, p_height - (p_maxTextHeight + p_paddingBottom),
+                 p_width - (p_paddingRight + p_paddingLeft), p_maxTextHeight};
+
+  painter.drawText(textRect, Qt::AlignCenter | Qt::TextWordWrap,
+                   p_signalData->channelsName()[p_number]);
 }
 
 }  // namespace fssp

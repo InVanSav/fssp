@@ -16,8 +16,6 @@ class NavigationWaveform : public BaseWaveform {
 
   void drawWaveform() override;
 
-  void setIsVisible(bool isVisible);
-
  public slots:
   void onChangedGraphTimeRange();
 
@@ -31,10 +29,9 @@ class NavigationWaveform : public BaseWaveform {
   void changeVisibilityAction(bool visible);
 
  private:
-  bool m_isVisible;
+  void drawName();
 
-  int m_leftX;
-  int m_rightX;
+  bool m_isVisible;
 
   QRect m_selectionRect;
 };

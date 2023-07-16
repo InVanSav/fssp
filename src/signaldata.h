@@ -29,14 +29,15 @@ class SignalData : public QObject {
   double timeForOne() const;
   size_t allTime() const;
 
-  QString unitOfTime() const;
-  size_t divisionBase() const;
-
   int leftArray() const;
   int rightArray() const;
 
+  int arrayRange() const;
+
   size_t leftTime() const;
   size_t rightTime() const;
+
+  size_t timeRange() const;
 
   bool isGridEnabled() const;
   bool isGlobalScale() const;
@@ -52,8 +53,7 @@ class SignalData : public QObject {
   void setGlobalScale(bool isGlobalScale);
   void setSelected(bool isSelected);
 
-  void setUnitOfTime(QString unitOfTime);
-  void setDivisionBase(size_t divisionBase);
+  void setDefault();
 
   void calculateArrayRange();
 
@@ -86,9 +86,6 @@ class SignalData : public QObject {
   double m_timeForOne;
 
   size_t m_allTime;
-
-  QString m_unitOfTime;
-  size_t m_divisionBase;
 
   std::vector<QString> m_channelsName;
   std::vector<std::vector<double>> m_data;

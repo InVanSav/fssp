@@ -19,6 +19,8 @@ class GraphWaveform : public BaseWaveform {
 
   void drawWaveform() override;
 
+  void updateRelative();
+
   void setTop();
   void setMiddle();
   void setBottom();
@@ -46,7 +48,18 @@ class GraphWaveform : public BaseWaveform {
 
   void initSelection(QMouseEvent *event);
 
- private:
+  void drawName();
+  void drawAxisY();
+  void drawAxisTopX();
+  void drawAxisBottomX();
+  void drawGrid();
+
+  double m_pixelPerData;
+  double m_pixelPerTime;
+
+  double m_dataPerPixel;
+  double m_timePerPixel;
+
   bool m_isTop;
   bool m_isBottom;
 

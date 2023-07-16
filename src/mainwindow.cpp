@@ -130,6 +130,8 @@ void MainWindow::modInCurSignal() {
   SignalData modelingData = modWindow->getData();
 
   signalData->addData(modelingData.channelsName()[0], modelingData.data()[0]);
+  signalData->setDefault();
+  emit signalData->dataAdded();
 }
 
 void MainWindow::handleCloseTabEvent(int index) {
