@@ -195,57 +195,57 @@
 <context>
     <name>fssp::GraphWaveform</name>
     <message>
-        <location filename="../src/graphwaveform.cpp" line="259"/>
+        <location filename="../src/graphwaveform.cpp" line="261"/>
         <source>Value: %1 
  Time: %2</source>
         <translation>Значение: %1
 Время: %2</translation>
     </message>
     <message>
-        <location filename="../src/graphwaveform.cpp" line="450"/>
-        <location filename="../src/graphwaveform.cpp" line="553"/>
+        <location filename="../src/graphwaveform.cpp" line="452"/>
+        <location filename="../src/graphwaveform.cpp" line="555"/>
         <source>msec</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/graphwaveform.cpp" line="453"/>
-        <location filename="../src/graphwaveform.cpp" line="556"/>
+        <location filename="../src/graphwaveform.cpp" line="455"/>
+        <location filename="../src/graphwaveform.cpp" line="558"/>
         <source>sec</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/graphwaveform.cpp" line="456"/>
-        <location filename="../src/graphwaveform.cpp" line="559"/>
+        <location filename="../src/graphwaveform.cpp" line="458"/>
+        <location filename="../src/graphwaveform.cpp" line="561"/>
         <source>min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/graphwaveform.cpp" line="459"/>
-        <location filename="../src/graphwaveform.cpp" line="562"/>
+        <location filename="../src/graphwaveform.cpp" line="461"/>
+        <location filename="../src/graphwaveform.cpp" line="564"/>
         <source>h</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/graphwaveform.cpp" line="462"/>
-        <location filename="../src/graphwaveform.cpp" line="565"/>
+        <location filename="../src/graphwaveform.cpp" line="464"/>
+        <location filename="../src/graphwaveform.cpp" line="567"/>
         <source>d</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/graphwaveform.cpp" line="465"/>
-        <location filename="../src/graphwaveform.cpp" line="568"/>
+        <location filename="../src/graphwaveform.cpp" line="467"/>
+        <location filename="../src/graphwaveform.cpp" line="570"/>
         <source>w</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/graphwaveform.cpp" line="468"/>
-        <location filename="../src/graphwaveform.cpp" line="571"/>
+        <location filename="../src/graphwaveform.cpp" line="470"/>
+        <location filename="../src/graphwaveform.cpp" line="573"/>
         <source>m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/graphwaveform.cpp" line="471"/>
-        <location filename="../src/graphwaveform.cpp" line="574"/>
+        <location filename="../src/graphwaveform.cpp" line="473"/>
+        <location filename="../src/graphwaveform.cpp" line="576"/>
         <source>y</source>
         <translation type="unfinished"></translation>
     </message>
@@ -454,42 +454,42 @@ Date and time the recording started: </source>
 <context>
     <name>fssp::ModelingWaveform</name>
     <message>
-        <location filename="../src/modelingwaveform.cpp" line="82"/>
+        <location filename="../src/modelingwaveform.cpp" line="95"/>
         <source>msec</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/modelingwaveform.cpp" line="85"/>
+        <location filename="../src/modelingwaveform.cpp" line="98"/>
         <source>sec</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/modelingwaveform.cpp" line="88"/>
+        <location filename="../src/modelingwaveform.cpp" line="101"/>
         <source>min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/modelingwaveform.cpp" line="91"/>
+        <location filename="../src/modelingwaveform.cpp" line="104"/>
         <source>h</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/modelingwaveform.cpp" line="94"/>
+        <location filename="../src/modelingwaveform.cpp" line="107"/>
         <source>d</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/modelingwaveform.cpp" line="97"/>
+        <location filename="../src/modelingwaveform.cpp" line="110"/>
         <source>w</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/modelingwaveform.cpp" line="100"/>
+        <location filename="../src/modelingwaveform.cpp" line="113"/>
         <source>m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/modelingwaveform.cpp" line="103"/>
+        <location filename="../src/modelingwaveform.cpp" line="116"/>
         <source>y</source>
         <translation type="unfinished"></translation>
     </message>

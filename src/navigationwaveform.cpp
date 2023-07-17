@@ -12,6 +12,18 @@ NavigationWaveform::NavigationWaveform(std::shared_ptr<SignalData> signalData,
 
   setTextMargin(5, 5, 3, 3);
   setOffset(0, 0, 0, p_maxTextHeight);
+
+  p_data = p_signalData->data()[p_number];
+
+  p_leftArray = p_signalData->leftArray();
+  p_rightArray = p_signalData->rightArray();
+
+  p_arrayRange = p_rightArray - p_leftArray + 1;
+
+  p_minValue = *std::min_element(p_data.begin(), p_data.end());
+  p_maxValue = *std::max_element(p_data.begin(), p_data.end());
+
+  p_dataRange = std::abs(p_maxValue - p_minValue);
 }
 
 void NavigationWaveform::drawWaveform() {

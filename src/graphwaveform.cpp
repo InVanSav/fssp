@@ -16,6 +16,9 @@ GraphWaveform::GraphWaveform(std::shared_ptr<SignalData> signalData, int number,
   setOffset(p_maxTextHeight + p_paddingLeft * 2 + p_maxAxisTextWidth + 5, 15,
             10, 10);
   setPadding(3, 3, 3, 3);
+
+  p_data = p_signalData->data()[p_number];
+
   updateRelative();
 
   connect(p_signalData.get(), &SignalData::changedEnableGrid, this,
@@ -49,18 +52,19 @@ void GraphWaveform::drawWaveform() {
 }
 
 void GraphWaveform::updateRelative() {
+  p_leftArray = p_signalData->leftArray();
+  p_rightArray = p_signalData->rightArray();
+
+  p_arrayRange = p_rightArray - p_leftArray + 1;
+
   if (p_signalData->isGlobalScale()) {
-    p_maxValue = *std::max_element(p_signalData->data()[p_number].begin(),
-                                   p_signalData->data()[p_number].end());
-    p_minValue = *std::min_element(p_signalData->data()[p_number].begin(),
-                                   p_signalData->data()[p_number].end());
+    p_maxValue = *std::max_element(p_data.begin(), p_data.end());
+    p_minValue = *std::min_element(p_data.begin(), p_data.end());
   } else {
-    p_maxValue = *std::max_element(
-        p_signalData->data()[p_number].begin() + p_signalData->leftArray(),
-        p_signalData->data()[p_number].begin() + p_signalData->rightArray());
-    p_minValue = *std::min_element(
-        p_signalData->data()[p_number].begin() + p_signalData->leftArray(),
-        p_signalData->data()[p_number].begin() + p_signalData->rightArray());
+    p_maxValue = *std::max_element(p_data.begin() + p_leftArray,
+                                   p_data.begin() + p_rightArray);
+    p_minValue = *std::min_element(p_data.begin() + p_leftArray,
+                                   p_data.begin() + p_rightArray);
   }
 
   p_dataRange = std::abs(p_maxValue - p_minValue);
@@ -234,12 +238,10 @@ void GraphWaveform::showToolTip(QMouseEvent *event) {
                  (p_signalData->allTime() - 1);
 
   double max =
-      *std::max_element(p_signalData->data()[p_number].begin() + arrayStart,
-                        p_signalData->data()[p_number].begin() + arrayEnd);
+      *std::max_element(p_data.begin() + arrayStart, p_data.begin() + arrayEnd);
 
   double min =
-      *std::min_element(p_signalData->data()[p_number].begin() + arrayStart,
-                        p_signalData->data()[p_number].begin() + arrayEnd);
+      *std::min_element(p_data.begin() + arrayStart, p_data.begin() + arrayEnd);
 
   double avg = (max + min) / 2;
 

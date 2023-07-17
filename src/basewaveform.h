@@ -50,6 +50,13 @@ class BaseWaveform : public QLabel {
   std::shared_ptr<SignalData> p_signalData;
   int p_number;
 
+  std::vector<double> p_data;
+
+  int p_leftArray;
+  int p_rightArray;
+
+  int p_arrayRange;
+
   double p_maxValue;
   double p_minValue;
 

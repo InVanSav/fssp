@@ -13,6 +13,19 @@ ModelingWaveform::ModelingWaveform(std::shared_ptr<SignalData> signalData,
   setTextMargin(5, 5, 3, 3);
   setOffset(p_maxAxisTextWidth, 15, p_maxTextHeight + 5, 10);
   setPadding(3, 3, 3, 3);
+
+  p_data = p_signalData->data()[p_number];
+
+  p_leftArray = p_signalData->leftArray();
+  p_rightArray = p_signalData->rightArray();
+
+  p_arrayRange = p_rightArray - p_leftArray + 1;
+
+  p_minValue = *std::min_element(p_data.begin(), p_data.end());
+  p_maxValue = *std::max_element(p_data.begin(), p_data.end());
+
+  p_dataRange = std::abs(p_maxValue - p_minValue);
+
   updateRelative();
 }
 
