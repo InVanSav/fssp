@@ -188,7 +188,7 @@ void GraphWaveform::paintEvent(QPaintEvent *event) {
     painter.setBrush(QColor(255, 0, 0, 100));
     painter.drawRect(m_selectionRect);
   } else if (m_isToolTipShow) {
-    painter.setPen(Qt::red);
+    painter.setPen(Qt::black);
 
     QLine xLine{
         QPoint{p_offsetLeft + p_paddingLeft, m_toolTipPoint.y()},
