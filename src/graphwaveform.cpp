@@ -260,12 +260,12 @@ void GraphWaveform::showToolTip(QMouseEvent *event) {
           .arg(data)
           .arg(QLocale::system().toString(fullTime, "dd.MM.yyyy hh:mm:ss.zzz"));
 
-  QToolTip::showText(mapToGlobal(event->pos()), tooltipText, this);
-
   m_toolTipPoint.setX(event->pos().x());
   m_toolTipPoint.setY((p_maxValue - data) * m_pixelPerData + p_offsetTop +
                       p_paddingTop);
   m_isToolTipShow = true;
+
+  QToolTip::showText(mapToGlobal(m_toolTipPoint), tooltipText, this);
 
   update();
 }
