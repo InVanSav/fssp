@@ -23,7 +23,7 @@ SignalData::SignalData() {
   m_leftTime = 0;
   m_rightTime = m_allTime - 1;
 
-  m_isGlobalScale = true;
+  m_isGlobalScale = false;
   m_isGridEnabled = true;
   m_isSelected = false;
 }
@@ -52,7 +52,7 @@ SignalData::SignalData(const QDateTime &startTime, const QDateTime &endTime,
   m_leftTime = 0;
   m_rightTime = m_allTime - 1;
 
-  m_isGlobalScale = true;
+  m_isGlobalScale = false;
   m_isGridEnabled = true;
   m_isSelected = false;
 }
@@ -226,7 +226,7 @@ void SignalData::setDefault() {
   m_leftTime = 0;
   m_rightTime = m_allTime - 1;
 
-  m_isGlobalScale = true;
+  m_isGlobalScale = false;
   m_isGridEnabled = true;
   m_isSelected = false;
 }
