@@ -238,10 +238,17 @@ void SpectrumWindow::scaleGraphWaveformAction() {
   connect(resetScale, &QPushButton::clicked, this,
           &SpectrumWindow::pushResetButton);
 
-  m_scaleFromValue = new QDateTimeEdit(m_signalData->startTime());
-  m_scaleFromValue->setCalendarPopup(true);
-  m_scaleToValue = new QDateTimeEdit(m_signalData->endTime());
-  m_scaleToValue->setCalendarPopup(true);
+  m_scaleFromValue = new QDoubleSpinBox();
+  m_scaleFromValue->setDecimals(8);
+  m_scaleFromValue->setMinimum(0);
+  m_scaleFromValue->setMaximum(m_signalData->allFreq());
+  m_scaleFromValue->setValue(m_signalData->leftFreq());
+
+  m_scaleToValue = new QDoubleSpinBox();
+  m_scaleToValue->setDecimals(8);
+  m_scaleToValue->setMinimum(0);
+  m_scaleToValue->setMaximum(m_signalData->allFreq());
+  m_scaleToValue->setValue(m_signalData->rightFreq());
 
   m_error = new QLabel();
 
@@ -277,11 +284,8 @@ void SpectrumWindow::pushScaleCancelButton() {
 }
 
 void SpectrumWindow::pushScaleAcceptButton() {
-  QDateTime fromDateTime = m_scaleFromValue->dateTime();
-  m_leftFreq = m_signalData->startTime().msecsTo(fromDateTime);
-
-  QDateTime toDateTime = m_scaleToValue->dateTime();
-  m_rightFreq = m_signalData->startTime().msecsTo(toDateTime);
+  m_leftFreq = m_scaleFromValue->value();
+  m_rightFreq = m_scaleToValue->value();
 
   m_signalData->setSelected(true);
 
@@ -291,8 +295,10 @@ void SpectrumWindow::pushScaleAcceptButton() {
 void SpectrumWindow::pushDoubleScaleButton() {
   size_t timeRange = m_signalData->rightTime() - m_signalData->leftTime();
 
-  m_leftFreq = m_signalData->leftTime() + (timeRange / 4);
-  m_rightFreq = m_signalData->rightTime() - (timeRange / 4);
+  double freqRange = m_signalData->freqRange();
+
+  m_leftFreq = m_signalData->leftFreq() + (freqRange / 4);
+  m_rightFreq = m_signalData->rightFreq() - (freqRange / 4);
 
   m_signalData->setSelected(true);
 

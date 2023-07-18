@@ -76,8 +76,8 @@ class SpectrumWindow : public QGroupBox {
   QSpinBox *m_smoothingValue;
   double m_smoothing;
 
-  QDateTimeEdit *m_scaleFromValue;
-  QDateTimeEdit *m_scaleToValue;
+  QDoubleSpinBox *m_scaleFromValue;
+  QDoubleSpinBox *m_scaleToValue;
 
   QWidget *m_settingsForm;
   QWidget *m_scaleForm;
