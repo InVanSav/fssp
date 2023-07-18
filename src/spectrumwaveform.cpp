@@ -330,19 +330,7 @@ void SpectrumWaveform::drawName() {
   painter.setPen(p_mainColor);
   painter.setFont(p_font);
 
-  QRect textRect = {p_paddingLeft, p_paddingTop, p_maxTextHeight,
-                    p_height - (p_paddingTop + p_paddingBottom)};
-
-  painter.translate(textRect.center());
-  painter.rotate(-90);
-  painter.translate(-textRect.height() / 2 - p_paddingLeft,
-                    -textRect.width() / 2 - p_paddingTop);
-
-  textRect.setWidth(p_height - (p_paddingTop + p_paddingBottom));
-  textRect.setHeight(p_maxTextHeight * 2);
-
-  painter.drawText(textRect, Qt::AlignCenter | Qt::TextWordWrap,
-                   p_signalData->channelsName()[p_number]);
+  QRect textRect;
 
   if (m_isTop) {
     textRect = {p_paddingLeft, p_maxTextHeight + p_paddingTop,
@@ -355,6 +343,20 @@ void SpectrumWaveform::drawName() {
     painter.drawText(textRect, Qt::AlignCenter | Qt::TextWordWrap,
                      tr("Freq (HZ)"));
   }
+
+  textRect = {p_paddingLeft, p_paddingTop, p_maxTextHeight,
+              p_height - (p_paddingTop + p_paddingBottom)};
+
+  painter.translate(textRect.center());
+  painter.rotate(-90);
+  painter.translate(-textRect.height() / 2 - p_paddingLeft,
+                    -textRect.width() / 2 - p_paddingTop);
+
+  textRect.setWidth(p_height - (p_paddingTop + p_paddingBottom));
+  textRect.setHeight(p_maxTextHeight * 2);
+
+  painter.drawText(textRect, Qt::AlignCenter | Qt::TextWordWrap,
+                   p_signalData->channelsName()[p_number]);
 }
 
 void SpectrumWaveform::drawAxisY() {
@@ -409,7 +411,7 @@ void SpectrumWaveform::drawAxisY() {
                                        p_maxTextHeight % 2 + p_axisLineWidth)},
                    QPoint{textX2, y + p_maxTextHeight / 2}};
 
-    painter.drawText(textRect, Qt::AlignHCenter | Qt::AlignVCenter,
+    painter.drawText(textRect, Qt::AlignRight | Qt::AlignVCenter,
                      QString::number(curValue, 'f', count));
 
     if (i != delimitersNumber - 1) {
@@ -429,7 +431,7 @@ void SpectrumWaveform::drawAxisY() {
                                        p_maxTextHeight % 2 + p_axisLineWidth)},
                    QPoint{textX2, y + p_maxTextHeight / 2}};
 
-    painter.drawText(textRect, Qt::AlignHCenter | Qt::AlignVCenter,
+    painter.drawText(textRect, Qt::AlignRight | Qt::AlignVCenter,
                      QString::number(curValue, 'f', count));
   }
 }
