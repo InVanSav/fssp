@@ -65,6 +65,53 @@ void MainWindow::open() {
   m_tabWidget->addTab(signalPage, fileInfo.fileName());
 }
 
+void MainWindow::save() {
+  if (!m_tabWidget->count()) {
+    QMessageBox::information(this, tr("Save file"),
+                             tr("There is no open signal yet"));
+    return;
+  }
+
+  SignalPage *signalPage =
+      dynamic_cast<SignalPage *>(m_tabWidget->currentWidget());
+  std::shared_ptr<SignalData> signalData = signalPage->getSignalData();
+
+  QString fileName = QFileDialog::getSaveFileName(
+      this, tr("Save File"), m_lastDir, tr("Text files (*.txt)"));
+
+  QFile out(fileName + ".txt");
+  if (out.open(QIODevice::WriteOnly)) {
+    QTextStream stream(&out);
+    stream << "# channels number\n";
+    stream << signalData->channelsNumber() << "\n";
+    stream << "# samples number\n";
+    stream << signalData->samplesNumber() << "\n";
+    stream << "# sampling rate\n";
+    stream << signalData->rate() << "\n";
+    stream << "# start date\n";
+    stream << QLocale::system().toString(signalData->startTime().date(),
+                                         "dd.MM.yyyy")
+           << "\n";
+    stream << "# start time\n";
+    stream << QLocale::system().toString(signalData->startTime().time(),
+                                         "hh:mm:ss.zzz")
+           << "\n";
+    stream << "# channels names\n";
+    for (int i = 0; i < signalData->channelsNumber(); ++i) {
+      stream << signalData->channelsName()[i] << ";";
+    }
+    stream << "\n";
+
+    for (int i = 0; i < signalData->samplesNumber(); ++i) {
+      for (int j = 0; j < signalData->channelsNumber(); ++j) {
+        stream << signalData->data()[j][i] << " ";
+      }
+      stream << "\n";
+    }
+    out.close();
+  }
+}
+
 void MainWindow::aboutSignal() {
   if (!m_tabWidget->count()) {
     QMessageBox::information(this, tr("About signal"),
@@ -157,6 +204,9 @@ void MainWindow::createActions() {
   m_openAct = new QAction(tr("&Open"), this);
   connect(m_openAct, &QAction::triggered, this, &MainWindow::open);
 
+  m_saveAct = new QAction(tr("&Save"), this);
+  connect(m_saveAct, &QAction::triggered, this, &MainWindow::save);
+
   m_aboutSignalAct = new QAction(tr("About signal"), this);
   connect(m_aboutSignalAct, &QAction::triggered, this,
           &MainWindow::aboutSignal);
@@ -181,6 +231,7 @@ void MainWindow::createActions() {
 void MainWindow::createMenus() {
   m_fileMenu = menuBar()->addMenu(tr("&File"));
   m_fileMenu->addAction(m_openAct);
+  m_fileMenu->addAction(m_saveAct);
   m_fileMenu->addAction(m_aboutSignalAct);
 
   m_modelingMenu = menuBar()->addMenu(tr("&Modeling"));
@@ -251,7 +302,7 @@ void MainWindow::chooseStatisticSignal() {
   if (dialog->result() == QDialog::Accepted) {
     StatisticWindow *statistic =
         new StatisticWindow(signalPage->getSignalData(),
-                            comboBox->currentIndex(), spinBox->value());
+                            comboBox->currentIndex(), spinBox->value(), this);
 
     statistic->show();
 

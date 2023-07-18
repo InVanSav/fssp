@@ -322,23 +322,41 @@ MovingAverageAutoregressModel::MovingAverageAutoregressModel(
     : BaseModel{signalData, parent} {
   srand(time(nullptr));
 
-  autoregressionSpinBox = addDoubleSpinBox(tr("MA Coefficients:"), 1);
-  averageSpinBox = addDoubleSpinBox(tr("AR Coefficients:"), 1);
+  autoregressionLineEdit = addLineEdit(tr("MA Coefficients:"), 1);
+  averageLineEdit = addLineEdit(tr("AR Coefficients:"), 1);
+
   dispersionSpinBox = addDoubleSpinBox(tr("Dispersion:"), 1);
 }
 
 void MovingAverageAutoregressModel::calc() {
   int n = p_sampleNumberSpinBox->value();
-  int p = autoregressionSpinBox->value();
-  int q = averageSpinBox->value();
-
   double q_2 = dispersionSpinBox->value();
 
-  std::vector<double> p_coef = std::vector<double>(p);
-  std::vector<double> q_coef = std::vector<double>(q);
   std::vector<double> normalWhiteNoise = std::vector<double>(n);
 
+  std::vector<double> p_coef;
+  std::vector<double> q_coef;
   p_data = std::vector<double>(n);
+
+  static QRegularExpression separatorRegex("[,\\s]+");
+
+  QString input = autoregressionLineEdit->text();
+  QStringList values = input.split(separatorRegex);
+
+  for (const QString &value : values) {
+    p_coef.push_back(value.toDouble());
+  }
+
+  int p = values.size();
+
+  input = averageLineEdit->text();
+  values = input.split(separatorRegex);
+
+  for (const QString &value : values) {
+    q_coef.push_back(value.toDouble());
+  }
+
+  int q = values.size();
 
   for (quint64 i = 0; i < n; ++i) {
     double nu = -6;

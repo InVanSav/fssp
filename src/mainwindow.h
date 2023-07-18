@@ -24,6 +24,7 @@ class MainWindow : public QMainWindow {
 
   void aboutFssp();
   void open();
+  void save();
   void aboutSignal();
   void modNewSignal();
   void modInCurSignal();
@@ -46,6 +47,7 @@ class MainWindow : public QMainWindow {
 
   QAction *m_aboutFsspAct;
   QAction *m_openAct;
+  QAction *m_saveAct;
   QAction *m_aboutSignalAct;
   QAction *m_modNewSignalAct;
   QAction *m_modInCurSignalAct;

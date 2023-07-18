@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include <QRegularExpression>
 #include <QWidget>
 #include <cmath>
 
@@ -211,8 +212,8 @@ class MovingAverageAutoregressModel : public BaseModel {
   void calc() override;
 
  private:
-  QDoubleSpinBox *autoregressionSpinBox;
-  QDoubleSpinBox *averageSpinBox;
+  QLineEdit *autoregressionLineEdit;
+  QLineEdit *averageLineEdit;
   QDoubleSpinBox *dispersionSpinBox;
 
   double randomValue;
