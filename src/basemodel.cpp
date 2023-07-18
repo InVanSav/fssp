@@ -64,6 +64,14 @@ QDoubleSpinBox *BaseModel::addDoubleSpinBox(const QString name,
   return spinBox;
 }
 
+QLineEdit *BaseModel::addLineEdit(const QString name, const int value) {
+  QLineEdit *lineEdit = new QLineEdit(QString::number(value));
+
+  p_formLayout->addRow(name, lineEdit);
+
+  return lineEdit;
+}
+
 QSpinBox *BaseModel::addSpinBox(const QString name, const int value,
                                 const int min, const int max) {
   QSpinBox *spinBox = new QSpinBox();

@@ -39,6 +39,8 @@ class BaseModel : public QWidget {
   QSpinBox *addSpinBox(const QString name, const int value,
                        const int min = INT_MIN, const int max = INT_MAX);
 
+  QLineEdit *addLineEdit(const QString name, const int value);
+
   std::vector<double> p_data;
 
   int number;
