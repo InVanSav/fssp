@@ -302,7 +302,7 @@ void MainWindow::chooseStatisticSignal() {
   if (dialog->result() == QDialog::Accepted) {
     StatisticWindow *statistic =
         new StatisticWindow(signalPage->getSignalData(),
-                            comboBox->currentIndex(), spinBox->value());
+                            comboBox->currentIndex(), spinBox->value(), this);
 
     statistic->show();
 

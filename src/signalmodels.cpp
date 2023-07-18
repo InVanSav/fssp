@@ -338,8 +338,10 @@ void MovingAverageAutoregressModel::calc() {
   std::vector<double> q_coef;
   p_data = std::vector<double>(n);
 
+  static QRegularExpression separatorRegex("[,\\s]+");
+
   QString input = autoregressionLineEdit->text();
-  QStringList values = input.split(QRegularExpression("[,\\s]+"));
+  QStringList values = input.split(separatorRegex);
 
   for (const QString &value : values) {
     p_coef.push_back(value.toDouble());
@@ -348,7 +350,7 @@ void MovingAverageAutoregressModel::calc() {
   int p = values.size();
 
   input = averageLineEdit->text();
-  values = input.split(QRegularExpression("[,\\s]+"));
+  values = input.split(separatorRegex);
 
   for (const QString &value : values) {
     q_coef.push_back(value.toDouble());

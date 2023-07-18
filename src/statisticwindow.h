@@ -20,7 +20,7 @@ class StatisticWindow : public QDialog {
   Q_OBJECT
  public:
   explicit StatisticWindow(std::shared_ptr<SignalData> data, int curSignal,
-                     int intervalsNumber, QWidget *parent = nullptr);
+                           int intervalsNumber, QWidget *parent = nullptr);
 
  private:
   void calculateStatistic();

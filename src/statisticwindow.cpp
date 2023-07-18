@@ -72,7 +72,12 @@ void StatisticWindow::showDialog() {
 void StatisticWindow::calculateStatistic() {
   if (!p_intervalsNumber) return;
 
-  std::vector<double> data = p_signalData->data()[p_curSignal];
+  std::vector<double> data(p_signalData->rightArray() -
+                           p_signalData->leftArray());
+
+  for (int i = p_signalData->leftArray(); i < p_signalData->rightArray(); ++i) {
+    data[i - p_signalData->leftArray()] = p_signalData->data()[p_curSignal][i];
+  }
 
   // Минимум и максимум
   p_minValue = *std::min_element(data.begin(), data.end());
