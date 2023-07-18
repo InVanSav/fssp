@@ -8,6 +8,7 @@ GraphWaveform::GraphWaveform(std::shared_ptr<SignalData> signalData, int number,
   m_isTop = false;
   m_isBottom = false;
 
+  m_isSelected = p_signalData->isSelected();
   m_isCtrlPressed = false;
 
   setWidth(800);

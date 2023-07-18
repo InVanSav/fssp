@@ -26,6 +26,8 @@ class SpectrumWaveform : public BaseWaveform {
   void setMiddle();
   void setBottom();
 
+  void setData(std::vector<double> &spectrumData);
+
  public slots:
   void onChangedEnableGrid();
   void onChangedGraphTimeRange();

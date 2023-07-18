@@ -130,6 +130,12 @@ void SpectrumWindow::pushSettingsAcceptButton() {
 
   calculate();
 
+  for (int i = 0; i < m_spectrumData.size(); ++i) {
+    m_waveforms[i]->setData(m_spectrumData[i]);
+  }
+
+  drawWaveforms();
+
   pushSettingsCancelButton();
 }
 

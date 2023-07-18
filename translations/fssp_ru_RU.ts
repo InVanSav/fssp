@@ -195,57 +195,57 @@
 <context>
     <name>fssp::GraphWaveform</name>
     <message>
-        <location filename="../src/graphwaveform.cpp" line="261"/>
+        <location filename="../src/graphwaveform.cpp" line="262"/>
         <source>Value: %1 
  Time: %2</source>
         <translation>Значение: %1
 Время: %2</translation>
     </message>
     <message>
-        <location filename="../src/graphwaveform.cpp" line="452"/>
-        <location filename="../src/graphwaveform.cpp" line="555"/>
+        <location filename="../src/graphwaveform.cpp" line="453"/>
+        <location filename="../src/graphwaveform.cpp" line="556"/>
         <source>msec</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/graphwaveform.cpp" line="455"/>
-        <location filename="../src/graphwaveform.cpp" line="558"/>
+        <location filename="../src/graphwaveform.cpp" line="456"/>
+        <location filename="../src/graphwaveform.cpp" line="559"/>
         <source>sec</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/graphwaveform.cpp" line="458"/>
-        <location filename="../src/graphwaveform.cpp" line="561"/>
+        <location filename="../src/graphwaveform.cpp" line="459"/>
+        <location filename="../src/graphwaveform.cpp" line="562"/>
         <source>min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/graphwaveform.cpp" line="461"/>
-        <location filename="../src/graphwaveform.cpp" line="564"/>
+        <location filename="../src/graphwaveform.cpp" line="462"/>
+        <location filename="../src/graphwaveform.cpp" line="565"/>
         <source>h</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/graphwaveform.cpp" line="464"/>
-        <location filename="../src/graphwaveform.cpp" line="567"/>
+        <location filename="../src/graphwaveform.cpp" line="465"/>
+        <location filename="../src/graphwaveform.cpp" line="568"/>
         <source>d</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/graphwaveform.cpp" line="467"/>
-        <location filename="../src/graphwaveform.cpp" line="570"/>
+        <location filename="../src/graphwaveform.cpp" line="468"/>
+        <location filename="../src/graphwaveform.cpp" line="571"/>
         <source>w</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/graphwaveform.cpp" line="470"/>
-        <location filename="../src/graphwaveform.cpp" line="573"/>
+        <location filename="../src/graphwaveform.cpp" line="471"/>
+        <location filename="../src/graphwaveform.cpp" line="574"/>
         <source>m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/graphwaveform.cpp" line="473"/>
-        <location filename="../src/graphwaveform.cpp" line="576"/>
+        <location filename="../src/graphwaveform.cpp" line="474"/>
+        <location filename="../src/graphwaveform.cpp" line="577"/>
         <source>y</source>
         <translation type="unfinished"></translation>
     </message>
@@ -661,14 +661,14 @@ Date and time the recording started: </source>
 Время: %2</translation>
     </message>
     <message>
-        <location filename="../src/spectrumwaveform.cpp" line="263"/>
+        <location filename="../src/spectrumwaveform.cpp" line="268"/>
         <source>Value: %1 
  Freq: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spectrumwaveform.cpp" line="343"/>
         <location filename="../src/spectrumwaveform.cpp" line="348"/>
+        <location filename="../src/spectrumwaveform.cpp" line="353"/>
         <source>Freq (HZ)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -682,7 +682,7 @@ Date and time the recording started: </source>
     </message>
     <message>
         <location filename="../src/spectrumwindow.cpp" line="46"/>
-        <location filename="../src/spectrumwindow.cpp" line="259"/>
+        <location filename="../src/spectrumwindow.cpp" line="265"/>
         <source>Scale</source>
         <translation type="unfinished">Масштаб</translation>
     </message>
@@ -706,24 +706,24 @@ Date and time the recording started: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spectrumwindow.cpp" line="215"/>
+        <location filename="../src/spectrumwindow.cpp" line="221"/>
         <source>Ok</source>
         <translation type="unfinished">Принять</translation>
     </message>
     <message>
         <location filename="../src/spectrumwindow.cpp" line="107"/>
-        <location filename="../src/spectrumwindow.cpp" line="219"/>
+        <location filename="../src/spectrumwindow.cpp" line="225"/>
         <source>Cancel</source>
         <translation type="unfinished">Отмена</translation>
     </message>
     <message>
-        <location filename="../src/spectrumwindow.cpp" line="223"/>
+        <location filename="../src/spectrumwindow.cpp" line="229"/>
         <source>Scale x2</source>
         <translation type="unfinished">Увеличить в 2 раза</translation>
     </message>
     <message>
         <location filename="../src/spectrumwindow.cpp" line="85"/>
-        <location filename="../src/spectrumwindow.cpp" line="227"/>
+        <location filename="../src/spectrumwindow.cpp" line="233"/>
         <source>Reset</source>
         <translation type="unfinished">Сброс</translation>
     </message>
@@ -783,22 +783,22 @@ Date and time the recording started: </source>
         <translation type="unfinished">Принять</translation>
     </message>
     <message>
-        <location filename="../src/spectrumwindow.cpp" line="241"/>
+        <location filename="../src/spectrumwindow.cpp" line="247"/>
         <source>&amp;From:</source>
         <translation type="unfinished">&amp;От:</translation>
     </message>
     <message>
-        <location filename="../src/spectrumwindow.cpp" line="242"/>
+        <location filename="../src/spectrumwindow.cpp" line="248"/>
         <source>&amp;To:</source>
         <translation type="unfinished">&amp;До:</translation>
     </message>
     <message>
-        <location filename="../src/spectrumwindow.cpp" line="317"/>
+        <location filename="../src/spectrumwindow.cpp" line="323"/>
         <source>Values must be less than range</source>
         <translation type="unfinished">Значения не могут выходить за границы промежутка</translation>
     </message>
     <message>
-        <location filename="../src/spectrumwindow.cpp" line="322"/>
+        <location filename="../src/spectrumwindow.cpp" line="328"/>
         <source>&apos;From&apos; must be less than &apos;to&apos;</source>
         <translation type="unfinished">Начало отчета не должно превышать конца</translation>
     </message>

@@ -35,6 +35,11 @@ SpectrumWaveform::SpectrumWaveform(std::shared_ptr<SignalData> signalData,
   setFocusPolicy(Qt::StrongFocus);
 }
 
+void SpectrumWaveform::setData(std::vector<double> &spectrumData) {
+  p_data = spectrumData;
+  updateRelative();
+}
+
 void SpectrumWaveform::drawWaveform() {
   initImage();
   fill();
@@ -229,15 +234,15 @@ void SpectrumWaveform::showToolTip(QMouseEvent *event) {
       (event->pos().x() - (p_offsetLeft + p_paddingLeft)) * m_freqPerPixel +
       p_signalData->leftFreq();
 
-  int arrayStart = (p_signalData->samplesNumber() - 1) * freqStart /
-                   (p_signalData->allTime() - 1);
+  int arrayStart = (p_signalData->samplesNumber() / 2 - 1) * freqStart /
+                   (p_signalData->rate() / 2);
 
   double freqEnd =
       (event->pos().x() + 1 - (p_offsetLeft + p_paddingLeft)) * m_freqPerPixel +
       p_signalData->leftFreq();
 
-  int arrayEnd = (p_signalData->samplesNumber() - 1) * freqEnd /
-                 (p_signalData->allTime() - 1);
+  int arrayEnd = (p_signalData->samplesNumber() / 2 - 1) * freqEnd /
+                 (p_signalData->rate() / 2);
 
   double max =
       *std::max_element(p_data.begin() + arrayStart, p_data.begin() + arrayEnd);

@@ -107,7 +107,6 @@ class BaseWaveform : public QLabel {
   int p_yLabelsNumber;
 
   const std::vector<double> p_dataMultiples = {
-
       0.00000001, 0.00000002, 0.00000005, 0.0000001, 0.0000002, 0.0000005,
       0.000001,   0.000002,   0.000005,   0.00001,   0.00002,   0.00005,
       0.0001,     0.0002,     0.0005,     0.001,     0.002,     0.005,
