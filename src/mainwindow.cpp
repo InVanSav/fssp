@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 
 #include "modelingwindow.h"
+#include "spectrumwindow.h"
 
 namespace fssp {
 
@@ -134,6 +135,15 @@ void MainWindow::modInCurSignal() {
   emit signalData->dataAdded();
 }
 
+void MainWindow::spectrumAnalize() {
+  SignalPage *signalPage =
+      dynamic_cast<SignalPage *>(m_tabWidget->currentWidget());
+  std::shared_ptr<SignalData> signalData = signalPage->getSignalData();
+
+  SpectrumWindow *spectrum = new SpectrumWindow(signalData);
+  spectrum->show();
+}
+
 void MainWindow::handleCloseTabEvent(int index) {
   QWidget *signalPage = m_tabWidget->widget(index);
   m_tabWidget->removeTab(index);
@@ -162,6 +172,10 @@ void MainWindow::createActions() {
   m_statisticAct = new QAction(tr("Statistic"), this);
   connect(m_statisticAct, &QAction::triggered, this,
           &MainWindow::chooseStatisticSignal);
+
+  m_spectrumAnalizeAct = new QAction(tr("Spectrum analize"), this);
+  connect(m_spectrumAnalizeAct, &QAction::triggered, this,
+          &MainWindow::spectrumAnalize);
 }
 
 void MainWindow::createMenus() {
@@ -175,6 +189,7 @@ void MainWindow::createMenus() {
 
   m_analizeMenu = menuBar()->addMenu(tr("&Analysis"));
   m_analizeMenu->addAction(m_statisticAct);
+  m_analizeMenu->addAction(m_spectrumAnalizeAct);
 
   m_filterMenu = menuBar()->addMenu(tr("&Filter"));
 

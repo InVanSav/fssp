@@ -20,13 +20,15 @@ class MainWindow : public QMainWindow {
   ~MainWindow();
 
  private slots:
+  void handleCloseTabEvent(int index);
+
   void aboutFssp();
   void open();
   void aboutSignal();
   void modNewSignal();
   void modInCurSignal();
   void chooseStatisticSignal();
-  void handleCloseTabEvent(int index);
+  void spectrumAnalize();
 
  private:
   void createActions();
@@ -48,6 +50,7 @@ class MainWindow : public QMainWindow {
   QAction *m_modNewSignalAct;
   QAction *m_modInCurSignalAct;
   QAction *m_statisticAct;
+  QAction *m_spectrumAnalizeAct;
 };
 
 }  // namespace fssp

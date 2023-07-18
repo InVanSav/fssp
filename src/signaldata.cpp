@@ -26,6 +26,16 @@ SignalData::SignalData() {
   m_isGlobalScale = false;
   m_isGridEnabled = true;
   m_isSelected = false;
+
+  m_spectrumLeftArray = 0;
+  m_spectrumRightArray = m_samplesNumber / 2;
+
+  m_leftFreq = 0;
+  m_rightFreq = m_rate / 2;
+
+  m_spectrumIsGlobalScale = false;
+  m_spectrumIsGridEnabled = true;
+  m_isSelected = false;
 }
 
 SignalData::SignalData(const QDateTime &startTime, const QDateTime &endTime,
@@ -55,6 +65,16 @@ SignalData::SignalData(const QDateTime &startTime, const QDateTime &endTime,
   m_isGlobalScale = false;
   m_isGridEnabled = true;
   m_isSelected = false;
+
+  m_spectrumLeftArray = 0;
+  m_spectrumRightArray = m_samplesNumber / 2;
+
+  m_leftFreq = 0;
+  m_rightFreq = m_rate / 2;
+
+  m_spectrumIsGlobalScale = false;
+  m_spectrumIsGridEnabled = true;
+  m_isSelected = false;
 }
 
 SignalData::SignalData(const SignalData &that) {
@@ -82,6 +102,16 @@ SignalData::SignalData(const SignalData &that) {
   m_isGlobalScale = that.m_isGlobalScale;
   m_isGridEnabled = that.m_isGridEnabled;
   m_isSelected = that.m_isSelected;
+
+  m_spectrumLeftArray = that.m_spectrumLeftArray;
+  m_spectrumRightArray = that.m_spectrumRightArray;
+
+  m_leftFreq = that.m_leftFreq;
+  m_rightFreq = that.m_rightFreq;
+
+  m_spectrumIsGlobalScale = that.m_spectrumIsGlobalScale;
+  m_spectrumIsGridEnabled = that.m_spectrumIsGridEnabled;
+  m_spectrumIsSelected = that.m_spectrumIsSelected;
 }
 
 SignalData::SignalData(SignalData &&that) {
@@ -109,6 +139,16 @@ SignalData::SignalData(SignalData &&that) {
   m_isGlobalScale = that.m_isGlobalScale;
   m_isGridEnabled = that.m_isGridEnabled;
   m_isSelected = that.m_isSelected;
+
+  m_spectrumLeftArray = that.m_spectrumLeftArray;
+  m_spectrumRightArray = that.m_spectrumRightArray;
+
+  m_leftFreq = that.m_leftFreq;
+  m_rightFreq = that.m_rightFreq;
+
+  m_spectrumIsGlobalScale = that.m_spectrumIsGlobalScale;
+  m_spectrumIsGridEnabled = that.m_spectrumIsGridEnabled;
+  m_spectrumIsSelected = that.m_spectrumIsSelected;
 }
 
 SignalData &SignalData::operator=(SignalData that) {
@@ -144,6 +184,16 @@ void swap(SignalData &first, SignalData &second) {
   swap(first.m_isGlobalScale, second.m_isGlobalScale);
   swap(first.m_isGridEnabled, second.m_isGridEnabled);
   swap(first.m_isSelected, second.m_isSelected);
+
+  swap(first.m_spectrumLeftArray, second.m_spectrumLeftArray);
+  swap(first.m_spectrumRightArray, second.m_spectrumRightArray);
+
+  swap(first.m_leftFreq, second.m_leftFreq);
+  swap(first.m_rightFreq, second.m_rightFreq);
+
+  swap(first.m_spectrumIsGlobalScale, second.m_spectrumIsGlobalScale);
+  swap(first.m_spectrumIsGridEnabled, second.m_spectrumIsGridEnabled);
+  swap(first.m_spectrumIsSelected, second.m_spectrumIsSelected);
 }
 
 QDateTime SignalData::startTime() const { return m_startTime; }
@@ -245,6 +295,73 @@ void SignalData::calculateArrayRange() {
     } else {
       m_rightArray = m_leftArray;
       m_leftArray -= 8;
+    }
+  }
+}
+
+int SignalData::spectrumLeftArray() const { return m_spectrumLeftArray; }
+int SignalData::spectrumRightArray() const { return m_spectrumRightArray; }
+
+double SignalData::leftFreq() const { return m_leftFreq; }
+double SignalData::rightFreq() const { return m_rightFreq; }
+
+bool SignalData::spectrumIsGridEnabled() const {
+  return m_spectrumIsGridEnabled;
+}
+bool SignalData::spectrumIsGlobalScale() const {
+  return m_spectrumIsGridEnabled;
+}
+bool SignalData::spectrumIsSelected() const { return m_spectrumIsSelected; }
+
+void SignalData::setSpectrumLeftArray(int leftArray) {
+  m_spectrumLeftArray = leftArray;
+}
+void SignalData::setSpectrumRightArray(int rightArray) {
+  m_spectrumRightArray = rightArray;
+}
+
+void SignalData::setLeftFreq(double leftFreq) { m_leftFreq = leftFreq; }
+void SignalData::setRightFreq(double rightFreq) { m_rightFreq = rightFreq; }
+
+void SignalData::setSpectrumGridEnabled(bool isGridEnabled) {
+  m_spectrumIsGridEnabled = isGridEnabled;
+}
+void SignalData::setSpectrumGlobalScale(bool isGlobalScale) {
+  m_spectrumIsGlobalScale = isGlobalScale;
+}
+void SignalData::setSpectrumSelected(bool isSelected) {
+  m_spectrumIsSelected = isSelected;
+}
+
+const std::vector<bool> &SignalData::spectrumVisibleWaveforms() const {
+  return m_spectrumVisibleWaveforms;
+}
+
+void SignalData::setSpectrumWaveformVisibility(int number, bool isVisible) {
+  m_spectrumVisibleWaveforms[number] = isVisible;
+}
+
+int SignalData::spectrumArrayRange() const {
+  return m_spectrumRightArray - m_spectrumLeftArray;
+}
+
+double SignalData::freqRange() const { return m_rightFreq - m_leftFreq; }
+
+void SignalData::spectrumCalculateArrayRange() {
+  double dataPerFreq =
+      static_cast<double>(m_samplesNumber) / static_cast<double>(m_rate / 2);
+
+  m_spectrumLeftArray = dataPerFreq * m_rightFreq;
+  m_spectrumRightArray = dataPerFreq * m_leftFreq;
+
+  if ((m_spectrumRightArray - m_spectrumLeftArray < 8) &&
+      (m_samplesNumber / 2 > 16)) {
+    if (m_samplesNumber - m_spectrumRightArray > 8) {
+      m_spectrumLeftArray = m_spectrumRightArray;
+      m_spectrumRightArray += 8;
+    } else {
+      m_spectrumRightArray = m_spectrumLeftArray;
+      m_spectrumLeftArray -= 8;
     }
   }
 }

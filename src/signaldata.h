@@ -53,9 +53,34 @@ class SignalData : public QObject {
   void setGlobalScale(bool isGlobalScale);
   void setSelected(bool isSelected);
 
+  int spectrumLeftArray() const;
+  int spectrumRightArray() const;
+
+  int spectrumArrayRange() const;
+
+  double leftFreq() const;
+  double rightFreq() const;
+
+  double freqRange() const;
+
+  bool spectrumIsGridEnabled() const;
+  bool spectrumIsGlobalScale() const;
+  bool spectrumIsSelected() const;
+
+  void setSpectrumLeftArray(int leftArray);
+  void setSpectrumRightArray(int rightArray);
+
+  void setLeftFreq(double leftFreq);
+  void setRightFreq(double rightFreq);
+
+  void setSpectrumGridEnabled(bool isGridEnabled);
+  void setSpectrumGlobalScale(bool isGlobalScale);
+  void setSpectrumSelected(bool isSelected);
+
   void setDefault();
 
   void calculateArrayRange();
+  void spectrumCalculateArrayRange();
 
   const std::vector<QString> &channelsName() const;
   const std::vector<std::vector<double>> &data() const;
@@ -68,6 +93,9 @@ class SignalData : public QObject {
   const std::vector<bool> &visibleWaveforms() const;
   void setWaveformVisibility(int number, bool isVisible);
 
+  const std::vector<bool> &spectrumVisibleWaveforms() const;
+  void setSpectrumWaveformVisibility(int number, bool isVisible);
+
  signals:
   void changedGraphTimeRange();
 
@@ -75,6 +103,13 @@ class SignalData : public QObject {
 
   void changedEnableGrid();
   void changedGlobalScale();
+
+  void changedSpectrumFreqRange();
+
+  void changedSpectrumVisibility();
+
+  void changedSpectrumEnableGrid();
+  void changedSpectrumGlobalScale();
 
   void dataAdded();
 
@@ -103,7 +138,18 @@ class SignalData : public QObject {
   bool m_isGlobalScale;
   bool m_isSelected;
 
+  bool m_spectrumIsGridEnabled;
+  bool m_spectrumIsGlobalScale;
+  bool m_spectrumIsSelected;
+
+  int m_spectrumLeftArray;
+  int m_spectrumRightArray;
+
+  double m_leftFreq;
+  double m_rightFreq;
+
   std::vector<bool> m_visibleWaveforms;
+  std::vector<bool> m_spectrumVisibleWaveforms;
 };
 
 }  // namespace fssp
