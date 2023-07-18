@@ -26,6 +26,7 @@ SpectrumWindow::SpectrumWindow(std::shared_ptr<SignalData> data,
   calculate();
 
   addWaveforms();
+  hideWaveforms();
 
   drawWaveforms();
 
@@ -347,7 +348,7 @@ void SpectrumWindow::onDataAdded() {
 }
 
 void SpectrumWindow::fft(std::vector<base> &a, bool invert) {
-  int n = (int)a.size();
+  int n = a.size();
 
   for (int i = 1, j = 0; i < n; ++i) {
     int bit = n >> 1;

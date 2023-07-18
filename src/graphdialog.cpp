@@ -14,6 +14,7 @@ GraphDialog::GraphDialog(std::shared_ptr<SignalData> data, QWidget *parent)
   m_scrollArea->setWidgetResizable(true);
 
   addWaveforms();
+  hideWaveforms();
 
   drawWaveforms();
 
