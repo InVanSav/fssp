@@ -28,7 +28,13 @@ SignalData::SignalData() {
   m_isSelected = false;
 
   m_spectrumLeftArray = 0;
-  m_spectrumRightArray = m_samplesNumber / 2;
+
+  size_t tmp = 2;
+  while (tmp < m_samplesNumber) {
+    tmp *= 2;
+  }
+
+  m_spectrumRightArray = tmp / 2;
 
   m_leftFreq = 0;
   m_rightFreq = m_rate / 2;
@@ -67,7 +73,13 @@ SignalData::SignalData(const QDateTime &startTime, const QDateTime &endTime,
   m_isSelected = false;
 
   m_spectrumLeftArray = 0;
-  m_spectrumRightArray = m_samplesNumber / 2;
+
+  size_t tmp = 2;
+  while (tmp < m_samplesNumber) {
+    tmp *= 2;
+  }
+
+  m_spectrumRightArray = tmp / 2;
 
   m_leftFreq = 0;
   m_rightFreq = m_rate / 2;
@@ -348,8 +360,13 @@ int SignalData::spectrumArrayRange() const {
 double SignalData::freqRange() const { return m_rightFreq - m_leftFreq; }
 
 void SignalData::spectrumCalculateArrayRange() {
-  double dataPerFreq = static_cast<double>(m_samplesNumber / 2) /
-                       static_cast<double>(m_rate / 2);
+  size_t tmp = 2;
+  while (tmp < m_samplesNumber) {
+    tmp *= 2;
+  }
+
+  double dataPerFreq =
+      static_cast<double>(tmp / 2) / static_cast<double>(m_rate / 2);
 
   m_spectrumLeftArray = dataPerFreq * m_leftFreq;
   m_spectrumRightArray = dataPerFreq * m_rightFreq;

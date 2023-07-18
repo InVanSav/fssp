@@ -333,13 +333,16 @@ void SpectrumWaveform::drawName() {
   QRect textRect;
 
   if (m_isTop) {
-    textRect = {p_paddingLeft, p_maxTextHeight + p_paddingTop,
-                p_width - (p_paddingRight + p_paddingLeft), p_maxTextHeight};
+    textRect = {QPoint{p_offsetLeft + p_paddingLeft, p_paddingTop},
+                QPoint{p_width - (p_paddingRight + p_paddingLeft),
+                       p_maxTextHeight + p_paddingTop}};
     painter.drawText(textRect, Qt::AlignCenter | Qt::TextWordWrap,
                      tr("Freq (HZ)"));
   } else if (m_isBottom) {
-    textRect = {p_paddingLeft, p_height - (p_maxTextHeight + p_paddingBottom),
-                p_width - (p_paddingRight + p_paddingLeft), p_maxTextHeight};
+    textRect = {QPoint{p_offsetLeft + p_paddingLeft,
+                       p_height - (p_maxTextHeight + p_paddingBottom)},
+                QPoint{p_width - (p_paddingRight + p_paddingLeft),
+                       p_height - p_paddingBottom}};
     painter.drawText(textRect, Qt::AlignCenter | Qt::TextWordWrap,
                      tr("Freq (HZ)"));
   }

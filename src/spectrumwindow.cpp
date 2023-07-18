@@ -374,7 +374,7 @@ void SpectrumWindow::fft(std::vector<base> &a, bool invert) {
 }
 
 void SpectrumWindow::calculate() {
-  quint64 tmp = 2;
+  size_t tmp = 2;
   while (tmp < m_signalData->samplesNumber()) {
     tmp *= 2;
   }
@@ -397,8 +397,6 @@ void SpectrumWindow::calculate() {
 
   m_spectrumData = std::vector<std::vector<double>>(
       m_signalData->channelsNumber(), std::vector<double>(tmp / 2));
-
-  m_signalData->setSpectrumRightArray(tmp / 2);
 
   for (size_t i = 0; i < data.size(); ++i) {
     for (size_t j = 0; j < m_spectrumData[i].size(); ++j) {

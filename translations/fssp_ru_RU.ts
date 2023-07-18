@@ -667,8 +667,8 @@ Date and time the recording started: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spectrumwaveform.cpp" line="339"/>
-        <location filename="../src/spectrumwaveform.cpp" line="344"/>
+        <location filename="../src/spectrumwaveform.cpp" line="340"/>
+        <location filename="../src/spectrumwaveform.cpp" line="347"/>
         <source>Freq (HZ)</source>
         <translation type="unfinished"></translation>
     </message>
