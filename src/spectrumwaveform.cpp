@@ -214,7 +214,10 @@ void SpectrumWaveform::paintEvent(QPaintEvent *event) {
 }
 
 void SpectrumWaveform::keyPressEvent(QKeyEvent *event) {
-  if (event->key() == Qt::Key_Control) m_isCtrlPressed = true;
+  if (event->key() == Qt::Key_Control) {
+    m_isCtrlPressed = true;
+    m_isSelected = false;
+  }
 }
 
 void SpectrumWaveform::keyReleaseEvent(QKeyEvent *event) {

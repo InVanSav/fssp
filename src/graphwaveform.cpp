@@ -208,7 +208,10 @@ void GraphWaveform::paintEvent(QPaintEvent *event) {
 }
 
 void GraphWaveform::keyPressEvent(QKeyEvent *event) {
-  if (event->key() == Qt::Key_Control) m_isCtrlPressed = true;
+  if (event->key() == Qt::Key_Control) {
+    m_isCtrlPressed = true;
+    m_isSelected = false;
+  }
 }
 
 void GraphWaveform::keyReleaseEvent(QKeyEvent *event) {
