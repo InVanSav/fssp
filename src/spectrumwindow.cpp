@@ -334,7 +334,7 @@ bool SpectrumWindow::validateInputData() {
 }
 
 void SpectrumWindow::changeArrayGlobalizationAction() {
-  m_signalData->setSpectrumGlobalScale(!m_signalData->isGlobalScale());
+  m_signalData->setSpectrumGlobalScale(!m_signalData->spectrumIsGlobalScale());
   emit m_signalData->changedSpectrumGlobalScale();
 }
 

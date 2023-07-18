@@ -309,7 +309,7 @@ bool SignalData::spectrumIsGridEnabled() const {
   return m_spectrumIsGridEnabled;
 }
 bool SignalData::spectrumIsGlobalScale() const {
-  return m_spectrumIsGridEnabled;
+  return m_spectrumIsGlobalScale;
 }
 bool SignalData::spectrumIsSelected() const { return m_spectrumIsSelected; }
 
