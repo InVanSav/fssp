@@ -90,7 +90,7 @@ void SpectrumWaveform::updateRelative() {
 
   m_pixelPerFreq = ((p_width - (p_offsetRight + p_paddingRight)) -
                     (p_offsetLeft + p_paddingLeft)) /
-                   static_cast<double>(p_signalData->rate() / 2);
+                   p_signalData->freqRange();
 
   m_dataPerPixel = 1 / m_pixelPerData;
 
