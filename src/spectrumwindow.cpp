@@ -397,10 +397,10 @@ void SpectrumWindow::calculate() {
 
   m_spectrumData = std::vector<std::vector<double>>(
       m_signalData->channelsNumber(),
-      std::vector<double>(m_signalData->samplesNumber() / 2));
+      std::vector<double>(tmp / 2));
 
   for (size_t i = 0; i < data.size(); ++i) {
-    for (size_t j = 0; j < m_signalData->samplesNumber() / 2; ++j) {
+    for (size_t j = 0; j < tmp / 2; ++j) {
       m_spectrumData[i][j] = m_signalData->timeForOne() * abs(data[i][j]);
     }
   }
