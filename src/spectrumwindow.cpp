@@ -87,10 +87,9 @@ void SpectrumWindow::openSettingsAction() {
   m_collisionComboBox->addItem(tr("Equate with adjacent reading"));
   m_collisionComboBox->setCurrentIndex(m_collision);
 
-  m_smoothingValue = new QDoubleSpinBox();
+  m_smoothingValue = new QSpinBox();
   m_smoothingValue->setMinimum(INT_MIN);
   m_smoothingValue->setMaximum(INT_MAX);
-  m_smoothingValue->setDecimals(8);
   m_smoothingValue->setValue(m_smoothing);
 
   settingsForm->addRow(tr("Spectral characteristic"), m_specComboBox);
@@ -274,10 +273,10 @@ void SpectrumWindow::pushScaleCancelButton() {
 
 void SpectrumWindow::pushScaleAcceptButton() {
   QDateTime fromDateTime = m_scaleFromValue->dateTime();
-  m_leftTime = m_signalData->startTime().msecsTo(fromDateTime);
+  m_leftFreq = m_signalData->startTime().msecsTo(fromDateTime);
 
   QDateTime toDateTime = m_scaleToValue->dateTime();
-  m_rightTime = m_signalData->startTime().msecsTo(toDateTime);
+  m_rightFreq = m_signalData->startTime().msecsTo(toDateTime);
 
   m_signalData->setSelected(true);
 
@@ -287,8 +286,8 @@ void SpectrumWindow::pushScaleAcceptButton() {
 void SpectrumWindow::pushDoubleScaleButton() {
   size_t timeRange = m_signalData->rightTime() - m_signalData->leftTime();
 
-  m_leftTime = m_signalData->leftTime() + (timeRange / 4);
-  m_rightTime = m_signalData->rightTime() - (timeRange / 4);
+  m_leftFreq = m_signalData->leftTime() + (timeRange / 4);
+  m_rightFreq = m_signalData->rightTime() - (timeRange / 4);
 
   m_signalData->setSelected(true);
 
@@ -296,10 +295,10 @@ void SpectrumWindow::pushDoubleScaleButton() {
 }
 
 void SpectrumWindow::pushResetButton() {
-  m_leftTime = 0;
-  m_rightTime = m_signalData->allTime() - 1;
+  m_leftFreq = 0;
+  m_rightFreq = m_signalData->rate() / 2;
 
-  m_signalData->setSelected(false);
+  m_signalData->setSpectrumSelected(false);
 
   buttonHandler();
 }
@@ -307,24 +306,24 @@ void SpectrumWindow::pushResetButton() {
 void SpectrumWindow::buttonHandler() {
   if (!validateInputData()) return;
 
-  m_signalData->setLeftTime(m_leftTime);
-  m_signalData->setRightTime(m_rightTime);
+  m_signalData->setLeftFreq(m_leftFreq);
+  m_signalData->setRightFreq(m_rightFreq);
 
-  m_signalData->calculateArrayRange();
+  m_signalData->spectrumCalculateArrayRange();
 
   pushScaleCancelButton();
 
-  emit m_signalData->changedGraphTimeRange();
+  emit m_signalData->changedSpectrumFreqRange();
 }
 
 bool SpectrumWindow::validateInputData() {
-  if (m_leftTime > m_signalData->allTime() ||
-      m_rightTime > m_signalData->allTime()) {
+  if (m_leftFreq > m_signalData->allTime() ||
+      m_rightFreq > m_signalData->allTime()) {
     m_error->setText(tr("Values must be less than range"));
     return false;
   }
 
-  else if (m_leftTime >= m_rightTime) {
+  else if (m_leftFreq >= m_rightFreq) {
     m_error->setText(tr("'From' must be less than 'to'"));
     return false;
   }

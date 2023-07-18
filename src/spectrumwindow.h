@@ -2,7 +2,6 @@
 
 #include <QComboBox>
 #include <QDateTimeEdit>
-#include <QDoubleSpinBox>
 #include <QFormLayout>
 #include <QGroupBox>
 #include <QLabel>
@@ -10,6 +9,7 @@
 #include <QMenuBar>
 #include <QPushButton>
 #include <QScrollArea>
+#include <QSpinBox>
 #include <QVBoxLayout>
 #include <QWidget>
 #include <complex>
@@ -63,8 +63,8 @@ class SpectrumWindow : public QGroupBox {
 
   std::vector<std::vector<double>> m_spectrumData;
 
-  size_t m_leftTime;
-  size_t m_rightTime;
+  double m_leftFreq;
+  double m_rightFreq;
 
   QComboBox *m_specComboBox;
   int m_spec;
@@ -73,7 +73,7 @@ class SpectrumWindow : public QGroupBox {
   QComboBox *m_collisionComboBox;
   int m_collision;
 
-  QDoubleSpinBox *m_smoothingValue;
+  QSpinBox *m_smoothingValue;
   double m_smoothing;
 
   QDateTimeEdit *m_scaleFromValue;

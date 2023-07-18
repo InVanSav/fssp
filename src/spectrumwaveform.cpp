@@ -64,7 +64,7 @@ void SpectrumWaveform::updateRelative() {
 
   p_arrayRange = p_rightArray - p_leftArray + 1;
 
-  if (p_signalData->isGlobalScale()) {
+  if (p_signalData->spectrumIsGlobalScale()) {
     p_maxValue = *std::max_element(p_data.begin(), p_data.end());
     p_minValue = *std::min_element(p_data.begin(), p_data.end());
   } else {
