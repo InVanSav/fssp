@@ -64,6 +64,8 @@ SpectrumWindow::SpectrumWindow(std::shared_ptr<SignalData> data,
           &SpectrumWindow::onChangedWaveformVisibility);
 
   setTitle(tr("Spectrum"));
+
+  setWindowTitle(tr("Spectrum"));
 }
 
 void SpectrumWindow::openSettingsAction() {

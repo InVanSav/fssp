@@ -466,7 +466,7 @@ void SpectrumWaveform::drawAxisTopX() {
     }
   }
 
-  double curValue = freqRange;
+  double curValue = p_signalData->leftFreq() + freqRange;
   curValue -= std::fmod(curValue, delimiter);
 
   int count = 0;
@@ -474,8 +474,10 @@ void SpectrumWaveform::drawAxisTopX() {
   delimiter /= std::pow(10, count);
 
   double step = m_pixelPerFreq * delimiter;
-  int startX =
-      axisEnd.x() - std::abs(m_pixelPerFreq * (freqRange - curValue)) + 1;
+  int startX = axisEnd.x() -
+               std::abs(m_pixelPerFreq *
+                        (p_signalData->leftFreq() + freqRange - curValue)) +
+               1;
   for (int i = 0; i < delimitersNumber; ++i) {
     int x = startX - step * i;
     painter.drawLine(QPoint{x, p1}, QPoint{x, p2});
@@ -664,11 +666,13 @@ void SpectrumWaveform::drawGrid() {
   axisEnd = {p_width - (p_offsetRight + p_paddingRight),
              p_offsetTop + p_paddingTop};
 
-  double curValueX = freqRange;
+  double curValueX = p_signalData->leftFreq() + freqRange;
   curValueX -= std::fmod(curValueX, freqDelimiter);
 
   double stepX = std::round(m_pixelPerFreq * freqDelimiter);
-  int startX = axisEnd.x() - std::abs(m_pixelPerFreq * (freqRange - curValueX));
+  int startX = axisEnd.x() -
+               std::abs(m_pixelPerFreq *
+                        (p_signalData->leftFreq() + freqRange - curValueX));
 
   p1 = axisStart.y();
   p2 = axisStart.y() + (p_height - ((p_paddingTop + p_offsetTop) +
