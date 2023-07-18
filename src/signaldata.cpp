@@ -348,11 +348,11 @@ int SignalData::spectrumArrayRange() const {
 double SignalData::freqRange() const { return m_rightFreq - m_leftFreq; }
 
 void SignalData::spectrumCalculateArrayRange() {
-  double dataPerFreq =
-      static_cast<double>(m_samplesNumber) / static_cast<double>(m_rate / 2);
+  double dataPerFreq = static_cast<double>(m_samplesNumber / 2) /
+                       static_cast<double>(m_rate / 2);
 
-  m_spectrumLeftArray = dataPerFreq * m_rightFreq;
-  m_spectrumRightArray = dataPerFreq * m_leftFreq;
+  m_spectrumLeftArray = dataPerFreq * m_leftFreq;
+  m_spectrumRightArray = dataPerFreq * m_rightFreq;
 
   if ((m_spectrumRightArray - m_spectrumLeftArray < 8) &&
       (m_samplesNumber / 2 > 16)) {

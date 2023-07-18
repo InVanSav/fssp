@@ -118,6 +118,8 @@ void SpectrumWindow::openSettingsAction() {
 
   m_settingsForm->setMinimumSize(m_settingsForm->sizeHint());
 
+  m_settingsForm->setWindowTitle(tr("Spectrum settings"));
+
   m_settingsForm->show();
 }
 
