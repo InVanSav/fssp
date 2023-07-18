@@ -313,19 +313,19 @@ End date and time of recording: </source>
         <translation>Новый Файл</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="271"/>
+        <location filename="../src/mainwindow.cpp" line="278"/>
         <source>About</source>
         <translation>О программе</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="274"/>
+        <location filename="../src/mainwindow.cpp" line="281"/>
         <source>&amp;Open</source>
         <translation>&amp;Открыть</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="187"/>
         <location filename="../src/mainwindow.cpp" line="196"/>
-        <location filename="../src/mainwindow.cpp" line="280"/>
+        <location filename="../src/mainwindow.cpp" line="287"/>
         <source>About signal</source>
         <translation>О сигнале</translation>
     </message>
@@ -358,7 +358,8 @@ Made by students of DVFU:
         <location filename="../src/mainwindow.cpp" line="71"/>
         <location filename="../src/mainwindow.cpp" line="188"/>
         <location filename="../src/mainwindow.cpp" line="235"/>
-        <location filename="../src/mainwindow.cpp" line="326"/>
+        <location filename="../src/mainwindow.cpp" line="259"/>
+        <location filename="../src/mainwindow.cpp" line="333"/>
         <source>There is no open signal yet</source>
         <translation>Нет открытых сигналов</translation>
     </message>
@@ -404,7 +405,7 @@ Date and time the recording started: </source>
 Дата и время начала записи: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="277"/>
+        <location filename="../src/mainwindow.cpp" line="284"/>
         <source>&amp;Save</source>
         <translation type="unfinished"></translation>
     </message>
@@ -414,7 +415,7 @@ Date and time the recording started: </source>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="127"/>
-        <location filename="../src/mainwindow.cpp" line="354"/>
+        <location filename="../src/mainwindow.cpp" line="361"/>
         <source>Choose the channel</source>
         <translation>Выберите канал</translation>
     </message>
@@ -423,59 +424,60 @@ Date and time the recording started: </source>
         <translation type="vanished">Продолжительность: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="284"/>
+        <location filename="../src/mainwindow.cpp" line="291"/>
         <source>Model new signal...</source>
         <translation>Моделировать новый сигнал...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="288"/>
+        <location filename="../src/mainwindow.cpp" line="295"/>
         <source>Model in current signal...</source>
         <translation>Моделировать в текущем сигнале...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="292"/>
-        <location filename="../src/mainwindow.cpp" line="334"/>
+        <location filename="../src/mainwindow.cpp" line="299"/>
+        <location filename="../src/mainwindow.cpp" line="341"/>
         <source>Statistic</source>
         <translation>Статистика</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="296"/>
+        <location filename="../src/mainwindow.cpp" line="303"/>
         <source>Spectrum analize</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="302"/>
+        <location filename="../src/mainwindow.cpp" line="309"/>
         <source>&amp;File</source>
         <translation>&amp;Файл</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="307"/>
+        <location filename="../src/mainwindow.cpp" line="314"/>
         <source>&amp;Modeling</source>
         <translation>&amp;Моделирование</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="311"/>
+        <location filename="../src/mainwindow.cpp" line="318"/>
         <source>&amp;Analysis</source>
         <translation>&amp;Анализ</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="315"/>
+        <location filename="../src/mainwindow.cpp" line="322"/>
         <source>&amp;Filter</source>
         <translation>&amp;Фильтрация</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="317"/>
+        <location filename="../src/mainwindow.cpp" line="324"/>
         <source>&amp;Settings</source>
         <translation>&amp;Настройки</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="319"/>
+        <location filename="../src/mainwindow.cpp" line="326"/>
         <source>Help</source>
         <translation>Справка</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="235"/>
-        <location filename="../src/mainwindow.cpp" line="326"/>
+        <location filename="../src/mainwindow.cpp" line="259"/>
+        <location filename="../src/mainwindow.cpp" line="333"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
@@ -484,7 +486,7 @@ Date and time the recording started: </source>
         <translation type="vanished">Выберите Сигнал</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="355"/>
+        <location filename="../src/mainwindow.cpp" line="362"/>
         <source>Number of intervals</source>
         <translation>Число интервалов</translation>
     </message>
@@ -715,7 +717,7 @@ Date and time the recording started: </source>
     </message>
     <message>
         <location filename="../src/spectrumwindow.cpp" line="47"/>
-        <location filename="../src/spectrumwindow.cpp" line="276"/>
+        <location filename="../src/spectrumwindow.cpp" line="279"/>
         <source>Scale</source>
         <translation type="unfinished">Масштаб</translation>
     </message>
@@ -734,110 +736,110 @@ Date and time the recording started: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spectrumwindow.cpp" line="67"/>
-        <location filename="../src/spectrumwindow.cpp" line="69"/>
+        <location filename="../src/spectrumwindow.cpp" line="70"/>
+        <location filename="../src/spectrumwindow.cpp" line="72"/>
         <source>Spectrum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spectrumwindow.cpp" line="225"/>
+        <location filename="../src/spectrumwindow.cpp" line="228"/>
         <source>Ok</source>
         <translation type="unfinished">Принять</translation>
     </message>
     <message>
-        <location filename="../src/spectrumwindow.cpp" line="109"/>
-        <location filename="../src/spectrumwindow.cpp" line="229"/>
+        <location filename="../src/spectrumwindow.cpp" line="112"/>
+        <location filename="../src/spectrumwindow.cpp" line="232"/>
         <source>Cancel</source>
         <translation type="unfinished">Отмена</translation>
     </message>
     <message>
-        <location filename="../src/spectrumwindow.cpp" line="233"/>
+        <location filename="../src/spectrumwindow.cpp" line="236"/>
         <source>Scale x2</source>
         <translation type="unfinished">Увеличить в 2 раза</translation>
     </message>
     <message>
-        <location filename="../src/spectrumwindow.cpp" line="88"/>
-        <location filename="../src/spectrumwindow.cpp" line="237"/>
+        <location filename="../src/spectrumwindow.cpp" line="91"/>
+        <location filename="../src/spectrumwindow.cpp" line="240"/>
         <source>Reset</source>
         <translation type="unfinished">Сброс</translation>
     </message>
     <message>
-        <location filename="../src/spectrumwindow.cpp" line="78"/>
+        <location filename="../src/spectrumwindow.cpp" line="81"/>
         <source>Amplitude spectrum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spectrumwindow.cpp" line="79"/>
+        <location filename="../src/spectrumwindow.cpp" line="82"/>
         <source>Power Spectral Density</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spectrumwindow.cpp" line="83"/>
+        <location filename="../src/spectrumwindow.cpp" line="86"/>
         <source>Normal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spectrumwindow.cpp" line="84"/>
+        <location filename="../src/spectrumwindow.cpp" line="87"/>
         <source>Logarithmic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spectrumwindow.cpp" line="89"/>
+        <location filename="../src/spectrumwindow.cpp" line="92"/>
         <source>Do nothing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spectrumwindow.cpp" line="90"/>
+        <location filename="../src/spectrumwindow.cpp" line="93"/>
         <source>Equate with adjacent reading</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spectrumwindow.cpp" line="98"/>
+        <location filename="../src/spectrumwindow.cpp" line="101"/>
         <source>Spectral characteristic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spectrumwindow.cpp" line="99"/>
+        <location filename="../src/spectrumwindow.cpp" line="102"/>
         <source>Display mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spectrumwindow.cpp" line="100"/>
+        <location filename="../src/spectrumwindow.cpp" line="103"/>
         <source>Collision resolution</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spectrumwindow.cpp" line="101"/>
+        <location filename="../src/spectrumwindow.cpp" line="104"/>
         <source>Smoothing window width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spectrumwindow.cpp" line="105"/>
+        <location filename="../src/spectrumwindow.cpp" line="108"/>
         <source>Accept</source>
         <translation type="unfinished">Принять</translation>
     </message>
     <message>
-        <location filename="../src/spectrumwindow.cpp" line="124"/>
+        <location filename="../src/spectrumwindow.cpp" line="127"/>
         <source>Spectrum settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spectrumwindow.cpp" line="258"/>
+        <location filename="../src/spectrumwindow.cpp" line="261"/>
         <source>&amp;From:</source>
         <translation type="unfinished">&amp;От:</translation>
     </message>
     <message>
-        <location filename="../src/spectrumwindow.cpp" line="259"/>
+        <location filename="../src/spectrumwindow.cpp" line="262"/>
         <source>&amp;To:</source>
         <translation type="unfinished">&amp;До:</translation>
     </message>
     <message>
-        <location filename="../src/spectrumwindow.cpp" line="333"/>
+        <location filename="../src/spectrumwindow.cpp" line="336"/>
         <source>Values must be less than range</source>
         <translation type="unfinished">Значения не могут выходить за границы промежутка</translation>
     </message>
     <message>
-        <location filename="../src/spectrumwindow.cpp" line="338"/>
+        <location filename="../src/spectrumwindow.cpp" line="341"/>
         <source>&apos;From&apos; must be less than &apos;to&apos;</source>
         <translation type="unfinished">Начало отчета не должно превышать конца</translation>
     </message>

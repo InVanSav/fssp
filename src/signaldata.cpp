@@ -35,7 +35,7 @@ SignalData::SignalData() {
 
   m_spectrumIsGlobalScale = false;
   m_spectrumIsGridEnabled = true;
-  m_isSelected = false;
+  m_spectrumIsSelected = false;
 }
 
 SignalData::SignalData(const QDateTime &startTime, const QDateTime &endTime,
@@ -74,7 +74,7 @@ SignalData::SignalData(const QDateTime &startTime, const QDateTime &endTime,
 
   m_spectrumIsGlobalScale = false;
   m_spectrumIsGridEnabled = true;
-  m_isSelected = false;
+  m_spectrumIsSelected = false;
 }
 
 SignalData::SignalData(const SignalData &that) {
@@ -368,11 +368,23 @@ void SignalData::spectrumCalculateArrayRange() {
 
 double SignalData::allFreq() const {
   size_t tmp = 2;
-  while (tmp < m_samplesNumber) {
+  while (tmp < arrayRange()) {
     tmp *= 2;
   }
 
   return tmp / 2;
+}
+
+void SignalData::setSpectrumDefault() {
+  m_spectrumLeftArray = 0;
+  m_spectrumRightArray = allFreq();
+
+  m_leftFreq = 0;
+  m_rightFreq = m_rate / 2;
+
+  m_spectrumIsGlobalScale = false;
+  m_spectrumIsGridEnabled = true;
+  m_isSelected = false;
 }
 
 }  // namespace fssp

@@ -32,6 +32,7 @@ class SpectrumWindow : public QGroupBox {
 
  protected slots:
   void onChangedWaveformVisibility();
+  void onChangedGraphTimeRange();
 
   void onDataAdded();
 

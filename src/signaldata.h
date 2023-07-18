@@ -80,6 +80,7 @@ class SignalData : public QObject {
   void setSpectrumSelected(bool isSelected);
 
   void setDefault();
+  void setSpectrumDefault();
 
   void calculateArrayRange();
   void spectrumCalculateArrayRange();

@@ -249,10 +249,17 @@ void MainWindow::modInCurSignal() {
 
   signalData->addData(modelingData.channelsName()[0], modelingData.data()[0]);
   signalData->setDefault();
+  signalData->setSpectrumDefault();
   emit signalData->dataAdded();
 }
 
 void MainWindow::spectrumAnalize() {
+  if (!m_tabWidget->count()) {
+    QMessageBox::information(
+        this, tr("Error"), tr("There is no open signal yet"), QMessageBox::Ok);
+    return;
+  }
+
   SignalPage *signalPage =
       dynamic_cast<SignalPage *>(m_tabWidget->currentWidget());
   std::shared_ptr<SignalData> signalData = signalPage->getSignalData();

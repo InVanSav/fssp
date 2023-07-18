@@ -64,6 +64,9 @@ SpectrumWindow::SpectrumWindow(std::shared_ptr<SignalData> data,
   connect(m_signalData.get(), &SignalData::changedWaveformVisibility, this,
           &SpectrumWindow::onChangedWaveformVisibility);
 
+  connect(m_signalData.get(), &SignalData::changedGraphTimeRange, this,
+          &SpectrumWindow::onChangedGraphTimeRange);
+
   setTitle(tr("Spectrum"));
 
   setWindowTitle(tr("Spectrum"));
@@ -353,6 +356,18 @@ void SpectrumWindow::onDataAdded() {
   drawWaveforms();
 }
 
+void SpectrumWindow::onChangedGraphTimeRange() {
+  calculate();
+
+  m_signalData->setSpectrumDefault();
+
+  for (int i = 0; i < m_signalData->channelsNumber(); ++i) {
+    m_waveforms[i]->setData(m_spectrumData[i]);
+  }
+
+  drawWaveforms();
+}
+
 void SpectrumWindow::fft(std::vector<base> &a, bool invert) {
   int n = a.size();
 
@@ -382,7 +397,7 @@ void SpectrumWindow::fft(std::vector<base> &a, bool invert) {
 
 void SpectrumWindow::calculate() {
   size_t tmp = 2;
-  while (tmp < m_signalData->samplesNumber()) {
+  while (tmp < m_signalData->arrayRange()) {
     tmp *= 2;
   }
 
@@ -390,10 +405,11 @@ void SpectrumWindow::calculate() {
       m_signalData->channelsNumber(), std::vector<base>(tmp));
 
   for (size_t i = 0; i < m_signalData->channelsNumber(); ++i) {
-    for (size_t j = 0; j < m_signalData->samplesNumber(); ++j) {
-      data[i][j] = base(m_signalData->data()[i][j], 0);
+    for (size_t j = 0; j < m_signalData->arrayRange(); ++j) {
+      data[i][j] =
+          base(m_signalData->data()[i][j + m_signalData->leftArray()], 0);
     }
-    for (size_t j = m_signalData->samplesNumber(); j < tmp; ++j) {
+    for (size_t j = m_signalData->arrayRange(); j < tmp; ++j) {
       data[i][j] = base(0);
     }
   }
