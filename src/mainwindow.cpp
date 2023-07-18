@@ -91,11 +91,13 @@ void MainWindow::save() {
   }
 
   QSpinBox *fromSpinBox = new QSpinBox();
-  fromSpinBox->setMaximum(INT_MAX);
+  fromSpinBox->setMaximum(signalData->samplesNumber() - 1);
+  fromSpinBox->setMinimum(1);
   fromSpinBox->setValue(1);
 
   QSpinBox *toSpinBox = new QSpinBox();
-  toSpinBox->setMaximum(INT_MAX);
+  toSpinBox->setMaximum(signalData->samplesNumber());
+  toSpinBox->setMinimum(2);
   toSpinBox->setValue(signalData->samplesNumber());
 
   QLabel *noteFrom = new QLabel(tr("From samples"));
@@ -166,7 +168,7 @@ void MainWindow::save() {
       }
       stream << "\n";
 
-      for (int i = fromSpinBox->value(); i < toSpinBox->value(); ++i) {
+      for (int i = fromSpinBox->value() - 1; i < toSpinBox->value(); ++i) {
         for (int j = 0; j < signalData->channelsNumber(); ++j) {
           if (!checkBoxes[j]->isChecked()) continue;
           stream << signalData->data()[j][i] << " ";

@@ -11,48 +11,67 @@ StatisticWindow::StatisticWindow(std::shared_ptr<SignalData> data,
 
   p_signalData = data;
 
+  connect(p_signalData.get(), &SignalData::changedGraphTimeRange, this,
+          &StatisticWindow::onGraphTimeRangeChange);
+
+  p_graph = new QGraphicsView();
+
+  setWindowTitle(tr("Statistic of ") +
+                 p_signalData->channelsName()[p_curSignal]);
+
   calculateStatistic();
 
   showDialog();
 }
 
 void StatisticWindow::showDialog() {
-  setWindowTitle(tr("Statistic of ") +
-                 p_signalData->channelsName()[p_curSignal]);
-
   QVBoxLayout *textOneLayout = new QVBoxLayout();
 
-  textOneLayout->addWidget(
-      new QLabel{tr("Minimum value: ") + QString::number(p_minValue)});
-  textOneLayout->addWidget(
-      new QLabel(tr("Maximum value: ") + QString::number(p_maxValue)));
-  textOneLayout->addWidget(
-      new QLabel(tr("Average value: ") + QString::number(p_avgValue)));
+  m_minValueLabel =
+      new QLabel{tr("Minimum value: ") + QString::number(p_minValue)};
+  m_maxValueLabel =
+      new QLabel(tr("Maximum value: ") + QString::number(p_maxValue));
+  m_avgValueLabel =
+      new QLabel(tr("Average value: ") + QString::number(p_avgValue));
+
+  textOneLayout->addWidget(m_minValueLabel);
+  textOneLayout->addWidget(m_maxValueLabel);
+  textOneLayout->addWidget(m_avgValueLabel);
 
   QVBoxLayout *textTwoLayout = new QVBoxLayout();
 
-  textTwoLayout->addWidget(new QLabel(tr("Variation factor: ") +
-                                      QString::number(p_variationFactor)));
-  textTwoLayout->addWidget(new QLabel(tr("Asymmetry factor: ") +
-                                      QString::number(p_asymmetryFactor)));
-  textTwoLayout->addWidget(
-      new QLabel(tr("Kurtosis factor: ") + QString::number(p_kurtosisFactor)));
+  m_variationFactorLabel =
+      new QLabel(tr("Variation factor: ") + QString::number(p_variationFactor));
+  m_asymmetryFactorLabel =
+      new QLabel(tr("Asymmetry factor: ") + QString::number(p_asymmetryFactor));
+  m_kurtosisFactorLabel =
+      new QLabel(tr("Kurtosis factor: ") + QString::number(p_kurtosisFactor));
+
+  textTwoLayout->addWidget(m_variationFactorLabel);
+  textTwoLayout->addWidget(m_asymmetryFactorLabel);
+  textTwoLayout->addWidget(m_kurtosisFactorLabel);
 
   QVBoxLayout *textThreeLayout = new QVBoxLayout();
 
-  textThreeLayout->addWidget(
-      new QLabel(tr("Dispersion: ") + QString::number(p_dispersion)));
-  textThreeLayout->addWidget(new QLabel(tr("Standart derivation: ") +
-                                        QString::number(p_standardDeviation)));
-  textThreeLayout->addWidget(
-      new QLabel(tr("Median: ") + QString::number(p_median)));
+  m_dispersionLabel =
+      new QLabel(tr("Dispersion: ") + QString::number(p_dispersion));
+  m_standardDeviationLabel = new QLabel(tr("Standart derivation: ") +
+                                        QString::number(p_standardDeviation));
+  m_medianLabel = new QLabel(tr("Median: ") + QString::number(p_median));
+
+  textThreeLayout->addWidget(m_dispersionLabel);
+  textThreeLayout->addWidget(m_standardDeviationLabel);
+  textThreeLayout->addWidget(m_medianLabel);
 
   QVBoxLayout *textFourLayout = new QVBoxLayout();
 
-  textFourLayout->addWidget(
-      new QLabel(tr("Order quantile 0.05: ") + QString::number(p_minQuantile)));
-  textFourLayout->addWidget(
-      new QLabel(tr("Order quantile 0.95: ") + QString::number(p_maxQuantile)));
+  m_minQuantileLabel =
+      new QLabel(tr("Order quantile 0.05: ") + QString::number(p_minQuantile));
+  m_maxQuantileLabel =
+      new QLabel(tr("Order quantile 0.95: ") + QString::number(p_maxQuantile));
+
+  textFourLayout->addWidget(m_minQuantileLabel);
+  textFourLayout->addWidget(m_maxQuantileLabel);
 
   QHBoxLayout *textLayout = new QHBoxLayout();
   textLayout->addLayout(textOneLayout);
@@ -65,8 +84,12 @@ void StatisticWindow::showDialog() {
   mainLayout->addLayout(textLayout);
   mainLayout->addWidget(p_graph);
 
+  setLabelsText();
+
   setLayout(mainLayout);
   setFixedSize(sizeHint());
+
+  show();
 }
 
 void StatisticWindow::calculateStatistic() {
@@ -144,7 +167,6 @@ void StatisticWindow::calculateStatistic() {
   double height = 280;
   h = (width - 40) / p_intervalsNumber;
 
-  p_graph = new QGraphicsView();
   QGraphicsScene *scene = new QGraphicsScene();
 
   p_graph->setScene(scene);
@@ -159,6 +181,35 @@ void StatisticWindow::calculateStatistic() {
     item->setBrush(Qt::gray);
     scene->addItem(item);
   }
+}
+
+void StatisticWindow::setLabelsText() {
+  m_minValueLabel->setText(tr("Minimum value: ") + QString::number(p_minValue));
+  m_maxValueLabel->setText(tr("Maximum value: ") + QString::number(p_maxValue));
+  m_avgValueLabel->setText(tr("Average value: ") + QString::number(p_avgValue));
+
+  m_variationFactorLabel->setText(tr("Variation factor: ") +
+                                  QString::number(p_variationFactor));
+  m_asymmetryFactorLabel->setText(tr("Asymmetry factor: ") +
+                                  QString::number(p_asymmetryFactor));
+  m_kurtosisFactorLabel->setText(tr("Kurtosis factor: ") +
+                                 QString::number(p_kurtosisFactor));
+
+  m_dispersionLabel->setText(tr("Dispersion: ") +
+                             QString::number(p_dispersion));
+  m_standardDeviationLabel->setText(tr("Standart derivation: ") +
+                                    QString::number(p_standardDeviation));
+  m_medianLabel->setText(tr("Median: ") + QString::number(p_median));
+
+  m_minQuantileLabel->setText(tr("Order quantile 0.05: ") +
+                              QString::number(p_minQuantile));
+  m_maxQuantileLabel->setText(tr("Order quantile 0.95: ") +
+                              QString::number(p_maxQuantile));
+}
+
+void StatisticWindow::onGraphTimeRangeChange() {
+  calculateStatistic();
+  setLabelsText();
 }
 
 }  // namespace fssp

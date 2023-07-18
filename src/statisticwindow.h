@@ -22,14 +22,34 @@ class StatisticWindow : public QDialog {
   explicit StatisticWindow(std::shared_ptr<SignalData> data, int curSignal,
                            int intervalsNumber, QWidget *parent = nullptr);
 
+ protected slots:
+  void onGraphTimeRangeChange();
+
  private:
   void calculateStatistic();
   void showDialog();
+  void setLabelsText();
 
  private:
   std::shared_ptr<SignalData> p_signalData;
 
   QGraphicsView *p_graph;
+
+  QLabel *m_minValueLabel;
+  QLabel *m_maxValueLabel;
+  QLabel *m_avgValueLabel;
+
+  QLabel *m_dispersionLabel;
+  QLabel *m_standardDeviationLabel;
+
+  QLabel *m_variationFactorLabel;
+  QLabel *m_asymmetryFactorLabel;
+  QLabel *m_kurtosisFactorLabel;
+
+  QLabel *m_medianLabel;
+
+  QLabel *m_minQuantileLabel;
+  QLabel *m_maxQuantileLabel;
 
   double p_minValue;
   double p_maxValue;
