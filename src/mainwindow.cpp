@@ -90,9 +90,28 @@ void MainWindow::save() {
     checkBoxesLayout->addWidget(checkBox);
   }
 
-  QSpinBox *spinBox = new QSpinBox();
-  spinBox->setMaximum(INT_MAX);
-  spinBox->setValue(signalData->samplesNumber());
+  QSpinBox *fromSpinBox = new QSpinBox();
+  fromSpinBox->setMaximum(INT_MAX);
+  fromSpinBox->setValue(1);
+
+  QSpinBox *toSpinBox = new QSpinBox();
+  toSpinBox->setMaximum(INT_MAX);
+  toSpinBox->setValue(signalData->samplesNumber());
+
+  QLabel *noteFrom = new QLabel(tr("From samples"));
+  QLabel *noteTo = new QLabel(tr("To samples"));
+
+  QVBoxLayout *fromLayout = new QVBoxLayout();
+  fromLayout->addWidget(noteFrom);
+  fromLayout->addWidget(fromSpinBox);
+
+  QVBoxLayout *toLayout = new QVBoxLayout();
+  toLayout->addWidget(noteTo);
+  toLayout->addWidget(toSpinBox);
+
+  QHBoxLayout *spinBoxLayout = new QHBoxLayout();
+  spinBoxLayout->addLayout(fromLayout);
+  spinBoxLayout->addLayout(toLayout);
 
   QDialogButtonBox *buttonBox =
       new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
@@ -104,14 +123,12 @@ void MainWindow::save() {
   buttonLayout->addWidget(buttonBox);
 
   QLabel *noteCheckBoxes = new QLabel(tr("Choose the channel"));
-  QLabel *noteSpinBox = new QLabel(tr("Samples number"));
 
   QVBoxLayout *dialogLayout = new QVBoxLayout();
 
   dialogLayout->addWidget(noteCheckBoxes);
   dialogLayout->addLayout(checkBoxesLayout);
-  dialogLayout->addWidget(noteSpinBox);
-  dialogLayout->addWidget(spinBox);
+  dialogLayout->addLayout(spinBoxLayout);
   dialogLayout->addLayout(buttonLayout);
 
   dialog->setLayout(dialogLayout);
@@ -131,7 +148,7 @@ void MainWindow::save() {
       stream << "# channels number\n";
       stream << signalData->channelsNumber() << "\n";
       stream << "# samples number\n";
-      stream << spinBox->value() << "\n";
+      stream << toSpinBox->value() << "\n";
       stream << "# sampling rate\n";
       stream << signalData->rate() << "\n";
       stream << "# start date\n";
@@ -149,7 +166,7 @@ void MainWindow::save() {
       }
       stream << "\n";
 
-      for (int i = 0; i < spinBox->value(); ++i) {
+      for (int i = fromSpinBox->value(); i < toSpinBox->value(); ++i) {
         for (int j = 0; j < signalData->channelsNumber(); ++j) {
           if (!checkBoxes[j]->isChecked()) continue;
           stream << signalData->data()[j][i] << " ";
