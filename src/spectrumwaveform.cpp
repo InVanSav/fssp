@@ -237,15 +237,15 @@ void SpectrumWaveform::showToolTip(QMouseEvent *event) {
       (event->pos().x() - (p_offsetLeft + p_paddingLeft)) * m_freqPerPixel +
       p_signalData->leftFreq();
 
-  int arrayStart = (p_signalData->samplesNumber() / 2 - 1) * freqStart /
-                   (p_signalData->rate() / 2);
+  int arrayStart =
+      (p_signalData->allFreq() - 1) * freqStart / (p_signalData->rate() / 2);
 
   double freqEnd =
       (event->pos().x() + 1 - (p_offsetLeft + p_paddingLeft)) * m_freqPerPixel +
       p_signalData->leftFreq();
 
-  int arrayEnd = (p_signalData->samplesNumber() / 2 - 1) * freqEnd /
-                 (p_signalData->rate() / 2);
+  int arrayEnd =
+      (p_signalData->allFreq() - 1) * freqEnd / (p_signalData->rate() / 2);
 
   double max =
       *std::max_element(p_data.begin() + arrayStart, p_data.begin() + arrayEnd);
@@ -264,8 +264,6 @@ void SpectrumWaveform::showToolTip(QMouseEvent *event) {
   } else {
     data = min;
   }
-
-  //  QDateTime fullTime = p_signalData->startTime().addMSecs(freqStart);
 
   QString tooltipText =
       QString(tr("Value: %1 \n Freq: %2")).arg(data).arg(freqStart);
@@ -551,7 +549,7 @@ void SpectrumWaveform::drawAxisBottomX() {
     }
   }
 
-  double curValue = freqRange;
+  double curValue = p_signalData->leftFreq() + freqRange;
   curValue -= std::fmod(curValue, delimiter);
 
   int count = 0;
@@ -559,8 +557,10 @@ void SpectrumWaveform::drawAxisBottomX() {
   delimiter /= std::pow(10, count);
 
   double step = m_pixelPerFreq * delimiter;
-  int startX =
-      axisEnd.x() - std::abs(m_pixelPerFreq * (freqRange - curValue)) + 1;
+  int startX = axisEnd.x() -
+               std::abs(m_pixelPerFreq *
+                        (p_signalData->leftFreq() + freqRange - curValue)) +
+               1;
   for (int i = 0; i < delimitersNumber; ++i) {
     int x = startX - step * i;
     painter.drawLine(QPoint{x, p1}, QPoint{x, p2});

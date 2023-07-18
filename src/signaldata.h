@@ -63,6 +63,8 @@ class SignalData : public QObject {
 
   double freqRange() const;
 
+  double allFreq() const;
+
   bool spectrumIsGridEnabled() const;
   bool spectrumIsGlobalScale() const;
   bool spectrumIsSelected() const;

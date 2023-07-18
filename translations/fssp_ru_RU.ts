@@ -661,14 +661,14 @@ Date and time the recording started: </source>
 Время: %2</translation>
     </message>
     <message>
-        <location filename="../src/spectrumwaveform.cpp" line="271"/>
+        <location filename="../src/spectrumwaveform.cpp" line="269"/>
         <source>Value: %1 
  Freq: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spectrumwaveform.cpp" line="340"/>
-        <location filename="../src/spectrumwaveform.cpp" line="347"/>
+        <location filename="../src/spectrumwaveform.cpp" line="338"/>
+        <location filename="../src/spectrumwaveform.cpp" line="345"/>
         <source>Freq (HZ)</source>
         <translation type="unfinished"></translation>
     </message>
