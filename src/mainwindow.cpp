@@ -76,39 +76,90 @@ void MainWindow::save() {
       dynamic_cast<SignalPage *>(m_tabWidget->currentWidget());
   std::shared_ptr<SignalData> signalData = signalPage->getSignalData();
 
-  QString fileName = QFileDialog::getSaveFileName(
-      this, tr("Save File"), m_lastDir, tr("Text files (*.txt)"));
+  QDialog *dialog = new QDialog();
+  dialog->setWindowTitle(tr("Signal saving"));
 
-  QFile out(fileName + ".txt");
-  if (out.open(QIODevice::WriteOnly)) {
-    QTextStream stream(&out);
-    stream << "# channels number\n";
-    stream << signalData->channelsNumber() << "\n";
-    stream << "# samples number\n";
-    stream << signalData->samplesNumber() << "\n";
-    stream << "# sampling rate\n";
-    stream << signalData->rate() << "\n";
-    stream << "# start date\n";
-    stream << QLocale::system().toString(signalData->startTime().date(),
-                                         "dd.MM.yyyy")
-           << "\n";
-    stream << "# start time\n";
-    stream << QLocale::system().toString(signalData->startTime().time(),
-                                         "hh:mm:ss.zzz")
-           << "\n";
-    stream << "# channels names\n";
-    for (int i = 0; i < signalData->channelsNumber(); ++i) {
-      stream << signalData->channelsName()[i] << ";";
-    }
-    stream << "\n";
+  std::vector<QCheckBox *> checkBoxes;
 
-    for (int i = 0; i < signalData->samplesNumber(); ++i) {
-      for (int j = 0; j < signalData->channelsNumber(); ++j) {
-        stream << signalData->data()[j][i] << " ";
+  QHBoxLayout *checkBoxesLayout = new QHBoxLayout();
+
+  for (int i = 0; i < signalData->channelsNumber(); ++i) {
+    QCheckBox *checkBox = new QCheckBox(signalData->channelsName()[i]);
+    checkBoxes.push_back(checkBox);
+
+    checkBoxesLayout->addWidget(checkBox);
+  }
+
+  QSpinBox *spinBox = new QSpinBox();
+  spinBox->setMaximum(INT_MAX);
+  spinBox->setValue(signalData->samplesNumber());
+
+  QDialogButtonBox *buttonBox =
+      new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+
+  connect(buttonBox, &QDialogButtonBox::accepted, dialog, &QDialog::accept);
+  connect(buttonBox, &QDialogButtonBox::rejected, dialog, &QDialog::reject);
+
+  QHBoxLayout *buttonLayout = new QHBoxLayout();
+  buttonLayout->addWidget(buttonBox);
+
+  QLabel *noteCheckBoxes = new QLabel(tr("Choose the channel"));
+  QLabel *noteSpinBox = new QLabel(tr("Samples number"));
+
+  QVBoxLayout *dialogLayout = new QVBoxLayout();
+
+  dialogLayout->addWidget(noteCheckBoxes);
+  dialogLayout->addLayout(checkBoxesLayout);
+  dialogLayout->addWidget(noteSpinBox);
+  dialogLayout->addWidget(spinBox);
+  dialogLayout->addLayout(buttonLayout);
+
+  dialog->setLayout(dialogLayout);
+  dialog->setFixedSize(dialog->sizeHint());
+
+  dialog->exec();
+
+  if (dialog->result() == QDialog::Rejected) dialog->reject();
+
+  if (dialog->result() == QDialog::Accepted) {
+    QString fileName = QFileDialog::getSaveFileName(
+        this, tr("Save File"), m_lastDir, tr("Text files (*.txt)"));
+
+    QFile out(fileName + ".txt");
+    if (out.open(QIODevice::WriteOnly)) {
+      QTextStream stream(&out);
+      stream << "# channels number\n";
+      stream << signalData->channelsNumber() << "\n";
+      stream << "# samples number\n";
+      stream << spinBox->value() << "\n";
+      stream << "# sampling rate\n";
+      stream << signalData->rate() << "\n";
+      stream << "# start date\n";
+      stream << QLocale::system().toString(signalData->startTime().date(),
+                                           "dd.MM.yyyy")
+             << "\n";
+      stream << "# start time\n";
+      stream << QLocale::system().toString(signalData->startTime().time(),
+                                           "hh:mm:ss.zzz")
+             << "\n";
+      stream << "# channels names\n";
+      for (int i = 0; i < signalData->channelsNumber(); ++i) {
+        if (!checkBoxes[i]->isChecked()) continue;
+        stream << signalData->channelsName()[i] << ";";
       }
       stream << "\n";
+
+      for (int i = 0; i < spinBox->value(); ++i) {
+        for (int j = 0; j < signalData->channelsNumber(); ++j) {
+          if (!checkBoxes[j]->isChecked()) continue;
+          stream << signalData->data()[j][i] << " ";
+        }
+        stream << "\n";
+      }
+      out.close();
     }
-    out.close();
+
+    dialog->reject();
   }
 }
 
