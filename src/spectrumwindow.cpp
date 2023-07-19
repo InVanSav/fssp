@@ -290,7 +290,7 @@ void SpectrumWindow::pushScaleAcceptButton() {
   m_leftFreq = m_scaleFromValue->value();
   m_rightFreq = m_scaleToValue->value();
 
-  m_signalData->setSelected(true);
+  m_signalData->setSpectrumSelected(true);
 
   buttonHandler();
 }
@@ -303,7 +303,7 @@ void SpectrumWindow::pushDoubleScaleButton() {
   m_leftFreq = m_signalData->leftFreq() + (freqRange / 4);
   m_rightFreq = m_signalData->rightFreq() - (freqRange / 4);
 
-  m_signalData->setSelected(true);
+  m_signalData->setSpectrumSelected(true);
 
   buttonHandler();
 }
