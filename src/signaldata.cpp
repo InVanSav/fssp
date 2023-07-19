@@ -384,7 +384,7 @@ void SignalData::setSpectrumDefault() {
 
   m_spectrumIsGlobalScale = false;
   m_spectrumIsGridEnabled = true;
-  m_isSelected = false;
+  m_spectrumIsSelected = false;
 }
 
 }  // namespace fssp

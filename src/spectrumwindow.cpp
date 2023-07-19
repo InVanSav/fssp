@@ -24,10 +24,10 @@ SpectrumWindow::SpectrumWindow(std::shared_ptr<SignalData> data,
   m_smoothing = 0;
 
   calculate();
-
   addWaveforms();
   hideWaveforms();
 
+  onChangedGraphTimeRange();
   drawWaveforms();
 
   QVBoxLayout *mainLayout = new QVBoxLayout();
